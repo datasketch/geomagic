@@ -3,7 +3,8 @@ load_all()
 document()
 install()
 
-library(ggmapsmagic)
+library(gggeomagic)
+
 
 deptos <- c("05", "08", "11", "13", "15", "17", "18", "19", "20", "23", "25", "27", "41", "44", "47", "50")
 dataGnmNum <- data.frame(id = deptos, num = runif(length(deptos), 0, 1))
