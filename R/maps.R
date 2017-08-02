@@ -25,12 +25,12 @@ gg_choropleth_co_GnmNum. <- function(data, titleLabel = "", subtitle = "", capti
   data$a[data$a == "7"] <- "07"
   data$a[data$a == "8"] <- "08"
 
-  data_deptos <- suppressMessages(read_csv(system.file("geo/deptos_co.csv", package = "ggmapsmagic"), col_names = TRUE))
+  data_deptos <- suppressMessages(read_csv(system.file("geo/deptos_co.csv", package = "gggeomagic"), col_names = TRUE))
   names(data_deptos)[which(names(data_deptos) == "id")] <- "a"
   data_complete <- data.frame(a = unique(data_deptos$a), stringsAsFactors = FALSE)
   data <- suppressMessages(dplyr::inner_join(data_complete, data))
 
-  data_centroids <- suppressMessages(read_csv(system.file("geo/centroids_deptos_co.csv", package = "ggmapsmagic"), col_names = TRUE))
+  data_centroids <- suppressMessages(read_csv(system.file("geo/centroids_deptos_co.csv", package = "gggeomagic"), col_names = TRUE))
 
   data_graph <- dplyr::inner_join(data, data_deptos, by = "a")
   names(data_graph)[which(names(data_graph) == "a")] <- "id"
@@ -98,7 +98,7 @@ gg_sketchmap_depto_GnmNum. <- function(depto_ = depto_, color_map = "gold", colo
 
   options(warn = -1)
   data_mpios <- suppressMessages(read_csv(system.file("geo/mpios_depto_co.csv",
-                                                      package = "ggmapsmagic"), col_names = TRUE))
+                                                      package = "gggeomagic"), col_names = TRUE))
 
 
   data_mpios <- data_mpios %>% filter(depto == depto_)
@@ -135,13 +135,13 @@ gg_choropleth_depto_GnmNum. <- function(data, titleLabel = "", subtitle = "", ca
   data <- f$d
 
   options(warn=-1)
-  data_mpios <- suppressMessages(read_csv(system.file("geo/mpios_depto_co.csv", package = "ggmapsmagic"), col_names = TRUE))
+  data_mpios <- suppressMessages(read_csv(system.file("geo/mpios_depto_co.csv", package = "gggeomagic"), col_names = TRUE))
   names(data_mpios)[which(names(data_mpios) == "id")] <- "a"
   data_mpios <- data_mpios %>% filter(depto == depto_)
   data_complete <- data.frame(a = unique(data_mpios$a))
   data <- suppressMessages(dplyr::inner_join(data_complete, data))
 
-  data_centroids <- suppressMessages(read_csv(system.file("geo/centroids_mpios_depto_co.csv", package = "ggmapsmagic"), col_names = TRUE))
+  data_centroids <- suppressMessages(read_csv(system.file("geo/centroids_mpios_depto_co.csv", package = "gggeomagic"), col_names = TRUE))
 
   data_graph <- dplyr::inner_join(data, data_mpios, by = "a")
   names(data_graph)[which(names(data_graph) == "a")] <- "id"
@@ -218,7 +218,7 @@ gg_choropleth_latam_GnmNum. <- function(data, titleLabel = "", subtitle = "", ca
   data <- f$d
 
   options(warn=-1)
-  data_latam <- suppressMessages(read_csv(system.file("geo/latam.csv", package = "ggmapsmagic"), col_names = TRUE))
+  data_latam <- suppressMessages(read_csv(system.file("geo/latam.csv", package = "gggeomagic"), col_names = TRUE))
   data_latam$id <- as.character(data_latam$id)
   names(data_latam)[which(names(data_latam) == "id")] <- "a"
   data_complete <- data.frame(a = unique(data_latam$a))
@@ -277,9 +277,9 @@ gg_bubble_co_Gnm. <- function(data, titleLabel = "", subtitle = "", caption = ""
   data <- f$d
 
   options(warn=-1)
-  data_deptos <- suppressMessages(read_csv(system.file("geo/deptos_co.csv", package = "ggmapsmagic"), col_names = TRUE))
+  data_deptos <- suppressMessages(read_csv(system.file("geo/deptos_co.csv", package = "gggeomagic"), col_names = TRUE))
 
-  data_centroids <- suppressMessages(read_csv(system.file("geo/centroids_deptos_co.csv", package = "ggmapsmagic"), col_names = TRUE))
+  data_centroids <- suppressMessages(read_csv(system.file("geo/centroids_deptos_co.csv", package = "gggeomagic"), col_names = TRUE))
 
   data_graph <- data %>% dplyr::group_by(a, b) %>% dplyr::summarise(count = n())
 
@@ -343,7 +343,7 @@ gg_bubble_latam_Gnm. <- function(data, titleLabel = "", subtitle = "", caption =
   data <- f$d
 
   options(warn=-1)
-  data_latam <- suppressMessages(read_csv(system.file("geo/latam.csv", package = "ggmapsmagic"), col_names = TRUE))
+  data_latam <- suppressMessages(read_csv(system.file("geo/latam.csv", package = "gggeomagic"), col_names = TRUE))
 
   data_graph <- data %>% dplyr::group_by(a, b) %>% dplyr::summarise(count = n())
 
@@ -386,10 +386,10 @@ gg_bubble_depto_Gnm. <- function(data, titleLabel = "", subtitle = "", caption =
   data <- f$d
 
   options(warn=-1)
-  data_mpios <- suppressMessages(read_csv(system.file("geo/mpios_depto_co.csv", package = "ggmapsmagic"), col_names = TRUE))
+  data_mpios <- suppressMessages(read_csv(system.file("geo/mpios_depto_co.csv", package = "gggeomagic"), col_names = TRUE))
   data_mpios <- data_mpios %>% filter(depto == depto_)
 
-  data_centroids <- suppressMessages(read_csv(system.file("geo/centroids_mpios_depto_co.csv", package = "ggmapsmagic"), col_names = TRUE))
+  data_centroids <- suppressMessages(read_csv(system.file("geo/centroids_mpios_depto_co.csv", package = "gggeomagic"), col_names = TRUE))
 
   data_graph <- data %>% dplyr::group_by(a, b) %>% dplyr::summarise(count = n())
   graph <- ggplot() +
@@ -452,9 +452,9 @@ gg_bubble_co_GnmNum. <- function(data, titleLabel = "", subtitle = "", caption =
   data <- f$d
 
   options(warn=-1)
-  data_deptos <- suppressMessages(read_csv(system.file("geo/deptos_co.csv", package = "ggmapsmagic"), col_names = TRUE))
+  data_deptos <- suppressMessages(read_csv(system.file("geo/deptos_co.csv", package = "gggeomagic"), col_names = TRUE))
 
-  data_centroids <- suppressMessages(read_csv(system.file("geo/centroids_deptos_co.csv", package = "ggmapsmagic"), col_names = TRUE))
+  data_centroids <- suppressMessages(read_csv(system.file("geo/centroids_deptos_co.csv", package = "gggeomagic"), col_names = TRUE))
 
   graph <- ggplot(data_deptos) +
     geom_map(map = data_deptos,
@@ -515,7 +515,7 @@ gg_bubble_latam_GnmNum. <- function(data, titleLabel = "", subtitle = "", captio
   data <- f$d
 
   options(warn=-1)
-  data_latam <- suppressMessages(read_csv(system.file("geo/latam.csv", package = "ggmapsmagic"), col_names = TRUE))
+  data_latam <- suppressMessages(read_csv(system.file("geo/latam.csv", package = "gggeomagic"), col_names = TRUE))
 
   graph <- ggplot(data_latam) +
     geom_map(map = data_latam,
@@ -554,10 +554,10 @@ gg_bubble_depto_GnmNum. <- function(data, titleLabel = "", subtitle = "", captio
   data <- f$d
 
   options(warn=-1)
-  data_mpios <- suppressMessages(read_csv(system.file("geo/mpios_depto_co.csv", package = "ggmapsmagic"), col_names = TRUE))
+  data_mpios <- suppressMessages(read_csv(system.file("geo/mpios_depto_co.csv", package = "gggeomagic"), col_names = TRUE))
   data_mpios <- data_mpios %>% filter(depto == depto_)
 
-  data_centroids <- suppressMessages(read_csv(system.file("geo/centroids_mpios_depto_co.csv", package = "ggmapsmagic"), col_names = TRUE))
+  data_centroids <- suppressMessages(read_csv(system.file("geo/centroids_mpios_depto_co.csv", package = "gggeomagic"), col_names = TRUE))
 
   graph <- ggplot() +
     geom_map(data = data_mpios, map = data_mpios,
@@ -618,7 +618,7 @@ gg_bubble_co_CatGnm. <- function(data, titleLabel = "", subtitle = "", caption =
   data <- f$d
 
   options(warn=-1)
-  data_deptos <- suppressMessages(read_csv(system.file("geo/deptos_co.csv", package = "ggmapsmagic"), col_names = TRUE))
+  data_deptos <- suppressMessages(read_csv(system.file("geo/deptos_co.csv", package = "gggeomagic"), col_names = TRUE))
 
   data_graph <- data %>% dplyr::group_by(a, b, c) %>% dplyr::summarise(count = n())
 
@@ -661,10 +661,10 @@ gg_bubble_depto_CaGnm. <- function(data, titleLabel = "", subtitle = "", caption
   data <- f$d
 
   options(warn=-1)
-  data_mpios <- suppressMessages(read_csv(system.file("geo/mpios_depto_co.csv", package = "ggmapsmagic"), col_names = TRUE))
+  data_mpios <- suppressMessages(read_csv(system.file("geo/mpios_depto_co.csv", package = "gggeomagic"), col_names = TRUE))
   data_mpios <- data_mpios %>% filter(depto == depto_)
 
-  data_centroids <- suppressMessages(read_csv(system.file("geo/centroids_mpios_depto_co.csv", package = "ggmapsmagic"), col_names = TRUE))
+  data_centroids <- suppressMessages(read_csv(system.file("geo/centroids_mpios_depto_co.csv", package = "gggeomagic"), col_names = TRUE))
 
   data_graph <- data %>% dplyr::group_by(a, b, c) %>% dplyr::summarise(count = n())
 
