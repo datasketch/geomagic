@@ -1,13 +1,13 @@
 
 
 library(geojsonio)
-library(ggplot)
+library(ggplot2)
 library(tidyverse)
 
 # https://rud.is/b/2014/09/26/overcoming-d3-cartographic-envy-with-r-ggplot/
 
 #tj <- topojson_read("https://rawgit.com/jpmarindiaz/geo-collection/master/col/col-depto.topo.json")
-tj <- topojson_read(system.file("geo/col/col-depto.topojson",package = "gggeomagic"))
+tj <- topojson_read(system.file("geodata/col/col-adm1-departments.topojson",package = "geodata"))
 
 str(tj)
 dtj <- fortify(tj) %>% mutate(.id = as.numeric(id)) %>% select(-id)
