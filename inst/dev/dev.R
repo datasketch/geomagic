@@ -1,8 +1,8 @@
 
 
-library(geojsonio)
-library(ggplot2)
-library(tidyverse)
+# library(geojsonio)
+# library(ggplot2)
+# library(tidyverse)
 
 # https://rud.is/b/2014/09/26/overcoming-d3-cartographic-envy-with-r-ggplot/
 
