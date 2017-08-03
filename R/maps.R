@@ -712,3 +712,42 @@ gg_bubble_depto_CaGnm. <- function(data, titleLabel = "", subtitle = "", caption
 
   graph
 }
+
+
+
+
+#' Choropleth of World
+#' Choropleth of World
+#' @name gg_choropleth_world_GnmNum.
+#' @param x A category.
+#' @param y A number.
+#' @export
+#' @return The sum of \code{x} and \code{y}.
+#' @section ftypes: Gnm-Num
+#' @examples
+#' add(1, 1)
+#' add(10, 1)
+# gg_choropleth_world_GnmNum.
+#
+# f <- fringe(data)
+# nms <- getClabels(f)
+# flab <- fillLabel %||% nms[2]
+# data <- f$d
+#
+# tj <- topojson_read(system.file("geodata/world/world-countries.topojson",package = "geodata"))
+# data_world <- fortify(tj) %>% mutate(.id = as.numeric(id)) %>% select(-id)
+# countries <- tj@data %>% mutate(.id = 0:(nrow(.)-1))
+#
+#
+# data_world <- left_join(data_world, countries)
+# #data_world <- plyr::rename(data_world, c('.id', 'id'))
+#
+#
+#
+#
+# graph <- ggplot() +
+#   geom_map(data = data_world, map = data_world,
+#            aes(map_id = id, x = long, y = lat, group = group), fill = color_map,
+#            color = color_frontier, size = 0.25) + coord_map() +
+#   expand_limits(x = data_world$long, y = data_world$lat)
+#

@@ -117,3 +117,4 @@ df_CaGnm <- data.frame(type = type, long = long, lat = lat)
 gg_bubble_depto_CaGnm.(df_CaGnm, scale_point = 50)
 
 
+data <- data.frame(id = c('AFG', 'COL', 'SOM'), runif(3))
