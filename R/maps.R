@@ -728,26 +728,88 @@ gg_bubble_depto_CaGnm. <- function(data, titleLabel = "", subtitle = "", caption
 #' add(1, 1)
 #' add(10, 1)
 # gg_choropleth_world_GnmNum.
-#
-# f <- fringe(data)
-# nms <- getClabels(f)
-# flab <- fillLabel %||% nms[2]
-# data <- f$d
-#
-# tj <- topojson_read(system.file("geodata/world/world-countries.topojson",package = "geodata"))
-# data_world <- fortify(tj) %>% mutate(.id = as.numeric(id)) %>% select(-id)
-# countries <- tj@data %>% mutate(.id = 0:(nrow(.)-1))
-#
-#
-# data_world <- left_join(data_world, countries)
-# #data_world <- plyr::rename(data_world, c('.id', 'id'))
-#
-#
-#
-#
-# graph <- ggplot() +
-#   geom_map(data = data_world, map = data_world,
-#            aes(map_id = id, x = long, y = lat, group = group), fill = color_map,
-#            color = color_frontier, size = 0.25) + coord_map() +
-#   expand_limits(x = data_world$long, y = data_world$lat)
-#
+
+gg_choropleth_world_GnmNum. <- function(data, titleLabel = "", subtitle = "", caption = "", reverse = FALSE, text_size = 2,
+                                        fillLabel = NULL, leg_pos = "right", text = FALSE, prop_text = 'only_data',
+                                        color_map = "gray", color_frontier = "white", ...){
+
+  f <- fringe(data)
+  nms <- getClabels(f)
+  flab <- fillLabel %||% nms[2]
+  data <- f$d
+
+  tj <- topojson_read(system.file("geodata/world/world-countries.topojson",package = "geodata"))
+  data_world <- fortify(tj) %>% mutate(.id = as.numeric(id)) %>% select(-id)
+  countries <- tj@data %>% mutate(.id = 0:(nrow(.)-1)) %>% select(-id)
+
+  cod <- read_csv(system.file("geodata/world/world-countries.csv",package = "geodata"))
+
+  countries <- left_join(cod,countries)
+  countries <- countries %>% plyr::rename(c('lon' = 'x', 'lat' = 'y'))
+
+  data_world <- left_join(data_world, countries)
+  names(data_world)[which(names(data_world) == "id")] <- "a"
+  # data_world <- plyr::rename(data_world, c('.id', 'id'))
+
+
+  data_graph <- dplyr::inner_join(data, data_world, by = "a")
+  names(data_graph)[which(names(data_graph) == "a")] <- "id"
+  names(data_world)[which(names(data_world) == "a")] <- "id"
+
+  graph <- ggplot() +
+    geom_map(data = data_world, map = data_world,
+             aes(map_id = id, x = long, y = lat, group = group), fill = color_map,
+             color = color_frontier, size = 0.25) + coord_map() +
+    expand_limits(x = data_world$long, y = data_world$lat)
+
+
+  graph <- graph +
+    geom_map(data = data_graph, map = data_graph,
+             aes(map_id = id, x = long, y = lat, group = group, fill = b),
+             color = color_frontier, size = 0.25) + coord_map() +
+    expand_limits(x = data_graph$long, y = data_graph$lat) + theme_ds() + theme_ds_clean()
+
+
+  graph <- graph + coord_equal(ratio=1)
+
+  if(text){
+    if(prop_text == "all"){
+      graph <- graph + geom_text(data = countries,
+                                 aes(label = name, x = x, y = y,
+                                     check_overlap = TRUE), size=text_size)
+    }else{
+      if(prop_text == "only_data"){
+        prop_text <- data.frame(id = data$a)
+        prop_text <- prop_text %>% dplyr::inner_join(., countries, by = c("id"))
+        graph <- graph + geom_text(data = prop_text,
+                                   aes(label = name, x = x, y = y,
+                                       check_overlap = TRUE), size = text_size)
+      }else{
+        if(is.vector(prop_text) & class(prop_text) == "character"){
+          prop_text <- data.frame(name = prop_text)
+          prop_text <- prop_text %>% dplyr::inner_join(.,countries, by = c("name"))
+          graph <- graph + geom_text(data = prop_text,
+                                     aes(label = name, x = x, y = y,
+                                         check_overlap = TRUE), size = text_size)
+        }else{
+          countries <- sample_n(countries, dim(countries)[1] * prop_text)
+          graph <- graph + geom_text(data = countries,
+                                     aes(label = name, x = x, y = y,
+                                         check_overlap = TRUE), size = text_size)
+        }
+      }
+    }
+  }
+
+  if(reverse){
+    graph <- graph + scale_fill_gradient(low = getPalette(type = "sequential")[2],
+                                         high = getPalette(type = "sequential")[1])
+  }else{
+    graph <- graph + scale_fill_gradient(low = getPalette(type = "sequential")[1],
+                                         high = getPalette(type = "sequential")[2])
+  }
+  graph <- graph + labs(x = "", y = "", title = titleLabel, subtitle = subtitle, caption = caption) +
+    theme(legend.position=leg_pos)
+
+  graph
+}

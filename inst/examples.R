@@ -118,3 +118,6 @@ gg_bubble_depto_CaGnm.(df_CaGnm, scale_point = 50)
 
 
 data <- data.frame(id = c('AFG', 'COL', 'SOM'), runif(3))
+gg_choropleth_world_GnmNum.(data, text = TRUE, prop_text = c('China'))
+gg_choropleth_world_GnmNum.(data, text = TRUE)
+
