@@ -813,3 +813,208 @@ gg_choropleth_world_GnmNum. <- function(data, titleLabel = "", subtitle = "", ca
 
   graph
 }
+
+
+
+
+#' Choropleth of Locations
+#' Choropleth of Locations
+#' @name gg_choropleth_Locations_GnmNum.
+#' @param x A category.
+#' @param y A number.
+#' @export
+#' @return The sum of \code{x} and \code{y}.
+#' @section ftypes: Gnm-Num
+#' @examples
+#' add(1, 1)
+#' add(10, 1)
+# gg_choropleth_Locations_GnmNum.
+
+gg_choropleth_Locations_GnmNum. <- function(data, titleLabel = "", subtitle = "", caption = "", reverse = FALSE, text_size = 2,
+                                            fillLabel = NULL, leg_pos = "right", text = FALSE, prop_text = 'only_data',
+                                            color_map = "gray", color_frontier = "white", ...){
+
+
+  f <- fringe(data)
+  nms <- getClabels(f)
+  flab <- fillLabel %||% nms[2]
+  data <- f$d
+
+  tj <- topojson_read(system.file("geodata/col_dc/bog-localidades.topojson",package = "geodata"))
+  data_loc <- fortify(tj) %>% mutate(.id = as.numeric(id)) %>% select(-id)
+
+
+  localidades <- read_csv(system.file("geodata/col_dc/bog-localidades-centroides.csv",package = "geodata"))
+  localidades$id <- as.character(localidades$id)
+  loc_name <- localidades %>% select(-x, -y)
+
+
+  data_loc<- left_join(data_loc, loc_name)
+  names(data_loc)[which(names(data_loc) == "id")] <- "a"
+
+  data$a <- as.character(data$a)
+  data_loc$a <- as.character(data_loc$a)
+  data_graph <- dplyr::inner_join(data, data_loc, by = "a")
+
+  names(data_graph)[which(names(data_graph) == "a")] <- "id"
+  names(data_loc)[which(names(data_loc) == "a")] <- "id"
+
+
+  graph <- ggplot() +
+    geom_map(data = data_loc, map = data_loc,
+             aes(map_id = id, x = long, y = lat, group = group), fill = color_map,
+             color = color_frontier, size = 0.25) + coord_map() +
+    expand_limits(x = data_loc$long, y = data_loc$lat)
+  graph <- graph +
+    geom_map(data = data_graph, map = data_graph,
+             aes(map_id = id, x = long, y = lat, group = group, fill = b),
+             color = color_frontier, size = 0.25) + coord_map() +
+    expand_limits(x = data_graph$long, y = data_graph$lat) + theme_ds() + theme_ds_clean()
+
+
+
+  if(text){
+    if(prop_text == "all"){
+      graph <- graph + geom_text(data = localidades,
+                                 aes(label = name, x = x, y = y,
+                                     check_overlap = TRUE), size = 2)
+    }else{
+      if(prop_text == "only_data"){
+        prop_text <- data.frame(id = data$a)
+        prop_text$id <- as.character(prop_text$id)
+        prop_text <- prop_text %>% dplyr::inner_join(., localidades, by = c("id"))
+        graph <- graph + geom_text(data = prop_text,
+                                   aes(label = name, x = x, y = y,
+                                       check_overlap = TRUE), size = text_size)
+      }else{
+        if(is.vector(prop_text) & class(prop_text) == "character"){
+          prop_text <- data.frame(name = prop_text)
+          prop_text <- prop_text %>% dplyr::inner_join(.,localidades, by = c("name"))
+          graph <- graph + geom_text(data = prop_text,
+                                     aes(label = name, x = x, y = y,
+                                         check_overlap = TRUE), size = text_size)
+        }else{
+          localidades <- sample_n(localidades, dim(localidades)[1] * prop_text)
+          graph <- graph + geom_text(data = localidades,
+                                     aes(label = name, x = x, y = y,
+                                         check_overlap = TRUE), size = text_size)
+        }
+      }
+    }
+  }
+
+  if(reverse){
+    graph <- graph + scale_fill_gradient(low = getPalette(type = "sequential")[2],
+                                         high = getPalette(type = "sequential")[1])
+  }else{
+    graph <- graph + scale_fill_gradient(low = getPalette(type = "sequential")[1],
+                                         high = getPalette(type = "sequential")[2])
+  }
+  graph <- graph + labs(x = "", y = "", title = titleLabel, subtitle = subtitle, caption = caption) +
+    theme(legend.position=leg_pos)
+
+  graph
+
+}
+
+
+#' Choropleth of Locations without Sumapaz
+#' Choropleth of Locations without Sumapaz
+#' @name gg_choropleth_loc_GnmNum.
+#' @param x A category.
+#' @param y A number.
+#' @export
+#' @return The sum of \code{x} and \code{y}.
+#' @section ftypes: Gnm-Num
+#' @examples
+#' add(1, 1)
+#' add(10, 1)
+# gg_choropleth_Locations_withoutSumapaz_GnmNum.
+
+gg_choropleth_Locations_withoutSumapaz_GnmNum. <- function(data, titleLabel = "", subtitle = "", caption = "", reverse = FALSE, text_size = 2,
+                                                           fillLabel = NULL, leg_pos = "right", text = FALSE, prop_text = 'only_data',
+                                                           color_map = "gray", color_frontier = "white", ...){
+
+
+  f <- fringe(data)
+  nms <- getClabels(f)
+  flab <- fillLabel %||% nms[2]
+  data <- f$d
+
+  tj <- topojson_read(system.file("geodata/col_dc/bog-localidades.topojson",package = "geodata"))
+  data_loc <- fortify(tj) %>% mutate(.id = as.numeric(id)) %>% select(-id)
+  data_loc <- data_loc %>% filter(.id != 15)
+
+  localidades <- read_csv(system.file("geodata/col_dc/bog-localidades-centroides.csv",package = "geodata"))
+  localidades$id <- as.character(localidades$id)
+  loc_name <- localidades %>% select(-x, -y)
+  loc_name <- loc_name[-20,]
+
+  data_loc<- left_join(data_loc, loc_name)
+  names(data_loc)[which(names(data_loc) == "id")] <- "a"
+
+  data$a <- as.character(data$a)
+  data_loc$a <- as.character(data_loc$a)
+  data_graph <- dplyr::inner_join(data, data_loc, by = "a")
+
+  names(data_graph)[which(names(data_graph) == "a")] <- "id"
+  names(data_loc)[which(names(data_loc) == "a")] <- "id"
+
+
+  graph <- ggplot() +
+    geom_map(data = data_loc, map = data_loc,
+             aes(map_id = id, x = long, y = lat, group = group), fill = color_map,
+             color = color_frontier, size = 0.25) + coord_map() +
+    expand_limits(x = data_loc$long, y = data_loc$lat)
+  graph <- graph +
+    geom_map(data = data_graph, map = data_graph,
+             aes(map_id = id, x = long, y = lat, group = group, fill = b),
+             color = color_frontier, size = 0.25) + coord_map() +
+    expand_limits(x = data_graph$long, y = data_graph$lat) + theme_ds() + theme_ds_clean()
+
+
+
+  if(text){
+    if(prop_text == "all"){
+      graph <- graph + geom_text(data = localidades,
+                                 aes(label = name, x = x, y = y,
+                                     check_overlap = TRUE), size = 2)
+    }else{
+      if(prop_text == "only_data"){
+        prop_text <- data.frame(id = data$a)
+        prop_text$id <- as.character(prop_text$id)
+        prop_text <- prop_text %>% dplyr::inner_join(., localidades, by = c("id"))
+        graph <- graph + geom_text(data = prop_text,
+                                   aes(label = name, x = x, y = y,
+                                       check_overlap = TRUE), size = text_size)
+      }else{
+        if(is.vector(prop_text) & class(prop_text) == "character"){
+          prop_text <- data.frame(name = prop_text)
+          prop_text <- prop_text %>% dplyr::inner_join(.,localidades, by = c("name"))
+          graph <- graph + geom_text(data = prop_text,
+                                     aes(label = name, x = x, y = y,
+                                         check_overlap = TRUE), size = text_size)
+        }else{
+          localidades <- sample_n(localidades, dim(localidades)[1] * prop_text)
+          graph <- graph + geom_text(data = localidades,
+                                     aes(label = name, x = x, y = y,
+                                         check_overlap = TRUE), size = text_size)
+        }
+      }
+    }
+  }
+
+  if(reverse){
+    graph <- graph + scale_fill_gradient(low = getPalette(type = "sequential")[2],
+                                         high = getPalette(type = "sequential")[1])
+  }else{
+    graph <- graph + scale_fill_gradient(low = getPalette(type = "sequential")[1],
+                                         high = getPalette(type = "sequential")[2])
+  }
+  graph <- graph + labs(x = "", y = "", title = titleLabel, subtitle = subtitle, caption = caption) +
+    theme(legend.position=leg_pos)
+
+  graph
+
+}
+

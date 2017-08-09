@@ -121,3 +121,9 @@ data <- data.frame(id = c('AFG', 'COL', 'SOM'), runif(3))
 gg_choropleth_world_GnmNum.(data, text = TRUE, prop_text = c('China'))
 gg_choropleth_world_GnmNum.(data, text = TRUE)
 
+data <- data.frame(loc = c('9', '7', '1', '20'), num =runif(4))
+gg_choropleth_Locations_GnmNum.(data)
+
+
+data <- data.frame(loc = c('9', '7', '1'), num =runif(3))
+gg_choropleth_Locations_withoutSumapaz_GnmNum.(data)
