@@ -1018,3 +1018,188 @@ gg_choropleth_Locations_withoutSumapaz_GnmNum. <- function(data, titleLabel = ""
 
 }
 
+
+#' Bubble inside Bogotá's locations map
+#' Bubble inside Bogotá's locations map
+#' @name gg_bubble_locationsBta_Gnm.
+#' @param x A category.
+#' @param y A number.
+#' @export
+#' @return The sum of \code{x} and \code{y}.
+#' @section ftypes: Gnm
+#' @examples
+#' add(1, 1)
+#' add(10, 1)
+gg_bubble_locationsBta_Gnm. <- function(data, titleLabel = "", subtitle = "", caption = "", fillLabel = NULL, prop_text = 'only_data',
+                                        color_point = "red", leg_pos = "right", text = FALSE, text_size = 2,
+                                        color_map = "gray", color_frontier = "white", scale_point = 3,
+                                        alpha = 0.5, ...){
+  f <- fringe(data)
+  nms <- getClabels(f)
+  flab <- fillLabel %||% nms[2]
+  data <- f$d
+
+  tj <- topojson_read(system.file("geodata/col_dc/bog-localidades.topojson",package = "geodata"))
+  data_loc <- fortify(tj) %>% mutate(.id = as.numeric(id)) %>% select(-id)
+
+
+
+  localidades <- read_csv(system.file("geodata/col_dc/bog-localidades-centroides.csv",package = "geodata"))
+  localidades$a <- as.character(localidades$id)
+  data_graph <- data %>% dplyr::group_by(a) %>% dplyr::summarise(prom = mean(b))
+  data_graph <- left_join(data_graph, localidades)
+
+
+  loc_name <- localidades %>% select(-x, -y)
+
+  data_loc<- left_join(data_loc, loc_name)
+  names(data_loc)[which(names(data_loc) == "id")] <- "a"
+
+  data$a <- as.character(data$a)
+  data_loc$a <- as.character(data_loc$a)
+  names(data_loc)[which(names(data_loc) == "a")] <- "id"
+
+  localidades$id <- as.character(localidades$id)
+
+  graph <- ggplot() +
+    geom_map(data = data_loc, map = data_loc,
+             aes(map_id = id, x = long, y = lat, group = group), fill = color_map,
+             color = color_frontier, size = 0.25) + coord_map() +
+    expand_limits(x = data_loc$long, y = data_loc$lat)
+
+
+  graph <- graph + geom_point(data = data_graph,
+                              aes(x=x, y=y, size=prom), color = "red",colour = color_point, alpha = alpha) +
+    scale_size(range = c(0, scale_point)) + coord_map()  +
+    labs(x = "", y = "", title = titleLabel, subtitle = subtitle, caption = caption) + theme_ds() + theme_ds_clean() +
+    theme(legend.position=leg_pos)
+
+
+
+  if(text){
+    if(prop_text == "all"){
+      graph <- graph + geom_text(data = localidades,
+                                 aes(label = name, x = x, y = y,
+                                     check_overlap = TRUE), size = text_size)
+    }else{
+      if(prop_text == "only_data"){
+        prop_text <- data.frame(id = data$a)
+        prop_text$id <- as.character(prop_text$id)
+        prop_text <- prop_text %>% dplyr::inner_join(., localidades, by = c("id"))
+        graph <- graph + geom_text(data = prop_text,
+                                   aes(label = name, x = x, y = y,
+                                       check_overlap = TRUE), size = text_size)
+      }else{
+        if(is.vector(prop_text) & class(prop_text) == "character"){
+          prop_text <- data.frame(name = prop_text)
+          prop_text <- prop_text %>% dplyr::inner_join(.,localidades, by = c("name"))
+          graph <- graph + geom_text(data = prop_text,
+                                     aes(label = name, x = x, y = y,
+                                         check_overlap = TRUE), size = text_size)
+        }else{
+          localidades <- sample_n(localidades, dim(localidades)[1] * prop_text)
+          graph <- graph + geom_text(data = localidades,
+                                     aes(label = name, x = x, y = y,
+                                         check_overlap = TRUE), size = text_size)
+        }
+      }
+    }
+  }
+  graph <- graph + labs(x = "", y = "", title = titleLabel, subtitle = subtitle, caption = caption) +
+    theme(legend.position=leg_pos)
+
+  graph
+}
+
+#' Bubble inside Bogotá's locations map without Sumapaz
+#' Bubble inside Bogotá's locations map without Sumapaz
+#' @name gg_bubble_Locations_withoutSumapaz_Gnm.
+#' @param x A category.
+#' @param y A number.
+#' @export
+#' @return The sum of \code{x} and \code{y}.
+#' @section ftypes: Gnm
+#' @examples
+#' add(1, 1)
+#' add(10, 1)
+gg_bubble_Locations_withoutSumapaz_Gnm. <- function(data, titleLabel = "", subtitle = "", caption = "", fillLabel = NULL, prop_text = 'only_data',
+                                                    color_point = "red", leg_pos = "right", text = FALSE, text_size = 2,
+                                                    color_map = "gray", color_frontier = "white", scale_point = 3,
+                                                    alpha = 0.5, ...){
+  f <- fringe(data)
+  nms <- getClabels(f)
+  flab <- fillLabel %||% nms[2]
+  data <- f$d
+
+  tj <- topojson_read(system.file("geodata/col_dc/bog-localidades.topojson",package = "geodata"))
+  data_loc <- fortify(tj) %>% mutate(.id = as.numeric(id)) %>% select(-id)
+  data_loc <- data_loc %>% filter(.id != 15)
+
+
+  localidades <- read_csv(system.file("geodata/col_dc/bog-localidades-centroides.csv",package = "geodata"))
+  localidades$a <- as.character(localidades$id)
+  data_graph <- data %>% dplyr::group_by(a) %>% dplyr::summarise(prom = mean(b))
+  data_graph <- left_join(data_graph, localidades)
+
+
+  loc_name <- localidades %>% select(-x, -y)
+  loc_name <- loc_name[-20,]
+
+  data_loc<- left_join(data_loc, loc_name)
+  names(data_loc)[which(names(data_loc) == "id")] <- "a"
+
+  data$a <- as.character(data$a)
+  data_loc$a <- as.character(data_loc$a)
+  names(data_loc)[which(names(data_loc) == "a")] <- "id"
+
+
+
+  graph <- ggplot() +
+    geom_map(data = data_loc, map = data_loc,
+             aes(map_id = id, x = long, y = lat, group = group), fill = color_map,
+             color = color_frontier, size = 0.25) + coord_map() +
+    expand_limits(x = data_loc$long, y = data_loc$lat)
+
+
+  graph <- graph + geom_point(data = data_graph,
+                              aes(x=x, y=y, size=prom), color = "red",colour = color_point, alpha = alpha) +
+    scale_size(range = c(0, scale_point)) + coord_map()  +
+    labs(x = "", y = "", title = titleLabel, subtitle = subtitle, caption = caption) + theme_ds() + theme_ds_clean() +
+    theme(legend.position=leg_pos)
+
+  if(text){
+    if(prop_text == "all"){
+      graph <- graph + geom_text(data = localidades,
+                                 aes(label = name, x = x, y = y,
+                                     check_overlap = TRUE), size = 2)
+    }else{
+      if(prop_text == "only_data"){
+        prop_text <- data.frame(id = data$a)
+        prop_text$id <- as.character(prop_text$id)
+        prop_text <- prop_text %>% dplyr::inner_join(., localidades, by = c("id"))
+        graph <- graph + geom_text(data = prop_text,
+                                   aes(label = name, x = x, y = y,
+                                       check_overlap = TRUE), size = text_size)
+      }else{
+        if(is.vector(prop_text) & class(prop_text) == "character"){
+          prop_text <- data.frame(name = prop_text)
+          prop_text <- prop_text %>% dplyr::inner_join(.,localidades, by = c("name"))
+          graph <- graph + geom_text(data = prop_text,
+                                     aes(label = name, x = x, y = y,
+                                         check_overlap = TRUE), size = text_size)
+        }else{
+          localidades <- sample_n(localidades, dim(localidades)[1] * prop_text)
+          graph <- graph + geom_text(data = localidades,
+                                     aes(label = name, x = x, y = y,
+                                         check_overlap = TRUE), size = text_size)
+        }
+      }
+    }
+  }
+  graph <- graph + labs(x = "", y = "", title = titleLabel, subtitle = subtitle, caption = caption) +
+    theme(legend.position=leg_pos)
+
+  graph
+}
+
+
