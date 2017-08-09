@@ -3,6 +3,8 @@
 \name{gg_choropleth_loc_GnmNum.}
 \alias{gg_choropleth_loc_GnmNum.}
 \alias{gg_choropleth_Locations_withoutSumapaz_GnmNum.}
+\alias{gg_choropleth_loc_GnmNum.}
+\alias{gg_bubbles_world_GnmNum.}
 \title{Choropleth of Locations without Sumapaz
 Choropleth of Locations without Sumapaz}
 \usage{
@@ -11,24 +13,42 @@ gg_choropleth_Locations_withoutSumapaz_GnmNum.(data, titleLabel = "",
   fillLabel = NULL, leg_pos = "right", text = FALSE,
   prop_text = "only_data", color_map = "gray", color_frontier = "white",
   ...)
+
+gg_bubbles_world_GnmNum.(data, titleLabel = "", subtitle = "",
+  caption = "", reverse = FALSE, text_size = 2, fillLabel = NULL,
+  leg_pos = "right", text = FALSE, prop_text = "only_data",
+  color_map = "gray", color_frontier = "white", ...)
 }
 \arguments{
+\item{x}{A category.}
+
+\item{y}{A number.}
+
 \item{x}{A category.}
 
 \item{y}{A number.}
 }
 \value{
 The sum of \code{x} and \code{y}.
+
+The sum of \code{x} and \code{y}.
 }
 \description{
 Choropleth of Locations without Sumapaz
 Choropleth of Locations without Sumapaz
+
+gg_bubbles_world_GnmNum.
+gg_bubbles_world_GnmNum.
 }
 \section{ftypes}{
+ Gnm-Num
+
  Gnm-Num
 }
 
 \examples{
+add(1, 1)
+add(10, 1)
 add(1, 1)
 add(10, 1)
 }

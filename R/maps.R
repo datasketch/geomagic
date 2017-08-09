@@ -1018,6 +1018,105 @@ gg_choropleth_Locations_withoutSumapaz_GnmNum. <- function(data, titleLabel = ""
 
 }
 
+#' gg_bubbles_world_GnmNum.
+#' gg_bubbles_world_GnmNum.
+#' @name gg_choropleth_loc_GnmNum.
+#' @param x A category.
+#' @param y A number.
+#' @export
+#' @return The sum of \code{x} and \code{y}.
+#' @section ftypes: Gnm-Num
+#' @examples
+#' add(1, 1)
+#' add(10, 1)
+# gg_bubbles_world_GnmNum.
+
+gg_bubbles_world_GnmNum. <- function(data, titleLabel = "", subtitle = "", caption = "", reverse = FALSE, text_size = 2,
+                                     fillLabel = NULL, leg_pos = "right", text = FALSE, prop_text = 'only_data',
+                                     color_map = "gray", color_frontier = "white", ...){
+
+
+  f <- fringe(data)
+  nms <- getClabels(f)
+  flab <- fillLabel %||% nms[2]
+  data <- f$d
+
+
+  tj <- topojson_read(system.file("geodata/world/world-countries.topojson",package = "geodata"))
+  data_world <- fortify(tj) %>% mutate(.id = as.numeric(id)) %>% select(-id)
+  countries <- tj@data %>% mutate(.id = 0:(nrow(.)-1)) %>% select(-id)
+
+  cod <- read_csv(system.file("geodata/world/world-countries.csv",package = "geodata"))
+
+  countries <- left_join(cod,countries)
+  countries <- countries %>% plyr::rename(c('lon' = 'x', 'lat' = 'y'))
+
+  data_world <- left_join(data_world, countries)
+  names(data_world)[which(names(data_world) == "id")] <- "a"
+  names(countries)[which(names(countries) == "id")] <- "a"
+  # data_world <- plyr::rename(data_world, c('.id', 'id'))
+
+
+  data_graph <- dplyr::inner_join(data, data_world, by = "a")
+  data_graph <- data %>% dplyr::group_by(a) %>% dplyr::summarise(prom = mean(b))
+  data_graph <- left_join(data_graph, countries)
+
+
+  names(data_graph)[which(names(data_graph) == "a")] <- "id"
+  names(data_world)[which(names(data_world) == "a")] <- "id"
+
+
+
+  graph <- ggplot() +
+    geom_map(data = data_world, map = data_world,
+             aes(map_id = id, x = long, y = lat, group = group), fill = color_map,
+             color = color_frontier, size = 0.25) + coord_map() +
+    expand_limits(x = data_world$long, y = data_world$lat)
+
+  graph <- graph + geom_point(data = data_graph,
+                              aes(x=x, y=y, size=prom), color = "red",colour = color_point, alpha = alpha) +
+    scale_size(range = c(0.2, scale_point)) + coord_map()  +
+    labs(x = "", y = "", title = titleLabel, subtitle = subtitle, caption = caption) + theme_ds() + theme_ds_clean() +
+    theme(legend.position=leg_pos)
+
+  graph <- graph + coord_equal(ratio=1)
+
+  if(text){
+    if(prop_text == "all"){
+      graph <- graph + geom_text(data = countries,
+                                 aes(label = name, x = x, y = y,
+                                     check_overlap = TRUE), size=text_size)
+    }else{
+      if(prop_text == "only_data"){
+        prop_text <- data.frame(id = data$a)
+        prop_text <- prop_text %>% dplyr::inner_join(., countries, by = c("id"))
+        graph <- graph + geom_text(data = prop_text,
+                                   aes(label = name, x = x, y = y,
+                                       check_overlap = TRUE), size = text_size)
+      }else{
+        if(is.vector(prop_text) & class(prop_text) == "character"){
+          prop_text <- data.frame(name = prop_text)
+          prop_text <- prop_text %>% dplyr::inner_join(.,countries, by = c("name"))
+          graph <- graph + geom_text(data = prop_text,
+                                     aes(label = name, x = x, y = y,
+                                         check_overlap = TRUE), size = text_size)
+        }else{
+          countries <- sample_n(countries, dim(countries)[1] * prop_text)
+          graph <- graph + geom_text(data = countries,
+                                     aes(label = name, x = x, y = y,
+                                         check_overlap = TRUE), size = text_size)
+        }
+      }
+    }
+  }
+
+
+  graph <- graph + labs(x = "", y = "", title = titleLabel, subtitle = subtitle, caption = caption) +
+    theme(legend.position=leg_pos)
+
+  graph
+}
+
 
 #' Bubble inside Bogotá's locations map
 #' Bubble inside Bogotá's locations map
@@ -1070,7 +1169,7 @@ gg_bubble_locationsBta_Gnm. <- function(data, titleLabel = "", subtitle = "", ca
 
   graph <- graph + geom_point(data = data_graph,
                               aes(x=x, y=y, size=prom), color = "red",colour = color_point, alpha = alpha) +
-    scale_size(range = c(0, scale_point)) + coord_map()  +
+    scale_size(range = c(0.2, scale_point)) + coord_map()  +
     labs(x = "", y = "", title = titleLabel, subtitle = subtitle, caption = caption) + theme_ds() + theme_ds_clean() +
     theme(legend.position=leg_pos)
 
@@ -1163,7 +1262,7 @@ gg_bubble_Locations_withoutSumapaz_Gnm. <- function(data, titleLabel = "", subti
 
   graph <- graph + geom_point(data = data_graph,
                               aes(x=x, y=y, size=prom), color = "red",colour = color_point, alpha = alpha) +
-    scale_size(range = c(0, scale_point)) + coord_map()  +
+    scale_size(range = c(0.2, scale_point)) + coord_map()  +
     labs(x = "", y = "", title = titleLabel, subtitle = subtitle, caption = caption) + theme_ds() + theme_ds_clean() +
     theme(legend.position=leg_pos)
 
@@ -1201,5 +1300,6 @@ gg_bubble_Locations_withoutSumapaz_Gnm. <- function(data, titleLabel = "", subti
 
   graph
 }
+
 
 

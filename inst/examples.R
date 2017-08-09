@@ -133,4 +133,7 @@ data <- data.frame(loc = c('9', '7', '15', '2'), num =runif(4))
 gg_bubble_locationsBta_Gnm.(data, text = TRUE)
 
 
-gg_bubble_Locations_withoutSumapaz_Gnm.(data)
+gg_bubble_Locations_withoutSumapaz_Gnm.(data,scale_point = 8)
+
+data <- data.frame(id = c('AFG', 'COL', 'SOM'), runif(3))
+gg_bubbles_world_GnmNum.(data)
