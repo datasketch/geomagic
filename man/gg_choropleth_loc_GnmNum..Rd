@@ -15,9 +15,10 @@ gg_choropleth_Locations_withoutSumapaz_GnmNum.(data, titleLabel = "",
   ...)
 
 gg_bubbles_world_GnmNum.(data, titleLabel = "", subtitle = "",
-  caption = "", reverse = FALSE, text_size = 2, fillLabel = NULL,
-  leg_pos = "right", text = FALSE, prop_text = "only_data",
-  color_map = "gray", color_frontier = "white", ...)
+  caption = "", fillLabel = NULL, prop_text = "only_data",
+  color_point = "red", leg_pos = "right", text = FALSE, text_size = 2,
+  color_map = "gray", color_frontier = "white", scale_point = 3,
+  alpha = 0.5, ...)
 }
 \arguments{
 \item{x}{A category.}

@@ -844,13 +844,18 @@ gg_choropleth_Locations_GnmNum. <- function(data, titleLabel = "", subtitle = ""
   data_loc <- fortify(tj) %>% mutate(.id = as.numeric(id)) %>% select(-id)
 
 
-  localidades <- read_csv(system.file("geodata/col_dc/bog-localidades-centroides.csv",package = "geodata"))
+  localidades <- read_csv(system.file("geodata/col_dc/bog-localidades.csv",package = "geodata"))
+  names(localidades)[which(names(localidades) == "id")] <- ".id"
+  df <- data.frame(.id = c(12, 9,10, 16, 18, 14, 17, 6, 13, 5, 0, 8, 11, 1, 2, 4, 3, 7, 19, 15), id = 1:20 )
+  localidades <- left_join(localidades, df)
   localidades$id <- as.character(localidades$id)
-  loc_name <- localidades %>% select(-x, -y)
+  localidades$a <- localidades$id
+
+  loc_name <- localidades %>% select(-lon, -lat)
 
 
   data_loc<- left_join(data_loc, loc_name)
-  names(data_loc)[which(names(data_loc) == "id")] <- "a"
+  #names(data_loc)[which(names(data_loc) == "id")] <- "a"
 
   data$a <- as.character(data$a)
   data_loc$a <- as.character(data_loc$a)
@@ -876,7 +881,7 @@ gg_choropleth_Locations_GnmNum. <- function(data, titleLabel = "", subtitle = ""
   if(text){
     if(prop_text == "all"){
       graph <- graph + geom_text(data = localidades,
-                                 aes(label = name, x = x, y = y,
+                                 aes(label = name, x = lon, y = lat,
                                      check_overlap = TRUE), size = 2)
     }else{
       if(prop_text == "only_data"){
@@ -884,19 +889,19 @@ gg_choropleth_Locations_GnmNum. <- function(data, titleLabel = "", subtitle = ""
         prop_text$id <- as.character(prop_text$id)
         prop_text <- prop_text %>% dplyr::inner_join(., localidades, by = c("id"))
         graph <- graph + geom_text(data = prop_text,
-                                   aes(label = name, x = x, y = y,
+                                   aes(label = name, x = lon, y = lat,
                                        check_overlap = TRUE), size = text_size)
       }else{
         if(is.vector(prop_text) & class(prop_text) == "character"){
           prop_text <- data.frame(name = prop_text)
           prop_text <- prop_text %>% dplyr::inner_join(.,localidades, by = c("name"))
           graph <- graph + geom_text(data = prop_text,
-                                     aes(label = name, x = x, y = y,
+                                     aes(label = name, x = lon, y = lat,
                                          check_overlap = TRUE), size = text_size)
         }else{
           localidades <- sample_n(localidades, dim(localidades)[1] * prop_text)
           graph <- graph + geom_text(data = localidades,
-                                     aes(label = name, x = x, y = y,
+                                     aes(label = name, x = lon, y = lat,
                                          check_overlap = TRUE), size = text_size)
         }
       }
@@ -945,16 +950,20 @@ gg_choropleth_Locations_withoutSumapaz_GnmNum. <- function(data, titleLabel = ""
   data_loc <- fortify(tj) %>% mutate(.id = as.numeric(id)) %>% select(-id)
   data_loc <- data_loc %>% filter(.id != 15)
 
-  localidades <- read_csv(system.file("geodata/col_dc/bog-localidades-centroides.csv",package = "geodata"))
+  localidades <- read_csv(system.file("geodata/col_dc/bog-localidades.csv",package = "geodata"))
+  names(localidades)[which(names(localidades) == "id")] <- ".id"
+  df <- data.frame(.id = c(12, 9,10, 16, 18, 14, 17, 6, 13, 5, 0, 8, 11, 1, 2, 4, 3, 7, 19, 15), id = 1:20 )
+  localidades <- left_join(localidades, df)
   localidades$id <- as.character(localidades$id)
-  loc_name <- localidades %>% select(-x, -y)
+  localidades$a <- localidades$id
+
+  loc_name <- localidades %>% select(-lon, -lat)
   loc_name <- loc_name[-20,]
 
   data_loc<- left_join(data_loc, loc_name)
-  names(data_loc)[which(names(data_loc) == "id")] <- "a"
+  #names(data_loc)[which(names(data_loc) == "id")] <- "a"
 
   data$a <- as.character(data$a)
-  data_loc$a <- as.character(data_loc$a)
   data_graph <- dplyr::inner_join(data, data_loc, by = "a")
 
   names(data_graph)[which(names(data_graph) == "a")] <- "id"
@@ -977,7 +986,7 @@ gg_choropleth_Locations_withoutSumapaz_GnmNum. <- function(data, titleLabel = ""
   if(text){
     if(prop_text == "all"){
       graph <- graph + geom_text(data = localidades,
-                                 aes(label = name, x = x, y = y,
+                                 aes(label = name, x = lon, y = lat,
                                      check_overlap = TRUE), size = 2)
     }else{
       if(prop_text == "only_data"){
@@ -985,19 +994,19 @@ gg_choropleth_Locations_withoutSumapaz_GnmNum. <- function(data, titleLabel = ""
         prop_text$id <- as.character(prop_text$id)
         prop_text <- prop_text %>% dplyr::inner_join(., localidades, by = c("id"))
         graph <- graph + geom_text(data = prop_text,
-                                   aes(label = name, x = x, y = y,
+                                   aes(label = name, x = lon, y = lat,
                                        check_overlap = TRUE), size = text_size)
       }else{
         if(is.vector(prop_text) & class(prop_text) == "character"){
           prop_text <- data.frame(name = prop_text)
           prop_text <- prop_text %>% dplyr::inner_join(.,localidades, by = c("name"))
           graph <- graph + geom_text(data = prop_text,
-                                     aes(label = name, x = x, y = y,
+                                     aes(label = name, x = lon, y = lat,
                                          check_overlap = TRUE), size = text_size)
         }else{
           localidades <- sample_n(localidades, dim(localidades)[1] * prop_text)
           graph <- graph + geom_text(data = localidades,
-                                     aes(label = name, x = x, y = y,
+                                     aes(label = name, x = lon, y = lat,
                                          check_overlap = TRUE), size = text_size)
         }
       }
@@ -1031,9 +1040,10 @@ gg_choropleth_Locations_withoutSumapaz_GnmNum. <- function(data, titleLabel = ""
 #' add(10, 1)
 # gg_bubbles_world_GnmNum.
 
-gg_bubbles_world_GnmNum. <- function(data, titleLabel = "", subtitle = "", caption = "", reverse = FALSE, text_size = 2,
-                                     fillLabel = NULL, leg_pos = "right", text = FALSE, prop_text = 'only_data',
-                                     color_map = "gray", color_frontier = "white", ...){
+gg_bubbles_world_GnmNum. <- function(data, titleLabel = "", subtitle = "", caption = "", fillLabel = NULL, prop_text = 'only_data',
+                                     color_point = "red", leg_pos = "right", text = FALSE, text_size = 2,
+                                     color_map = "gray", color_frontier = "white", scale_point = 3,
+                                     alpha = 0.5, ...){
 
 
   f <- fringe(data)
@@ -1049,7 +1059,7 @@ gg_bubbles_world_GnmNum. <- function(data, titleLabel = "", subtitle = "", capti
   cod <- read_csv(system.file("geodata/world/world-countries.csv",package = "geodata"))
 
   countries <- left_join(cod,countries)
-  countries <- countries %>% plyr::rename(c('lon' = 'x', 'lat' = 'y'))
+  #countries <- countries %>% plyr::rename(c('lon' = 'x', 'lat' = 'y'))
 
   data_world <- left_join(data_world, countries)
   names(data_world)[which(names(data_world) == "id")] <- "a"
@@ -1074,7 +1084,7 @@ gg_bubbles_world_GnmNum. <- function(data, titleLabel = "", subtitle = "", capti
     expand_limits(x = data_world$long, y = data_world$lat)
 
   graph <- graph + geom_point(data = data_graph,
-                              aes(x=x, y=y, size=prom), color = "red",colour = color_point, alpha = alpha) +
+                              aes(x=lon, y=lat, size=prom), color = "red",colour = color_point, alpha = alpha) +
     scale_size(range = c(0.2, scale_point)) + coord_map()  +
     labs(x = "", y = "", title = titleLabel, subtitle = subtitle, caption = caption) + theme_ds() + theme_ds_clean() +
     theme(legend.position=leg_pos)
@@ -1084,26 +1094,26 @@ gg_bubbles_world_GnmNum. <- function(data, titleLabel = "", subtitle = "", capti
   if(text){
     if(prop_text == "all"){
       graph <- graph + geom_text(data = countries,
-                                 aes(label = name, x = x, y = y,
+                                 aes(label = name, x = lon, y = lat,
                                      check_overlap = TRUE), size=text_size)
     }else{
       if(prop_text == "only_data"){
         prop_text <- data.frame(id = data$a)
         prop_text <- prop_text %>% dplyr::inner_join(., countries, by = c("id"))
         graph <- graph + geom_text(data = prop_text,
-                                   aes(label = name, x = x, y = y,
+                                   aes(label = name, x = lon, y = lat,
                                        check_overlap = TRUE), size = text_size)
       }else{
         if(is.vector(prop_text) & class(prop_text) == "character"){
           prop_text <- data.frame(name = prop_text)
           prop_text <- prop_text %>% dplyr::inner_join(.,countries, by = c("name"))
           graph <- graph + geom_text(data = prop_text,
-                                     aes(label = name, x = x, y = y,
+                                     aes(label = name, x = lon, y = lat,
                                          check_overlap = TRUE), size = text_size)
         }else{
           countries <- sample_n(countries, dim(countries)[1] * prop_text)
           graph <- graph + geom_text(data = countries,
-                                     aes(label = name, x = x, y = y,
+                                     aes(label = name, x = lon, y = lat,
                                          check_overlap = TRUE), size = text_size)
         }
       }
@@ -1143,13 +1153,17 @@ gg_bubble_locationsBta_Gnm. <- function(data, titleLabel = "", subtitle = "", ca
 
 
 
-  localidades <- read_csv(system.file("geodata/col_dc/bog-localidades-centroides.csv",package = "geodata"))
-  localidades$a <- as.character(localidades$id)
+  localidades <- read_csv(system.file("geodata/col_dc/bog-localidades.csv",package = "geodata"))
+  names(localidades)[which(names(localidades) == "id")] <- ".id"
+  df <- data.frame(.id = c(12, 9,10, 16, 18, 14, 17, 6, 13, 5, 0, 8, 11, 1, 2, 4, 3, 7, 19, 15), id = 1:20 )
+  localidades <- left_join(localidades, df)
+  localidades$id <- as.character(localidades$id)
+  localidades$a <- localidades$id
   data_graph <- data %>% dplyr::group_by(a) %>% dplyr::summarise(prom = mean(b))
   data_graph <- left_join(data_graph, localidades)
 
 
-  loc_name <- localidades %>% select(-x, -y)
+  loc_name <- localidades %>% select(-lon, -lat)
 
   data_loc<- left_join(data_loc, loc_name)
   names(data_loc)[which(names(data_loc) == "id")] <- "a"
@@ -1158,7 +1172,7 @@ gg_bubble_locationsBta_Gnm. <- function(data, titleLabel = "", subtitle = "", ca
   data_loc$a <- as.character(data_loc$a)
   names(data_loc)[which(names(data_loc) == "a")] <- "id"
 
-  localidades$id <- as.character(localidades$id)
+
 
   graph <- ggplot() +
     geom_map(data = data_loc, map = data_loc,
@@ -1168,7 +1182,7 @@ gg_bubble_locationsBta_Gnm. <- function(data, titleLabel = "", subtitle = "", ca
 
 
   graph <- graph + geom_point(data = data_graph,
-                              aes(x=x, y=y, size=prom), color = "red",colour = color_point, alpha = alpha) +
+                              aes(x=lon, y=lat, size=prom), color = "red",colour = color_point, alpha = alpha) +
     scale_size(range = c(0.2, scale_point)) + coord_map()  +
     labs(x = "", y = "", title = titleLabel, subtitle = subtitle, caption = caption) + theme_ds() + theme_ds_clean() +
     theme(legend.position=leg_pos)
@@ -1178,7 +1192,7 @@ gg_bubble_locationsBta_Gnm. <- function(data, titleLabel = "", subtitle = "", ca
   if(text){
     if(prop_text == "all"){
       graph <- graph + geom_text(data = localidades,
-                                 aes(label = name, x = x, y = y,
+                                 aes(label = name, x = lon, y = lat,
                                      check_overlap = TRUE), size = text_size)
     }else{
       if(prop_text == "only_data"){
@@ -1186,19 +1200,19 @@ gg_bubble_locationsBta_Gnm. <- function(data, titleLabel = "", subtitle = "", ca
         prop_text$id <- as.character(prop_text$id)
         prop_text <- prop_text %>% dplyr::inner_join(., localidades, by = c("id"))
         graph <- graph + geom_text(data = prop_text,
-                                   aes(label = name, x = x, y = y,
+                                   aes(label = name, x = lon, y = lat,
                                        check_overlap = TRUE), size = text_size)
       }else{
         if(is.vector(prop_text) & class(prop_text) == "character"){
           prop_text <- data.frame(name = prop_text)
           prop_text <- prop_text %>% dplyr::inner_join(.,localidades, by = c("name"))
           graph <- graph + geom_text(data = prop_text,
-                                     aes(label = name, x = x, y = y,
+                                     aes(label = name, x = lon, y = lat,
                                          check_overlap = TRUE), size = text_size)
         }else{
           localidades <- sample_n(localidades, dim(localidades)[1] * prop_text)
           graph <- graph + geom_text(data = localidades,
-                                     aes(label = name, x = x, y = y,
+                                     aes(label = name, x = lon, y = lat,
                                          check_overlap = TRUE), size = text_size)
         }
       }
@@ -1235,22 +1249,28 @@ gg_bubble_Locations_withoutSumapaz_Gnm. <- function(data, titleLabel = "", subti
   data_loc <- data_loc %>% filter(.id != 15)
 
 
-  localidades <- read_csv(system.file("geodata/col_dc/bog-localidades-centroides.csv",package = "geodata"))
-  localidades$a <- as.character(localidades$id)
+
+  localidades <- read_csv(system.file("geodata/col_dc/bog-localidades.csv",package = "geodata"))
+  names(localidades)[which(names(localidades) == "id")] <- ".id"
+  df <- data.frame(.id = c(12, 9,10, 16, 18, 14, 17, 6, 13, 5, 0, 8, 11, 1, 2, 4, 3, 7, 19, 15), id = 1:20 )
+  localidades <- left_join(localidades, df)
+  localidades$id <- as.character(localidades$id)
+  localidades$a <- localidades$id
   data_graph <- data %>% dplyr::group_by(a) %>% dplyr::summarise(prom = mean(b))
   data_graph <- left_join(data_graph, localidades)
 
 
-  loc_name <- localidades %>% select(-x, -y)
+  loc_name <- localidades %>% select(-lon, -lat)
   loc_name <- loc_name[-20,]
-
+  localidades <- localidades[-20,]
+  names(data_loc)[which(names(data_loc) == ".id")] <- "a"
+  data_loc$a <- as.character(data_loc$a)
   data_loc<- left_join(data_loc, loc_name)
-  names(data_loc)[which(names(data_loc) == "id")] <- "a"
+
 
   data$a <- as.character(data$a)
   data_loc$a <- as.character(data_loc$a)
   names(data_loc)[which(names(data_loc) == "a")] <- "id"
-
 
 
   graph <- ggplot() +
@@ -1261,7 +1281,7 @@ gg_bubble_Locations_withoutSumapaz_Gnm. <- function(data, titleLabel = "", subti
 
 
   graph <- graph + geom_point(data = data_graph,
-                              aes(x=x, y=y, size=prom), color = "red",colour = color_point, alpha = alpha) +
+                              aes(x=lon, y=lat, size=prom), color = "red",colour = color_point, alpha = alpha) +
     scale_size(range = c(0.2, scale_point)) + coord_map()  +
     labs(x = "", y = "", title = titleLabel, subtitle = subtitle, caption = caption) + theme_ds() + theme_ds_clean() +
     theme(legend.position=leg_pos)
@@ -1269,7 +1289,7 @@ gg_bubble_Locations_withoutSumapaz_Gnm. <- function(data, titleLabel = "", subti
   if(text){
     if(prop_text == "all"){
       graph <- graph + geom_text(data = localidades,
-                                 aes(label = name, x = x, y = y,
+                                 aes(label = name, x = lon, y = lat,
                                      check_overlap = TRUE), size = 2)
     }else{
       if(prop_text == "only_data"){
@@ -1277,19 +1297,19 @@ gg_bubble_Locations_withoutSumapaz_Gnm. <- function(data, titleLabel = "", subti
         prop_text$id <- as.character(prop_text$id)
         prop_text <- prop_text %>% dplyr::inner_join(., localidades, by = c("id"))
         graph <- graph + geom_text(data = prop_text,
-                                   aes(label = name, x = x, y = y,
+                                   aes(label = name, x = lon, y = lat,
                                        check_overlap = TRUE), size = text_size)
       }else{
         if(is.vector(prop_text) & class(prop_text) == "character"){
           prop_text <- data.frame(name = prop_text)
           prop_text <- prop_text %>% dplyr::inner_join(.,localidades, by = c("name"))
           graph <- graph + geom_text(data = prop_text,
-                                     aes(label = name, x = x, y = y,
+                                     aes(label = name, x = lon, y = lat,
                                          check_overlap = TRUE), size = text_size)
         }else{
           localidades <- sample_n(localidades, dim(localidades)[1] * prop_text)
           graph <- graph + geom_text(data = localidades,
-                                     aes(label = name, x = x, y = y,
+                                     aes(label = name, x = lon, y = lat,
                                          check_overlap = TRUE), size = text_size)
         }
       }
