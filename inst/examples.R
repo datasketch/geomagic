@@ -40,7 +40,7 @@ gg_choropleth_depto_GnmNum.(dataGnmNum2, depto_ = depto_, color_map = "gold",
 paises <- c("ARG", "CUB", "COL", "CHL")
 dataGnmNum1.1 <- data.frame(id = paises, num = runif(length(paises), 0, 1))
 
-gg_choropleth_latam_GnmNum.(dataGnmNum1.1, color_map = "green", reverse = TRUE)
+gg_choropleth_latam_GnmNum.(dataGnmNum1.1, color_frontier = 'black')
 
 lat_max <- 6.276997
 long_max <- -69.635037
@@ -64,11 +64,13 @@ gg_bubble_co_Gnm.(dataGnmNum3, color_map = "grey", scale_point = 2,
 long <- runif(10, long_min, long_max)
 lat <- runif(10, lat_min, lat_max)
 
-gg_bubble_latam_Gnm.(dataGnmNum3)
+#gg_bubble_latam_Gnm.(dataGnmNum3)
 
 dataGnmNum3.1 <- data.frame(long = long, lat = lat, number = ceiling(runif(length(long), 0, 4))) #num = round(runif(length(lat), 1, 5), 0))
 
-gg_bubble_latam_GnmNum.(dataGnmNum3.1)
+DFD <- data.frame(ciu = c('MEX', 'URY', 'BRA', 'BOL', 'COL', 'CHL'), runif(6))
+
+gg_bubble_latam_GnmNum.(DFD)
 
 gg_bubble_co_GnmNum.(dataGnmNum3.1, color_map = "forestgreen", text = TRUE)
 
@@ -94,13 +96,10 @@ gg_bubble_depto_GnmNum.(dataGnmNum4.1, depto = depto_, color_map = "lightblue", 
 
 
 
-points_long <- c(-74.77349, -73.25066, -75.02309, -72.74667, -72.96547, -72.65211, -72.69544, -76.10000, -75.97304, -74.93877)
-points_lat <- c(2.115158, 10.477040,6.139590,5.438429,5.166737,5.373123,5.356951,7.887500,2.664088,6.336920)
+df_points <-data.frame(ciu = c('BHS', 'VGB', 'BRA', 'BOL', 'COL', 'CHL'), runif(6))
 
-df_points <- data.frame(long = points_long, lat = points_lat)
-
-gg_bubble_co_Gnm.(df_points, color_map = "forestgreen", text = TRUE)
-gg_bubble_latam_Gnm.(df_points, scale_point = 5)
+gg_bubble_latam_GnmNum.(df_points)
+#gg_bubble_latam_Gnm.(df_points, scale_point = 5)
 
 type <- c("Desminado militar en operaciones", "Desminado militar en operaciones", "Sospecha de campo minado")
 lat <- c(2.115158, 10.477040, 6.139590)

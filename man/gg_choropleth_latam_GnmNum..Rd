@@ -7,7 +7,8 @@ Choropleth of Latam}
 \usage{
 gg_choropleth_latam_GnmNum.(data, titleLabel = "", subtitle = "",
   caption = "", reverse = FALSE, fillLabel = NULL, leg_pos = "right",
-  color_map = "gray", color_frontier = "white", ...)
+  text = TRUE, prop_text = "only_data", color_map = "gray",
+  color_frontier = "white", text_size = 2, ...)
 }
 \arguments{
 \item{x}{A category.}

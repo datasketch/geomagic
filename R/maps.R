@@ -213,37 +213,81 @@ gg_choropleth_depto_GnmNum. <- function(data, titleLabel = "", subtitle = "", ca
 #' @examples
 #' add(1, 1)
 #' add(10, 1)
+
 gg_choropleth_latam_GnmNum. <- function(data, titleLabel = "", subtitle = "", caption = "", reverse = FALSE,
-                                        fillLabel = NULL, leg_pos = "right",
-                                        color_map = "gray", color_frontier = "white", ...){
+                                        fillLabel = NULL, leg_pos = "right", text = TRUE,prop_text = 'only_data',
+                                        color_map = "gray", color_frontier = "white",text_size = 2, ...){
 
   f <- fringe(data)
   nms <- getClabels(f)
   flab <- fillLabel %||% nms[2]
   data <- f$d
 
-  options(warn=-1)
-  data_latam <- suppressMessages(read_csv(system.file("geodata/latam/latam.csv", package = "geodata"), col_names = TRUE))
-  data_latam$id <- as.character(data_latam$id)
-  names(data_latam)[which(names(data_latam) == "id")] <- "a"
-  data_complete <- data.frame(a = unique(data_latam$a))
-  data <- suppressMessages(dplyr::inner_join(data_complete, data))
+  tj <- topojson_read(system.file("geodata/latam/latam-countries.topojson",package = "geodata"))
+  data_lat <- fortify(tj) %>% mutate(.id = as.character(id)) %>% select(-id)
 
-  data_graph <- dplyr::inner_join(data, data_latam, by = "a")
+  data_names <- tj@data
+  data_names$`.id` <-  rownames(data_names)
+  row.names(data_names) <- 1:dim(data_names)[1]
+
+  data_lat <- left_join(data_lat, data_names)
+  names(data_lat)[which(names(data_lat) == "id")] <- "a"
+  data_lat$a <- as.character(data_lat$a)
+
+  data$a <- as.character(data$a)
+  data_lat$a <- as.character(data_lat$a)
+
+  data_graph <- dplyr::inner_join(data, data_lat, by = "a")
   names(data_graph)[which(names(data_graph) == "a")] <- "id"
-  names(data_latam)[which(names(data_latam) == "a")] <- "id"
+  names(data_lat)[which(names(data_lat) == "a")] <- "id"
+
+  countries <- read_csv(system.file("geodata/latam/latam-countries.csv",package = "geodata"))
+
+
 
   graph <- ggplot() +
-    geom_map(data = data_latam, map = data_latam,
+    geom_map(data = data_lat, map = data_lat,
              aes(map_id = id, x = long, y = lat, group = group), fill = color_map,
              color = color_frontier, size = 0.25) + coord_map() +
-    expand_limits(x = data_latam$long, y = data_latam$lat)
+    expand_limits(x = data_lat$long, y = data_lat$lat)
+
+
   graph <- graph +
     geom_map(data = data_graph, map = data_graph,
              aes(map_id = id, x = long, y = lat, group = group, fill = b),
              color = color_frontier, size = 0.25) + coord_map() +
-    expand_limits(x = data_graph$long, y = data_graph$lat)
+    expand_limits(x = data_graph$long, y = data_graph$lat) + theme_ds() + theme_ds_clean()
 
+
+  if(text){
+    if(prop_text == "all"){
+      graph <- graph + geom_text(data = countries,
+                                 aes(label = name, x = lon, y = lat,
+                                     check_overlap = TRUE), size = 2)
+    }else{
+      if(prop_text == "only_data"){
+        prop_text <- data.frame(id = data$a)
+        prop_text$id <- as.character(prop_text$id)
+        prop_text <- prop_text %>% dplyr::inner_join(., countries, by = c("id"))
+        graph <- graph + geom_text(data = prop_text,
+                                   aes(label = name, x = lon, y = lat,
+                                       check_overlap = TRUE), size = text_size)
+      }else{
+        if(is.vector(prop_text) & class(prop_text) == "character"){
+          prop_text <- data.frame(name = prop_text)
+          prop_text <- prop_text %>% dplyr::inner_join(.,countries, by = c("name"))
+          graph <- graph + geom_text(data = prop_text,
+                                     aes(label = name, x = lon, y = lat,
+                                         check_overlap = TRUE), size = text_size)
+        }else{
+          countries <- sample_n(countries, dim(countries)[1] * prop_text)
+          graph <- graph + geom_text(data = countries,
+                                     aes(label = name, x = lon, y = lat,
+                                         check_overlap = TRUE), size = text_size)
+        }
+      }
+    }
+  }
   if(reverse){
     graph <- graph + scale_fill_gradient(low = getPalette(type = "sequential")[2],
                                          high = getPalette(type = "sequential")[1])
@@ -255,11 +299,8 @@ gg_choropleth_latam_GnmNum. <- function(data, titleLabel = "", subtitle = "", ca
   graph <- graph + labs(x = "", y = "", title = titleLabel, subtitle = subtitle, caption = caption) +
     theme_ds() + theme_ds_clean() + theme(legend.position=leg_pos)
 
-  options(warn=0)
-
   graph
 }
-
 #' Points inside Colombia's deptos map
 #' Points inside Colombia's deptos map
 #' @name gg_bubble_co_Gnm.
@@ -336,38 +377,38 @@ gg_bubble_co_Gnm. <- function(data, titleLabel = "", subtitle = "", caption = ""
 #' @section ftypes: Gnm
 #' @examples
 #' add(1, 1)
-#' add(10, 1)
-gg_bubble_latam_Gnm. <- function(data, titleLabel = "", subtitle = "", caption = "", fillLabel = NULL,
-                                 color_point = "red", leg_pos = "right",
-                                 color_map = "gray", color_frontier = "white", scale_point = 0.25,
-                                 alpha = 0.5, ...){
-
-  f <- fringe(data)
-  nms <- getClabels(f)
-  flab <- fillLabel %||% nms[3]
-  data <- f$d
-
-  options(warn=-1)
-  data_latam <- suppressMessages(read_csv(system.file("geodata/latam/latam.csv", package = "geodata"), col_names = TRUE))
-
-  data_graph <- data %>% dplyr::group_by(a, b) %>% dplyr::summarise(count = n())
-
-  graph <- ggplot(data_latam) +
-    geom_map(map = data_latam,
-             aes(map_id = id, x = long, y = lat, group = group), fill = color_map,
-             color=color_frontier, size = 0.25) +
-    expand_limits(x = data_latam$long, y = data_latam$lat) +
-    coord_fixed()
-
-  graph <- graph + geom_point(data = data_graph, aes(x = a, y = b),
-                              size = data_graph$count * scale_point,
-                              colour = color_point, alpha = alpha) + coord_map() + coord_fixed()  +
-    labs(x = "", y = "", title = titleLabel, subtitle = subtitle, caption = caption) + theme_ds() + theme_ds_clean() +
-    theme(legend.position=leg_pos)
-  options(warn=0)
-
-  graph
-}
+#' #' add(10, 1)
+#' gg_bubble_latam_Gnm. <- function(data, titleLabel = "", subtitle = "", caption = "", fillLabel = NULL,
+#'                                  color_point = "red", leg_pos = "right",
+#'                                  color_map = "gray", color_frontier = "white", scale_point = 0.25,
+#'                                  alpha = 0.5, ...){
+#'
+#'   f <- fringe(data)
+#'   nms <- getClabels(f)
+#'   flab <- fillLabel %||% nms[3]
+#'   data <- f$d
+#'
+#'   options(warn=-1)
+#'   data_latam <- suppressMessages(read_csv(system.file("geodata/latam/latam.csv", package = "geodata"), col_names = TRUE))
+#'
+#'   data_graph <- data %>% dplyr::group_by(a, b) %>% dplyr::summarise(count = n())
+#'
+#'   graph <- ggplot(data_latam) +
+#'     geom_map(map = data_latam,
+#'              aes(map_id = id, x = long, y = lat, group = group), fill = color_map,
+#'              color=color_frontier, size = 0.25) +
+#'     expand_limits(x = data_latam$long, y = data_latam$lat) +
+#'     coord_fixed()
+#'
+#'   graph <- graph + geom_point(data = data_graph, aes(x = a, y = b),
+#'                               size = data_graph$count * scale_point,
+#'                               colour = color_point, alpha = alpha) + coord_map() + coord_fixed()  +
+#'     labs(x = "", y = "", title = titleLabel, subtitle = subtitle, caption = caption) + theme_ds() + theme_ds_clean() +
+#'     theme(legend.position=leg_pos)
+#'   options(warn=0)
+#'
+#'   graph
+#' }
 
 #' Points inside Colombia's mpios map
 #' Points inside Colombia's mpios map
@@ -509,30 +550,87 @@ gg_bubble_co_GnmNum. <- function(data, titleLabel = "", subtitle = "", caption =
 #' @examples
 #' add(1, 1)
 #' add(10, 1)
-gg_bubble_latam_GnmNum. <- function(data, titleLabel = "", subtitle = "", caption = "", fillLabel = NULL,
-                                    leg_pos = "right", color_point = "red",
-                                    color_map = "gray", color_frontier = "white", scale_point = 0.25,
+gg_bubble_latam_GnmNum. <- function(data, titleLabel = "", subtitle = "", caption = "", fillLabel = NULL, prop_text = 'only_data',
+                                    color_point = "red", leg_pos = "right", text = FALSE, text_size = 2,
+                                    color_map = "gray", color_frontier = "white", scale_point = 3,
                                     alpha = 0.5, ...){
 
   f <- fringe(data)
   nms <- getClabels(f)
-  flab <- fillLabel %||% nms[3]
+  flab <- fillLabel %||% nms[2]
   data <- f$d
 
-  options(warn=-1)
-  data_latam <- suppressMessages(read_csv(system.file("geodata/latam/latam.csv", package = "geodata"), col_names = TRUE))
+  tj <- topojson_read(system.file("geodata/latam/latam-countries.topojson",package = "geodata"))
+  data_lat <- fortify(tj) %>% mutate(.id = as.character(id)) %>% select(-id)
 
-  graph <- ggplot(data_latam) +
-    geom_map(map = data_latam,
+  data_names <- tj@data
+  data_names$`.id` <-  rownames(data_names)
+  row.names(data_names) <- 1:dim(data_names)[1]
+
+  data_lat <- left_join(data_lat, data_names)
+  names(data_lat)[which(names(data_lat) == "id")] <- "a"
+  data_lat$a <- as.character(data_lat$a)
+
+  data$a <- as.character(data$a)
+  data_lat$a <- as.character(data_lat$a)
+
+  countries <- read_csv(system.file("geodata/latam/latam-countries.csv",package = "geodata"))
+
+  names(countries)[which(names(countries) == "id")] <- "a"
+  data_graph <- data %>% dplyr::group_by(a) %>% dplyr::summarise(prom = mean(b))
+  data_graph <- dplyr::inner_join(data_graph, countries, by = "a")
+  names(data_graph)[which(names(data_graph) == "a")] <- "id"
+  names(data_lat)[which(names(data_lat) == "a")] <- "id"
+
+
+
+
+  graph <- ggplot() +
+    geom_map(data = data_lat, map = data_lat,
              aes(map_id = id, x = long, y = lat, group = group), fill = color_map,
-             color=color_frontier, size = 0.25) +
-    expand_limits(x = data_latam$long, y = data_latam$lat) + coord_fixed()
+             color = color_frontier, size = 0.25) + coord_map() +
+    expand_limits(x = data_lat$long, y = data_lat$lat)
 
-  graph <- graph + geom_point(data = data, aes(x = a, y = b), size = data$c * scale_point,
-                              colour = color_point, alpha = alpha) + coord_map() + coord_fixed()  +
+
+  graph <- graph + geom_point(data = data_graph,
+                              aes(x=lon, y=lat, size=prom), color = "red",colour = color_point, alpha = alpha) +
+    scale_size(range = c(0.2, scale_point)) + coord_map()  +
     labs(x = "", y = "", title = titleLabel, subtitle = subtitle, caption = caption) + theme_ds() + theme_ds_clean() +
     theme(legend.position=leg_pos)
-  options(warn=0)
+
+  if(text){
+    if(prop_text == "all"){
+      graph <- graph + geom_text(data = countries,
+                                 aes(label = name, x = lon, y = lat,
+                                     check_overlap = TRUE), size = 2)
+    }else{
+      if(prop_text == "only_data"){
+        prop_text <- data.frame(id = data$a)
+        prop_text$id <- as.character(prop_text$id)
+        prop_text <- prop_text %>% dplyr::inner_join(., countries, by = c("id"))
+        graph <- graph + geom_text(data = prop_text,
+                                   aes(label = name, x = lon, y = lat,
+                                       check_overlap = TRUE), size = text_size)
+      }else{
+        if(is.vector(prop_text) & class(prop_text) == "character"){
+          prop_text <- data.frame(name = prop_text)
+          prop_text <- prop_text %>% dplyr::inner_join(.,countries, by = c("name"))
+          graph <- graph + geom_text(data = prop_text,
+                                     aes(label = name, x = lon, y = lat,
+                                         check_overlap = TRUE), size = text_size)
+        }else{
+          countries <- sample_n(countries, dim(countries)[1] * prop_text)
+          graph <- graph + geom_text(data = countries,
+                                     aes(label = name, x = lon, y = lat,
+                                         check_overlap = TRUE), size = text_size)
+        }
+      }
+    }
+  }
+
+
+  graph <- graph + labs(x = "", y = "", title = titleLabel, subtitle = subtitle, caption = caption) +
+    theme_ds() + theme_ds_clean() + theme(legend.position=leg_pos)
 
   graph
 }
@@ -739,6 +837,7 @@ gg_choropleth_world_GnmNum. <- function(data, titleLabel = "", subtitle = "", ca
   data <- f$d
 
   tj <- topojson_read(system.file("geodata/world/world-countries.topojson",package = "geodata"))
+  #tj <- topojson_read("world-countries.topojson")
   data_world <- fortify(tj) %>% mutate(.id = as.numeric(id)) %>% select(-id)
   countries <- tj@data %>% mutate(.id = 0:(nrow(.)-1)) %>% select(-id)
 
@@ -1029,7 +1128,7 @@ gg_choropleth_Locations_withoutSumapaz_GnmNum. <- function(data, titleLabel = ""
 
 #' gg_bubbles_world_GnmNum.
 #' gg_bubbles_world_GnmNum.
-#' @name gg_choropleth_loc_GnmNum.
+#' @name gg_bubbles_loc_GnmNum.
 #' @param x A category.
 #' @param y A number.
 #' @export
