@@ -1,4 +1,4 @@
-Package: gggeomagic
+Package: geomagic
 Type: Package
 Title: Maps with ggplot2
 Version: 0.1.0

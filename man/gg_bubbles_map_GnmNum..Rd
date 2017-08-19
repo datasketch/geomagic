@@ -6,7 +6,7 @@
 Bubbles map}
 \usage{
 gg_bubbles_map_GnmNum.(data = NULL, mapName, opts = list(titleLabel = "",
-  subtitle = "", caption = "", fillLabel = NULL, prop_text = "only_data",
+  subtitle = "", caption = "", fillLabel = "", prop_text = "only_data",
   color_point = "red", leg_pos = "right", titleLeg = "", text = FALSE, text_size
   = 2, color_map = "gray", color_frontier = "white", scale_point = 3, alpha =
   0.5))
