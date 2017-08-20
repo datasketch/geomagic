@@ -3,7 +3,7 @@ load_all()
 document()
 install()
 
-library(gggeomagic)
+library(geomagic)
 
 
 # Examples Continuos Choropleth GnmNum------------------------------------------------
@@ -39,8 +39,12 @@ gg_choropleth_map_GnmNum.(data = dataGnmNum, mapName = "col_departments")
 # Examples bubbles GnmNum--------------------------------------------------
 
 df_points <-data.frame(ciu = c('BHS', 'VGB', 'BRA', 'BOL', 'COL', 'CHL'), runif(6))
-gg_bubbles_map_GnmNum.(df_points, mapName = "latam_countries") +
-  scale_fill_gradientn(name = "Quality of the Cut")
+gg_bubbles_map_GnmNum.(df_points, mapName = "latam_countries")
+
+
+# Examples choropleth with Cat --------------------------------------------
+df_points <-data.frame(ciu = c('USA', 'VGB', 'BRA', 'BOL', 'COL', 'CHL', 'CHL'), color = c('RED', 'RED', 'BLUE', 'GRAY', 'GRAY', 'BLUE', 'GREEN'))
+gg_choropleth_map_GnmCat.(data = df_points, mapName = "world_countries")
 
 
 

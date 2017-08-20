@@ -3,6 +3,7 @@
 export(availableDmaps)
 export(getPalette)
 export(gg_bubbles_map_GnmNum.)
+export(gg_choropleth_map_GnmCat.)
 export(gg_choropleth_map_GnmNum.)
 export(gg_sketchmap_depto_GnmNum.)
 export(preprocessData)
