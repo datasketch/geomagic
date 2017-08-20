@@ -216,3 +216,35 @@ gg_bubbles_map_GnmNum. <- function(data = NULL, mapName,
 
 }
 
+
+
+
+#' Sketch map departments
+#' Sketch map departments
+#' @name gg_sketchmap_depto_GnmNum.
+#' @param x A category.
+#' @param y A number.
+#' @export
+#' @return The sum of \code{x} and \code{y}.
+#' @section ftypes: Gnm-Num
+#' @examples
+#' add(1, 1)
+#' add(10, 1)
+ gg_sketchmap_depto_GnmNum. <- function(depto_ = depto_, color_map = "gold", color_frontier = "black"){
+
+   options(warn = -1)
+   data_mpios <- suppressMessages(read_csv(system.file("geodata/col/mpios_depto_col.csv",
+                                                       package = "geodata"), col_names = TRUE))
+
+
+   data_mpios <- data_mpios %>% filter(depto == depto_)
+   graph <- ggplot() +
+     geom_map(data = data_mpios, map = data_mpios,
+              aes(map_id = id, x = long, y = lat, group = group), fill = color_map,
+              color = color_frontier, size = 0.25) +
+     coord_map() +
+     expand_limits(x = data_mpios$long, y = data_mpios$lat) +
+     theme_ds_clean()
+   graph
+
+ }
