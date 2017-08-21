@@ -1,16 +1,16 @@
 #'
 #' #' Choropleth of Colombia's deptos
 #' #' Choropleth of Colombia's deptos
-#' #' @name gg_choropleth_co_GnmNum.
+#' #' @name gg_choropleth_co_GcdNum.
 #' #' @param x A category.
 #' #' @param y A number.
 #' #' @export
 #' #' @return The sum of \code{x} and \code{y}.
-#' #' @section ftypes: Gnm-Num
+#' #' @section ftypes: Gcd-Num
 #' #' @examples
 #' #' add(1, 1)
 #' #' add(10, 1)
-#' gg_choropleth_co_GnmNum. <- function(data, titleLabel = "", subtitle = "", caption = "", reverse = FALSE, text_size = 2,
+#' gg_choropleth_co_GcdNum. <- function(data, titleLabel = "", subtitle = "", caption = "", reverse = FALSE, text_size = 2,
 #'                                      fillLabel = NULL, leg_pos = "right", text = FALSE, prop_text = 0.5,
 #'                                      color_map = "gray", color_frontier = "white", ...){
 #'
@@ -90,16 +90,16 @@
 #'
 #' #' Sketch map departments
 #' #' Sketch map departments
-#' #' @name gg_sketchmap_depto_GnmNum.
+#' #' @name gg_sketchmap_depto_GcdNum.
 #' #' @param x A category.
 #' #' @param y A number.
 #' #' @export
 #' #' @return The sum of \code{x} and \code{y}.
-#' #' @section ftypes: Gnm-Num
+#' #' @section ftypes: Gcd-Num
 #' #' @examples
 #' #' add(1, 1)
 #' #' add(10, 1)
-#' gg_sketchmap_depto_GnmNum. <- function(depto_ = depto_, color_map = "gold", color_frontier = "black"){
+#' gg_sketchmap_depto_GcdNum. <- function(depto_ = depto_, color_map = "gold", color_frontier = "black"){
 #'
 #'   options(warn = -1)
 #'   data_mpios <- suppressMessages(read_csv(system.file("geodata/col/mpios_depto_col.csv",
@@ -121,16 +121,16 @@
 #'
 #' #' Choropleth by filtering deptos
 #' #' Choropleth by filtering deptos
-#' #' @name gg_choropleth_depto_GnmNum.
+#' #' @name gg_choropleth_depto_GcdNum.
 #' #' @param x A category.
 #' #' @param y A number.
 #' #' @export
 #' #' @return The sum of \code{x} and \code{y}.
-#' #' @section ftypes: Gnm-Num
+#' #' @section ftypes: Gcd-Num
 #' #' @examples
 #' #' add(1, 1)
 #' #' add(10, 1)
-#' gg_choropleth_depto_GnmNum. <- function(data, titleLabel = "", subtitle = "", caption = "", depto_ = "05", reverse = FALSE, prop_text = 0.1,
+#' gg_choropleth_depto_GcdNum. <- function(data, titleLabel = "", subtitle = "", caption = "", depto_ = "05", reverse = FALSE, prop_text = 0.1,
 #'                                         fillLabel = NULL, leg_pos = "right", text = FALSE, text_size = 2,
 #'                                         color_map = "gray", color_frontier = "white", ...){
 #'
@@ -204,17 +204,17 @@
 #'
 #' #' Choropleth of Latam
 #' #' Choropleth of Latam
-#' #' @name gg_choropleth_latam_GnmNum.
+#' #' @name gg_choropleth_latam_GcdNum.
 #' #' @param x A category.
 #' #' @param y A number.
 #' #' @export
 #' #' @return The sum of \code{x} and \code{y}.
-#' #' @section ftypes: Gnm-Num
+#' #' @section ftypes: Gcd-Num
 #' #' @examples
 #' #' add(1, 1)
 #' #' add(10, 1)
 #'
-#' gg_choropleth_latam_GnmNum. <- function(data, titleLabel = "", subtitle = "", caption = "", reverse = FALSE,
+#' gg_choropleth_latam_GcdNum. <- function(data, titleLabel = "", subtitle = "", caption = "", reverse = FALSE,
 #'                                         fillLabel = NULL, leg_pos = "right", text = TRUE,prop_text = 'only_data',
 #'                                         color_map = "gray", color_frontier = "white",text_size = 2, ...){
 #'
@@ -303,16 +303,16 @@
 #' }
 #' #' Points inside Colombia's deptos map
 #' #' Points inside Colombia's deptos map
-#' #' @name gg_bubble_co_Gnm.
+#' #' @name gg_bubble_co_Gcd.
 #' #' @param x A category.
 #' #' @param y A number.
 #' #' @export
 #' #' @return The sum of \code{x} and \code{y}.
-#' #' @section ftypes: Gnm
+#' #' @section ftypes: Gcd
 #' #' @examples
 #' #' add(1, 1)
 #' #' add(10, 1)
-#' gg_bubble_co_Gnm. <- function(data, titleLabel = "", subtitle = "", caption = "", fillLabel = NULL, prop_text = 0.5,
+#' gg_bubble_co_Gcd. <- function(data, titleLabel = "", subtitle = "", caption = "", fillLabel = NULL, prop_text = 0.5,
 #'                               color_point = "red", leg_pos = "right", text = FALSE, text_size = 2,
 #'                               color_map = "gray", color_frontier = "white", scale_point = 0.25,
 #'                               alpha = 0.5, ...){
@@ -369,16 +369,16 @@
 #'
 #' #' Points inside Latam map
 #' #' Points inside Latam map
-#' #' @name gg_bubble_latam_Gnm.
+#' #' @name gg_bubble_latam_Gcd.
 #' #' @param x A category.
 #' #' @param y A number.
 #' #' @export
 #' #' @return The sum of \code{x} and \code{y}.
-#' #' @section ftypes: Gnm
+#' #' @section ftypes: Gcd
 #' #' @examples
 #' #' add(1, 1)
 #' #' #' add(10, 1)
-#' #' gg_bubble_latam_Gnm. <- function(data, titleLabel = "", subtitle = "", caption = "", fillLabel = NULL,
+#' #' gg_bubble_latam_Gcd. <- function(data, titleLabel = "", subtitle = "", caption = "", fillLabel = NULL,
 #' #'                                  color_point = "red", leg_pos = "right",
 #' #'                                  color_map = "gray", color_frontier = "white", scale_point = 0.25,
 #' #'                                  alpha = 0.5, ...){
@@ -412,16 +412,16 @@
 #'
 #' #' Points inside Colombia's mpios map
 #' #' Points inside Colombia's mpios map
-#' #' @name gg_bubble_depto_Gnm.
+#' #' @name gg_bubble_depto_Gcd.
 #' #' @param x A category.
 #' #' @param y A number.
 #' #' @export
 #' #' @return The sum of \code{x} and \code{y}.
-#' #' @section ftypes: Gnm
+#' #' @section ftypes: Gcd
 #' #' @examples
 #' #' add(1, 1)
 #' #' add(10, 1)
-#' gg_bubble_depto_Gnm. <- function(data, titleLabel = "", subtitle = "", caption = "", depto_ = "05", leg_pos = "right", prop_text = 0.1,
+#' gg_bubble_depto_Gcd. <- function(data, titleLabel = "", subtitle = "", caption = "", depto_ = "05", leg_pos = "right", prop_text = 0.1,
 #'                                  fillLabel = NULL, color_point = "red", text = FALSE, text_size = 2,
 #'                                  color_map = "gray", color_frontier = "white", scale_point = 0.25,
 #'                                  alpha = 0.5, ...){
@@ -478,16 +478,16 @@
 #'
 #' #' Points inside Colombia's deptos map
 #' #' Points inside Colombia's deptos map
-#' #' @name gg_bubble_co_GnmNum.
+#' #' @name gg_bubble_co_GcdNum.
 #' #' @param x A category.
 #' #' @param y A number.
 #' #' @export
 #' #' @return The sum of \code{x} and \code{y}.
-#' #' @section ftypes: Gnm-Num
+#' #' @section ftypes: Gcd-Num
 #' #' @examples
 #' #' add(1, 1)
 #' #' add(10, 1)
-#' gg_bubble_co_GnmNum. <- function(data, titleLabel = "", subtitle = "", caption = "", fillLabel = NULL, text = FALSE, text_size = 2,
+#' gg_bubble_co_GcdNum. <- function(data, titleLabel = "", subtitle = "", caption = "", fillLabel = NULL, text = FALSE, text_size = 2,
 #'                                  leg_pos = "right", color_point = "red", prop_text = 0.5,
 #'                                  color_map = "gray", color_frontier = "white", scale_point = 0.25,
 #'                                  alpha = 0.5, ...){
@@ -541,16 +541,16 @@
 #'
 #' #' Points inside Latam map
 #' #' Points inside Latam map
-#' #' @name gg_bubble_latam_GnmNum.
+#' #' @name gg_bubble_latam_GcdNum.
 #' #' @param x A category.
 #' #' @param y A number.
 #' #' @export
 #' #' @return The sum of \code{x} and \code{y}.
-#' #' @section ftypes: Gnm-Num
+#' #' @section ftypes: Gcd-Num
 #' #' @examples
 #' #' add(1, 1)
 #' #' add(10, 1)
-#' gg_bubble_latam_GnmNum. <- function(data, titleLabel = "", subtitle = "", caption = "", fillLabel = NULL, prop_text = 'only_data',
+#' gg_bubble_latam_GcdNum. <- function(data, titleLabel = "", subtitle = "", caption = "", fillLabel = NULL, prop_text = 'only_data',
 #'                                     color_point = "red", leg_pos = "right", text = FALSE, text_size = 2,
 #'                                     color_map = "gray", color_frontier = "white", scale_point = 3,
 #'                                     alpha = 0.5, ...){
@@ -637,16 +637,16 @@
 #'
 #' #' Points inside Colombia's mpios map
 #' #' Points inside Colombia's mpios map
-#' #' @name gg_bubble_depto_GnmNum.
+#' #' @name gg_bubble_depto_GcdNum.
 #' #' @param x A category.
 #' #' @param y A number.
 #' #' @export
 #' #' @return The sum of \code{x} and \code{y}.
-#' #' @section ftypes: Gnm-Num
+#' #' @section ftypes: Gcd-Num
 #' #' @examples
 #' #' add(1, 1)
 #' #' add(10, 1)
-#' gg_bubble_depto_GnmNum. <- function(data, titleLabel = "", subtitle = "", caption = "", depto_ = "05", leg_pos = "right", prop_text = 0.1,
+#' gg_bubble_depto_GcdNum. <- function(data, titleLabel = "", subtitle = "", caption = "", depto_ = "05", leg_pos = "right", prop_text = 0.1,
 #'                                     fillLabel = NULL, color_point = "red", text = FALSE, text_size = 2,
 #'                                     color_map = "gray", color_frontier = "white", scale_point = 0.25,
 #'                                     alpha = 0.5, ...){
@@ -702,16 +702,16 @@
 #'
 #' #' Points inside Colombia's deptos map
 #' #' Points inside Colombia's deptos map
-#' #' @name gg_bubble_co_CatGnm.
+#' #' @name gg_bubble_co_CatGcd.
 #' #' @param x A category.
 #' #' @param y A number.
 #' #' @export
 #' #' @return The sum of \code{x} and \code{y}.
-#' #' @section ftypes: Ca-Gnm
+#' #' @section ftypes: Ca-Gcd
 #' #' @examples
 #' #' add(1, 1)
 #' #' add(10, 1)
-#' gg_bubble_co_CatGnm. <- function(data, titleLabel = "", subtitle = "", caption = "", fillLabel = NULL,
+#' gg_bubble_co_CatGcd. <- function(data, titleLabel = "", subtitle = "", caption = "", fillLabel = NULL,
 #'                                  leg_pos = "right", color_map = "gray",
 #'                                  color_frontier = "white", scale_point = 0.25, alpha = 0.5, ...){
 #'
@@ -744,16 +744,16 @@
 #'
 #' #' Points inside Colombia's mpios map
 #' #' Points inside Colombia's mpios map
-#' #' @name gg_bubble_depto_CaGnm.
+#' #' @name gg_bubble_depto_CaGcd.
 #' #' @param x A category.
 #' #' @param y A number.
 #' #' @export
 #' #' @return The sum of \code{x} and \code{y}.
-#' #' @section ftypes: Ca-Gnm
+#' #' @section ftypes: Ca-Gcd
 #' #' @examples
 #' #' add(1, 1)
 #' #' add(10, 1)
-#' gg_bubble_depto_CaGnm. <- function(data, titleLabel = "", subtitle = "", caption = "", depto_ = "05", leg_pos = "right",
+#' gg_bubble_depto_CaGcd. <- function(data, titleLabel = "", subtitle = "", caption = "", depto_ = "05", leg_pos = "right",
 #'                                    fillLabel = NULL, text = FALSE, text_size = 2.5, prop_text = 0.1,
 #'                                    color_map = "gray", color_frontier = "white", scale_point = 0.25,
 #'                                    alpha = 0.5, ...){
@@ -816,18 +816,18 @@
 #'
 #' #' Choropleth of World
 #' #' Choropleth of World
-#' #' @name gg_choropleth_world_GnmNum.
+#' #' @name gg_choropleth_world_GcdNum.
 #' #' @param x A category.
 #' #' @param y A number.
 #' #' @export
 #' #' @return The sum of \code{x} and \code{y}.
-#' #' @section ftypes: Gnm-Num
+#' #' @section ftypes: Gcd-Num
 #' #' @examples
 #' #' add(1, 1)
 #' #' add(10, 1)
-#' # gg_choropleth_world_GnmNum.
+#' # gg_choropleth_world_GcdNum.
 #'
-#' gg_choropleth_world_GnmNum. <- function(data, titleLabel = "", subtitle = "", caption = "", reverse = FALSE, text_size = 2,
+#' gg_choropleth_world_GcdNum. <- function(data, titleLabel = "", subtitle = "", caption = "", reverse = FALSE, text_size = 2,
 #'                                         fillLabel = NULL, leg_pos = "right", text = FALSE, prop_text = 'only_data',
 #'                                         color_map = "gray", color_frontier = "white", ...){
 #'
@@ -918,18 +918,18 @@
 #'
 #' #' Choropleth of Locations
 #' #' Choropleth of Locations
-#' #' @name gg_choropleth_Locations_GnmNum.
+#' #' @name gg_choropleth_Locations_GcdNum.
 #' #' @param x A category.
 #' #' @param y A number.
 #' #' @export
 #' #' @return The sum of \code{x} and \code{y}.
-#' #' @section ftypes: Gnm-Num
+#' #' @section ftypes: Gcd-Num
 #' #' @examples
 #' #' add(1, 1)
 #' #' add(10, 1)
-#' # gg_choropleth_Locations_GnmNum.
+#' # gg_choropleth_Locations_GcdNum.
 #'
-#' gg_choropleth_Locations_GnmNum. <- function(data, titleLabel = "", subtitle = "", caption = "", reverse = FALSE, text_size = 2,
+#' gg_choropleth_Locations_GcdNum. <- function(data, titleLabel = "", subtitle = "", caption = "", reverse = FALSE, text_size = 2,
 #'                                             fillLabel = NULL, leg_pos = "right", text = FALSE, prop_text = 'only_data',
 #'                                             color_map = "gray", color_frontier = "white", ...){
 #'
@@ -1024,18 +1024,18 @@
 #'
 #' #' Choropleth of Locations without Sumapaz
 #' #' Choropleth of Locations without Sumapaz
-#' #' @name gg_choropleth_loc_GnmNum.
+#' #' @name gg_choropleth_loc_GcdNum.
 #' #' @param x A category.
 #' #' @param y A number.
 #' #' @export
 #' #' @return The sum of \code{x} and \code{y}.
-#' #' @section ftypes: Gnm-Num
+#' #' @section ftypes: Gcd-Num
 #' #' @examples
 #' #' add(1, 1)
 #' #' add(10, 1)
-#' # gg_choropleth_Locations_withoutSumapaz_GnmNum.
+#' # gg_choropleth_Locations_withoutSumapaz_GcdNum.
 #'
-#' gg_choropleth_Locations_withoutSumapaz_GnmNum. <- function(data, titleLabel = "", subtitle = "", caption = "", reverse = FALSE, text_size = 2,
+#' gg_choropleth_Locations_withoutSumapaz_GcdNum. <- function(data, titleLabel = "", subtitle = "", caption = "", reverse = FALSE, text_size = 2,
 #'                                                            fillLabel = NULL, leg_pos = "right", text = FALSE, prop_text = 'only_data',
 #'                                                            color_map = "gray", color_frontier = "white", ...){
 #'
@@ -1126,20 +1126,20 @@
 #'
 #' }
 #'
-#' #' gg_bubbles_world_GnmNum.
-#' #' gg_bubbles_world_GnmNum.
-#' #' @name gg_bubbles_loc_GnmNum.
+#' #' gg_bubbles_world_GcdNum.
+#' #' gg_bubbles_world_GcdNum.
+#' #' @name gg_bubbles_loc_GcdNum.
 #' #' @param x A category.
 #' #' @param y A number.
 #' #' @export
 #' #' @return The sum of \code{x} and \code{y}.
-#' #' @section ftypes: Gnm-Num
+#' #' @section ftypes: Gcd-Num
 #' #' @examples
 #' #' add(1, 1)
 #' #' add(10, 1)
-#' # gg_bubbles_world_GnmNum.
+#' # gg_bubbles_world_GcdNum.
 #'
-#' gg_bubbles_world_GnmNum. <- function(data, titleLabel = "", subtitle = "", caption = "", fillLabel = NULL, prop_text = 'only_data',
+#' gg_bubbles_world_GcdNum. <- function(data, titleLabel = "", subtitle = "", caption = "", fillLabel = NULL, prop_text = 'only_data',
 #'                                      color_point = "red", leg_pos = "right", title_leg = "", text = FALSE, text_size = 2,
 #'                                      color_map = "gray", color_frontier = "white", scale_point = 3,
 #'                                      alpha = 0.5, ...){
@@ -1229,16 +1229,16 @@
 #'
 #' #' Bubble inside Bogotá's locations map
 #' #' Bubble inside Bogotá's locations map
-#' #' @name gg_bubble_locationsBta_Gnm.
+#' #' @name gg_bubble_locationsBta_Gcd.
 #' #' @param x A category.
 #' #' @param y A number.
 #' #' @export
 #' #' @return The sum of \code{x} and \code{y}.
-#' #' @section ftypes: Gnm
+#' #' @section ftypes: Gcd
 #' #' @examples
 #' #' add(1, 1)
 #' #' add(10, 1)
-#' gg_bubble_locationsBta_Gnm. <- function(data, titleLabel = "", subtitle = "", caption = "", fillLabel = NULL, prop_text = 'only_data',
+#' gg_bubble_locationsBta_Gcd. <- function(data, titleLabel = "", subtitle = "", caption = "", fillLabel = NULL, prop_text = 'only_data',
 #'                                         color_point = "red", leg_pos = "right", text = FALSE, text_size = 2,
 #'                                         color_map = "gray", color_frontier = "white", scale_point = 3,
 #'                                         alpha = 0.5, ...){
@@ -1325,16 +1325,16 @@
 #'
 #' #' Bubble inside Bogotá's locations map without Sumapaz
 #' #' Bubble inside Bogotá's locations map without Sumapaz
-#' #' @name gg_bubble_Locations_withoutSumapaz_Gnm.
+#' #' @name gg_bubble_Locations_withoutSumapaz_Gcd.
 #' #' @param x A category.
 #' #' @param y A number.
 #' #' @export
 #' #' @return The sum of \code{x} and \code{y}.
-#' #' @section ftypes: Gnm
+#' #' @section ftypes: Gcd
 #' #' @examples
 #' #' add(1, 1)
 #' #' add(10, 1)
-#' gg_bubble_Locations_withoutSumapaz_Gnm. <- function(data, titleLabel = "", subtitle = "", caption = "", fillLabel = NULL, prop_text = 'only_data',
+#' gg_bubble_Locations_withoutSumapaz_Gcd. <- function(data, titleLabel = "", subtitle = "", caption = "", fillLabel = NULL, prop_text = 'only_data',
 #'                                                     color_point = "red", leg_pos = "right", text = FALSE, text_size = 2,
 #'                                                     color_map = "gray", color_frontier = "white", scale_point = 3,
 #'                                                     alpha = 0.5, ...){

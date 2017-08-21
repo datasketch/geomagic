@@ -1,5 +1,5 @@
 #' @export
-availableDmaps <- availableGeodata
+availableMaps <- availableGeodata
 
 #' @export
 preprocessData <- function(data, mapName){
