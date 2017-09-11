@@ -2,6 +2,7 @@
 
 export("%||%")
 export(availableMaps)
+export(getPalette)
 export(gg_bubbles_map_GcdNum.)
 export(gg_choropleth_map_GcdCat.)
 export(gg_choropleth_map_GcdNum.)
