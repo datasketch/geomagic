@@ -162,7 +162,8 @@ gg_choropleth_map_GcdNum. <- function(data = NULL, mapName,
   }
 
   centroides <- read_csv(system.file(ggmap$centroides,package = "geodata"))
-
+  centroides$id <- as.character(centroides$id)
+  centroides$name <- as.character(centroides$name)
   if(opts$text){
     if(opts$prop_text == "all"){
       graph <- graph + geom_text(data = centroides,

@@ -15,6 +15,9 @@ gg_choropleth_map_GcdNum.(data = NULL, mapName = "cri_provinces")
 gg_choropleth_map_GcdNum.(data = NULL, mapName = "latam_countries")
 gg_choropleth_map_GcdNum.(data = NULL, mapName = "mex_states")
 
+df <- data.frame(loc = c('9', '7', '1'), num =runif(3))
+gg_choropleth_map_GcdNum.(data = df, mapName = "col_dc_districts")
+
 opts <- list(titleLabel = "",
              subtitle = "",
              caption = "",
