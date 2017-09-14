@@ -5,10 +5,7 @@
 \title{Choropleth map
 Choropleth map}
 \usage{
-gg_choropleth_map_GcdNum.(data = NULL, mapName, opts = list(titleLabel = "",
-  subtitle = "", caption = "", reverse = FALSE, fillLabel = "", text = TRUE,
-  text_size = 2, prop_text = "only_data", leg_pos = "right", titleLeg = "",
-  color_map = "gray", color_frontier = "white"))
+gg_choropleth_map_GcdNum.(data = NULL, mapName, opts = NULL, ...)
 }
 \arguments{
 \item{x}{A code.}

@@ -88,7 +88,10 @@ gg_choropleth_map_GcdCat. <- function(data = NULL, mapName,
   }
 
   graph <- graph + labs(x = "", y = "", title = opts$titleLabel, subtitle = opts$subtitle, caption = opts$caption) +
-    theme_ds() + theme_ds_clean() + theme(legend.position=opts$leg_pos) +
+    theme_ds() + theme_ds_clean() + theme(legend.position=opts$leg_pos, plot.background = element_rect(fill = opts$Bcolor),
+                                          panel.background = element_rect(fill = opts$Bcolor,
+                                                                          colour = opts$Bcolor,
+                                                                          size = 1.5, linetype = "solid")) +
     guides(fill = guide_legend(title = opts$titleLeg)) + scale_fill_manual(values = paleta(palette = opts$palette, n = nLevels))
   graph
 }
@@ -106,18 +109,8 @@ gg_choropleth_map_GcdCat. <- function(data = NULL, mapName,
 #' @examples
 #' NULL
 gg_choropleth_map_GcdNum. <- function(data = NULL, mapName,
-                                      opts = list(titleLabel = "",
-                                                  subtitle = "",
-                                                  caption = "",
-                                                  reverse = FALSE,
-                                                  fillLabel = "",
-                                                  text = TRUE,
-                                                  text_size = 2,
-                                                  prop_text = 'only_data',
-                                                  leg_pos = "right",
-                                                  titleLeg = "",
-                                                  color_map = "gray",
-                                                  color_frontier = "white")){
+                                      opts = NULL, ...){
+  opts <- parseOpts(opts = opts, ...)
   ggmap <- geodataMeta(mapName)
   ggmap$path <- file.path("geodata",ggmap$geoname,paste0(ggmap$basename,".topojson"))
   ggmap$centroides <- file.path("geodata",ggmap$geoname,paste0(ggmap$basename,".csv"))
@@ -201,7 +194,10 @@ gg_choropleth_map_GcdNum. <- function(data = NULL, mapName,
   }
 
   graph <- graph + labs(x = "", y = "", title = opts$titleLabel, subtitle = opts$subtitle, caption = opts$caption) +
-    theme_ds() + theme_ds_clean() + theme(legend.position=opts$leg_pos) +
+    theme_ds() + theme_ds_clean() + theme(legend.position=opts$leg_pos, plot.background = element_rect(fill = opts$Bcolor),
+                                          panel.background = element_rect(fill = opts$Bcolor,
+                                                                          colour = opts$Bcolor,
+                                                                          size = 1.5, linetype = "solid")) +
     guides(fill = guide_legend(title = opts$titleLeg))
 
   graph

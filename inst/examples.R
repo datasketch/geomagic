@@ -13,7 +13,7 @@ gg_choropleth_map_GcdNum.(data = NULL, mapName = "col_departments")
 gg_choropleth_map_GcdNum.(data = NULL, mapName = "col_municipalities")
 gg_choropleth_map_GcdNum.(data = NULL, mapName = "cri_provinces")
 gg_choropleth_map_GcdNum.(data = NULL, mapName = "latam_countries")
-gg_choropleth_map_GcdNum.(data = NULL, mapName = "mex_states")
+gg_choropleth_map_GcdCat.(data = NULL, mapName = "mex_states")
 
 opts <- list(titleLabel = "",
              subtitle = "",
@@ -26,17 +26,12 @@ opts <- list(titleLabel = "",
              leg_pos = "right",
              titleLeg = '',
              color_map = "gray",
-             color_frontier = "white")
+             color_frontier = "white",
+             Bcolor = 'green')
 
 df <- data.frame(loc = c('9', '7','2', '3', '4', '5', '1', '11', '1', '10', '12', '13', '14', '15', '16'), num =runif(15))
-d <- gg_choropleth_bogota_GcdNum.(data = df, opts = opts)
 
-
- library(svgPanZoom)
- svgPanZoom(
-  d
- )
-
+gg_choropleth_bogota_GcdNum.(data = df)
 opts <- list(titleLabel = "",
              subtitle = "",
              caption = "",

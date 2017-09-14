@@ -6,10 +6,7 @@
 \title{Choropleth map Bogota's locations whitout Sumpaz
 Choropleth Bogota's locations}
 \usage{
-gg_choropleth_bogota_GcdNum.(data = NULL, opts = list(titleLabel = "",
-  subtitle = "", caption = "", reverse = FALSE, fillLabel = "", text = TRUE,
-  text_size = 2, prop_text = "only_data", leg_pos = "right", titleLeg = "",
-  color_map = "gray", color_frontier = "white"))
+gg_choropleth_bogota_GcdNum.(data = NULL, opts = NULL, ...)
 }
 \arguments{
 \item{x}{A code.}
