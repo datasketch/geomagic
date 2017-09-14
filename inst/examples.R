@@ -21,17 +21,20 @@ opts <- list(titleLabel = "",
              reverse = FALSE,
              fillLabel = NULL,
              text = TRUE,
-             text_size = 0.8,
+             text_size = 1.8,
              prop_text = 'all',
              leg_pos = "right",
              titleLeg = '',
              color_map = "gray",
              color_frontier = "white",
-             Bcolor = 'green')
+             highC = "#c96b3b",
+             lowC = "#e1e2e0",
+             Bcolor = "transparent")
 
 df <- data.frame(loc = c('9', '7','2', '3', '4', '5', '1', '11', '1', '10', '12', '13', '14', '15', '16'), num =runif(15))
 
-gg_choropleth_bogota_GcdNum.(data = df)
+gg_choropleth_bogota_GcdNum.(data = df, opts = opts)
+
 opts <- list(titleLabel = "",
              subtitle = "",
              caption = "",

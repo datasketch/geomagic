@@ -10,8 +10,11 @@ chroroplethOpts <- function(){
        prop_text = 'only_data',
        leg_pos = "right",
        titleLeg = "",
+       lowC = "white",
+       highC = "black",
        color_map = "gray",
        color_frontier = "white",
+       Bcolor = "white",
        palette = "datasketch")
 }
 

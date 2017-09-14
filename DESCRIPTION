@@ -13,6 +13,7 @@ Depends:
     datafringe,
     geodata,
     ggplot2,
+    ggrepel,
     tidyverse,
     geojsonio,
     paletero

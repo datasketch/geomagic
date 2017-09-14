@@ -48,8 +48,8 @@ gg_choropleth_bogota_GcdNum. <- function(data = NULL, opts= NULL, ...){
 
     graph <- graph +
       geom_map(data = data_graph, map = data_graph,
-               aes(map_id = id, x = long, y = lat, group = group, fill = total),
-               color = opts$color_frontier, size = 0.25)
+               aes(map_id = id, x = long, y = lat, fill = total),
+               color = opts$color_frontier, size = 0.2)
 
   }else{
     graph <- graph
@@ -61,7 +61,7 @@ gg_choropleth_bogota_GcdNum. <- function(data = NULL, opts= NULL, ...){
   centroides$name <- as.character(centroides$name)
   if(opts$text){
     if(opts$prop_text == "all"){
-      graph <- graph + geom_text(data = centroides,
+      graph <- graph + geom_text_repel(data = centroides,
                                  aes(label = name, x = lon, y = lat,
                                      check_overlap = TRUE), size = opts$text_size)
     }else{
@@ -70,7 +70,7 @@ gg_choropleth_bogota_GcdNum. <- function(data = NULL, opts= NULL, ...){
           dat_text <- data.frame(id = data$a)
           dat_text$id <- as.character(dat_text$id)
           dat_text <- dat_text %>% dplyr::inner_join(., centroides, by = c("id"))
-          graph <- graph + geom_text(data = dat_text,
+          graph <- graph + geom_text_repel(data = dat_text,
                                      aes(label = name, x = lon, y = lat,
                                          check_overlap = TRUE), size = opts$text_size)
         }else{
@@ -80,27 +80,24 @@ gg_choropleth_bogota_GcdNum. <- function(data = NULL, opts= NULL, ...){
         if(is.vector(opts$prop_text) & class(opts$prop_text) == "character"){
           dat_text <- data.frame(name = opts$prop_text)
           dat_text <- opts$prop_text %>% dplyr::inner_join(.,centroides, by = c("name"))
-          graph <- graph + geom_text(data = dat_text,
+          graph <- graph + geom_text_repel(data = dat_text,
                                      aes(label = name, x = lon, y = lat,
                                          check_overlap = TRUE), size = opts$text_size)
         }
       }
     }
   }
-  if(opts$reverse){
-    graph <- graph + scale_fill_gradient(low = getPalette(type = "sequential")[2],
-                                         high = getPalette(type = "sequential")[1])
-  }else{
-    graph <- graph + scale_fill_gradient(low = getPalette(type = "sequential")[1],
-                                         high = getPalette(type = "sequential")[2])
-  }
 
-  graph <- graph + labs(x = "", y = "", title = opts$titleLabel, subtitle = opts$subtitle, caption = opts$caption) +
-    theme_ds() + theme_ds_clean() + theme(legend.position=opts$leg_pos, plot.background = element_rect(fill = opts$Bcolor),
+  graph <- graph +  scale_fill_continuous(low = opts$lowC, high = opts$highC)
+
+  graph <- graph + labs(x = "", y = "", title = opts$titleLabel, subtitle = opts$subtitle, caption = opts$caption,fill=opts$titleLeg) +
+    theme_ds() + theme_ds_clean() +
+    theme(legend.position=opts$leg_pos, plot.background = element_rect(fill = opts$Bcolor),
                                           panel.background = element_rect(fill = opts$Bcolor,
                                                                           colour = opts$Bcolor,
-                                                                          size = 1.5, linetype = "solid")) +
-    guides(fill = guide_legend(title = opts$titleLeg))
+                                                                          size = 1.5, linetype = "solid"),
+          legend.background = element_rect(colour ='transparent' ,fill = 'transparent'))
+
 
   graph
 }
