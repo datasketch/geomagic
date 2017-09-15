@@ -56,7 +56,7 @@ gg_choropleth_bogota_GcdNum. <- function(data = NULL, opts= NULL, ...){
   }
 
   centroides <- read_csv(system.file(ggmap$centroides,package = "geodata"))
-  centroides <- centroides %>% filter(id != 15)
+  centroides <- centroides %>% filter(id != 20)
   centroides$id <- as.character(centroides$id)
   centroides$name <- as.character(centroides$name)
   if(opts$text){

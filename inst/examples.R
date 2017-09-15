@@ -27,7 +27,7 @@ opts <- list(titleLabel = "",
              titleLeg = '',
              color_map = "gray",
              color_frontier = "white",
-             highC = "#c96b3b",
+             highC = "#a0a336",
              lowC = "#e1e2e0",
              Bcolor = "transparent")
 
