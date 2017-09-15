@@ -92,10 +92,10 @@ gg_choropleth_bogota_GcdNum. <- function(data = NULL, opts= NULL, ...){
 
   graph <- graph + labs(x = "", y = "", title = opts$titleLabel, subtitle = opts$subtitle, caption = opts$caption,fill=opts$titleLeg) +
     theme_ds() + theme_ds_clean() +
-    theme(legend.position=opts$leg_pos, plot.background = element_rect(fill = opts$Bcolor),
+    theme(legend.position=opts$leg_pos, plot.background = element_rect(fill = opts$Bcolor,linetype = 'blank'),
                                           panel.background = element_rect(fill = opts$Bcolor,
                                                                           colour = opts$Bcolor,
-                                                                          size = 1.5, linetype = "solid"),
+                                                                          size = 1.5,  linetype = 'blank'),
           legend.background = element_rect(colour ='transparent' ,fill = 'transparent'))
 
 
