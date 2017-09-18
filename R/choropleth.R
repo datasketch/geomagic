@@ -87,12 +87,17 @@ gg_choropleth_map_GcdCat. <- function(data = NULL, mapName,
     }
   }
 
-  graph <- graph + labs(x = "", y = "", title = opts$titleLabel, subtitle = opts$subtitle, caption = opts$caption) +
-    theme_ds() + theme_ds_clean() + theme(legend.position=opts$leg_pos, plot.background = element_rect(fill = opts$Bcolor),
-                                          panel.background = element_rect(fill = opts$Bcolor,
-                                                                          colour = opts$Bcolor,
-                                                                          size = 1.5, linetype = "solid")) +
-    guides(fill = guide_legend(title = opts$titleLeg)) + scale_fill_manual(values = paleta(palette = opts$palette, n = nLevels))
+  graph <- graph +  scale_fill_continuous(low = opts$lowC, high = opts$highC)
+
+  graph <- graph + labs(x = "", y = "", title = opts$titleLabel, subtitle = opts$subtitle, caption = opts$caption,fill=opts$titleLeg) +
+    theme_ds() + theme_ds_clean() +
+    theme(legend.position=opts$leg_pos, plot.background = element_rect(fill = opts$Bcolor,linetype = 'blank'),
+          panel.background = element_rect(fill = opts$Bcolor,
+                                          colour = opts$Bcolor,
+                                          size = 1.5,  linetype = 'blank'),
+          legend.background = element_rect(colour ='transparent' ,fill = 'transparent'))
+
+
   graph
 }
 
@@ -193,12 +198,16 @@ gg_choropleth_map_GcdNum. <- function(data = NULL, mapName,
                                          high = getPalette(type = "sequential")[2])
   }
 
-  graph <- graph + labs(x = "", y = "", title = opts$titleLabel, subtitle = opts$subtitle, caption = opts$caption) +
-    theme_ds() + theme_ds_clean() + theme(legend.position=opts$leg_pos, plot.background = element_rect(fill = opts$Bcolor),
-                                          panel.background = element_rect(fill = opts$Bcolor,
-                                                                          colour = opts$Bcolor,
-                                                                          size = 1.5, linetype = "solid")) +
-    guides(fill = guide_legend(title = opts$titleLeg))
+  graph <- graph +  scale_fill_continuous(low = opts$lowC, high = opts$highC)
+
+  graph <- graph + labs(x = "", y = "", title = opts$titleLabel, subtitle = opts$subtitle, caption = opts$caption,fill=opts$titleLeg) +
+    theme_ds() + theme_ds_clean() +
+    theme(legend.position=opts$leg_pos,
+          plot.background = element_rect(fill = opts$Bcolor,linetype = 'blank'),
+          panel.background = element_rect(fill = opts$Bcolor,
+                                          colour = opts$Bcolor,
+                                          size = 1.5,  linetype = 'blank'),
+          legend.background = element_rect(colour ='transparent' ,fill = 'transparent'))
 
   graph
 }
