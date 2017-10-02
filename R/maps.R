@@ -107,6 +107,78 @@ gg_bubbles_map_GcdNum. <- function(data = NULL, mapName,
 
 }
 
+#' Bubbles map
+#' Bubbles map
+#' @name gg_bubble_GcdLonLat.
+#' @param x longitud.
+#' @param y latitud.
+#' @export
+#' @return The sum of \code{x} and \code{y}.
+#' @section ftypes: pLon-Lat
+#' @examples
+#' NULL
+gg_bubble_GcdLonLat. <- function(data = NULL, mapName,
+                                 opts = NULL, ...){
+  #opts <- parseOpts(opts = opts, ...)
+  ggmap <- geodataMeta(mapName)
+  ggmap$path <- file.path("geodata",ggmap$geoname,paste0(ggmap$basename,".topojson"))
+  ggmap$centroides <- file.path("geodata",ggmap$geoname,paste0(ggmap$basename,".csv"))
+
+  tj <- topojson_read(system.file(ggmap$path,package = "geodata"))
+
+  data_map <- fortify(tj) %>% mutate(.id = as.numeric(id)) %>% select(-id)
+  data_info <- tj@data %>% mutate(.id = 0:(nrow(.)-1)) #%>% select(-id)
+
+
+  data_map <- left_join(data_map, data_info)
+
+  graph <- ggplot() +
+    geom_map(data = data_map, map = data_map,
+             aes(map_id = id, x = long, y = lat, group = group), fill = opts$color_map,
+             color = opts$color_frontier, size = 0.25) + coord_map() +
+    expand_limits(x = data_map$long, y = data_map$lat)
+
+  graph <- graph + theme_ds() + theme_ds_clean() + coord_equal(ratio=1)
+
+  if(!is.null(data)){
+
+    f <- fringe(data)
+    nms <- getClabels(f)
+    flab <- opts$fillLabel %||% nms[2]
+    data <- f$d
+
+    data_graph <- data %>% group_by(a, b) %>% summarise(count = n())
+
+    #names(data_graph)[which(names(data_graph) == "a")] <- "id"
+
+    graph <- graph + geom_point(data = data_graph, aes(x = a, y = b),
+                                size = data_graph$count * opts$scale_point,
+                                colour = opts$color_point, alpha = opts$alpha)
+
+  }else{
+    graph <- graph
+  }
+
+  centroides <- read_csv(system.file(ggmap$centroides,package = "geodata"))
+
+
+  if(opts$text){
+    if(opts$prop_text == "all"){
+      graph <- graph + geom_text(data = centroides,
+                                 aes(label = name, x = lon, y = lat,
+                                     check_overlap = TRUE), size = opts$text_size)
+    }else{
+      graph <- graph
+    }
+  }
+
+  graph <-  graph + labs(x = "", y = "", title = opts$titleLabel, subtitle = opts$subtitle, caption = opts$caption, size = opts$titleLeg) +
+    theme_ds() + theme_ds_clean() + theme(legend.position=opts$leg_pos)
+
+
+  graph
+
+}
 
 
 

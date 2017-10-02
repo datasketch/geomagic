@@ -45,8 +45,19 @@ opts <- list(titleLabel = "",
              prop_text = 'all',
              leg_pos = "right",
              titleLeg = '',
+             scale_point = 1.5,
              color_map = "gray",
+             color_point = 'red',
+             alpha = 0.1,
              color_frontier = "white")
+
+
+
+long <- runif(100, -76.937433, -69.635037)
+lat <- runif(100, 2.342537, 6.276997)
+
+fg <- data.frame(long = long, lat = lat) #num = round(runif(length(lat), 1, 5), 0))
+gg_bubble_GcdLonLat.(data = fg, mapName = 'col_departments', opts = opts)
 
 deptos <- c("05", "08", "11", "13", "15", "17", "18", "19", "20", "23", "25", "27", "41", "44", "47", "50")
 data <- data.frame(id = deptos, num = sample(LETTERS[1:5],16, replace = TRUE))
