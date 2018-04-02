@@ -49,13 +49,13 @@ opts <- list(titleLabel = "",
              color_map = "gray",
              color_point = 'red',
              alpha = 0.1,
-             color_frontier = "white")
+             color_frontier = "white",
+             Bcolor = 'red')
 
 
 
 long <- runif(100, -76.937433, -69.635037)
 lat <- runif(100, 2.342537, 6.276997)
-
 fg <- data.frame(long = long, lat = lat) #num = round(runif(length(lat), 1, 5), 0))
 gg_bubble_GcdLonLat.(data = fg, mapName = 'col_departments', opts = opts)
 

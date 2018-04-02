@@ -119,7 +119,7 @@ gg_bubbles_map_GcdNum. <- function(data = NULL, mapName,
 #' NULL
 gg_bubble_GcdLonLat. <- function(data = NULL, mapName,
                                  opts = NULL, ...){
-  #opts <- parseOpts(opts = opts, ...)
+  #opts <- parseOptsBb(opts = opts, ...)
   ggmap <- geodataMeta(mapName)
   ggmap$path <- file.path("geodata",ggmap$geoname,paste0(ggmap$basename,".topojson"))
   ggmap$centroides <- file.path("geodata",ggmap$geoname,paste0(ggmap$basename,".csv"))
@@ -173,7 +173,13 @@ gg_bubble_GcdLonLat. <- function(data = NULL, mapName,
   }
 
   graph <-  graph + labs(x = "", y = "", title = opts$titleLabel, subtitle = opts$subtitle, caption = opts$caption, size = opts$titleLeg) +
-    theme_ds() + theme_ds_clean() + theme(legend.position=opts$leg_pos)
+    theme_ds() + theme_ds_clean() +
+    theme(legend.position=opts$leg_pos,
+          plot.background = element_rect(fill = opts$Bcolor,linetype = 'blank'),
+          panel.background = element_rect(fill = opts$Bcolor,
+                                          colour = opts$Bcolor,
+                                          size = 1.5,  linetype = 'blank'),
+          legend.background = element_rect(colour ='transparent' ,fill = 'transparent'))
 
 
   graph
