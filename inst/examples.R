@@ -15,14 +15,14 @@ gg_choropleth_map_GcdNum.(data = NULL, mapName = "cri_provinces")
 gg_choropleth_map_GcdNum.(data = NULL, mapName = "latam_countries")
 gg_choropleth_map_GcdCat.(data = NULL, mapName = "mex_states")
 
-opts <- list(titleLabel = "",
+opts <- list(titleLabel = "HOLA PERRA",
              subtitle = "",
              caption = "",
              reverse = FALSE,
              fillLabel = NULL,
              text = TRUE,
              text_size = 1.8,
-             prop_text = 'all',
+             prop_text = 0.5,
              leg_pos = "right",
              titleLeg = '',
              color_map = "gray",
