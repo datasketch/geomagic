@@ -9,24 +9,23 @@
 #' @examples
 #' NULL
 
-gg_choropleth_map_GcdNum. <- function(
-  data = NULL,
-  mapName = "world_countries",
-  title = NULL,
-  subtitle = NULL,
-  caption = NULL,
-  legend = list(),
-  border = list(),
-  labelWrap = 12,
-  agg = 'sum',
-  fill = list(),
-  marks = c(".", ","),
-  nDigits = NULL,
-  projections = list(),
-  percentage = FALSE,
-  format = c('', ''),
-  showText = c(TRUE, TRUE),
-  theme = NULL) {
+gg_choropleth_map_GcdNum. <- function(data = NULL,
+                                      mapName = "world_countries",
+                                      title = NULL,
+                                      subtitle = NULL,
+                                      caption = NULL,
+                                      legend = list(),
+                                      border = list(),
+                                      labelWrap = 12,
+                                      agg = 'sum',
+                                      fill = list(),
+                                      marks = c(".", ","),
+                                      nDigits = NULL,
+                                      projections = list(),
+                                      percentage = FALSE,
+                                      format = c('', ''),
+                                      theme = NULL)
+{
 
   projectionsDefault <- list(ratio = NULL,
                              type = NULL,
@@ -47,10 +46,13 @@ gg_choropleth_map_GcdNum. <- function(
   border <- modifyList(borderDefault, border)
 
   fillDefault <- list(color = NULL,
+                      naColor = 'orange',
                       opacity = 0.7,
                       scale = 'continuous',
                       nullColor = '#eeeeee',
-                      background = '#ffffff')
+                      background = '#ffffff',
+                      showText = FALSE,
+                      sizeText = 1)
   fill <- modifyList(fillDefault, fill)
 
   mapResults <- layerMap(mapName = mapName,
@@ -60,6 +62,7 @@ gg_choropleth_map_GcdNum. <- function(
                          fillOpacity = fill$opacity)
   data_map <- mapResults[[1]]
   graph <- mapResults[[2]]
+  centroides <- mapResults[[3]]
 
   if (!is.null(data)) {
 
@@ -70,9 +73,9 @@ gg_choropleth_map_GcdNum. <- function(
     data$a <- as.character(data$a)
     data_map$a <- as.character(data_map$id)
 
-    data <- data %>%
-      group_by(a) %>%
-      dplyr::summarise(b = agg(agg, b))
+    data <- data  %>%
+      dplyr::group_by(a) %>%
+      dplyr::summarise(b = ifelse(sum(is.na(b) == length(b)), b, agg(agg, b)))
 
     if (percentage) {
       data$b <- (data[['b']] * 100) / sum(data[['b']], na.rm = TRUE)
@@ -95,17 +98,20 @@ gg_choropleth_map_GcdNum. <- function(
     g <- graph +
       geom_map(data = data_graph, map = data_graph,
                aes(map_id = id, x = long, y = lat, fill = bins),
-               color = border$color, size = 0.25)
+               color = border$color, size = 0.25, alpha = fill$opacity)
 
     if (fill$scale == 'continuous') {
       g <- g + scale_fill_gradientn(
         aesthetics = "fill",
+        na.value = fill$naColor,
         colours = as.character(unique(data_graph$color)),
         labels =  as.character(unique(data_graph$labels[!is.na(data_graph$labels)])),
         breaks =  as.numeric(unique(data_graph$breaks[!is.na(data_graph$breaks)])),
         limits = c(min(data_graph$breaks, na.rm = T) - legend$limit, max(data_graph$breaks, na.rm = T) + legend$limit))
     } else {
-      g <- g + scale_fill_manual(values = as.character(unique(data_graph$color)))
+      g <- g + scale_fill_manual(
+        values = as.character(unique(data_graph$color)),
+        na.value = fill$naColor)
     }
     g <- g +
       labs(x = "",
@@ -122,7 +128,7 @@ gg_choropleth_map_GcdNum. <- function(
   if (!is.null(projections$ratio)) g <- g + coord_equal(ratio= projections$ratio)
   if (!is.null(projections$type)) g <- g  + coord_map(projections$type, orientation = projections$orientation)
 
-  g + theme(legend.position= legend$position,
+  g <- g + theme(legend.position= legend$position,
             plot.background = element_rect(fill = fill$background, linetype = 'blank'),
             panel.background = element_rect(fill = fill$background,
                                             colour = fill$background,
@@ -130,4 +136,11 @@ gg_choropleth_map_GcdNum. <- function(
                                             linetype = 'blank'),
             legend.background = element_rect(colour = legend$background,
                                              fill = legend$fill))
+  if (fill$showText) {
+  g <- g + geom_text(data = centroides,
+                             aes(label = name, x = lon, y = lat,
+                                 check_overlap = TRUE), size = fill$sizeText)
+  }
+
+  g
 }

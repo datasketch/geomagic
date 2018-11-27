@@ -115,7 +115,16 @@ binsLeg <- function(data = NULL,
   data <- data[order(data[[col]]),]
   nDig <- 2
   if (!is.null(nDigits)) nDig <- nDigits
+  sumNa <- sum(is.na(data[[col]]))
+  if (sumNa != 0){
+   d <- data[is.na(data$b),]
+   d$bins <- d$b
+  }
+  data <- data %>% drop_na()
   vector <- data[[col]]
+
+
+
 
   if (percent) formatL[2] <- '%'
 
@@ -145,8 +154,8 @@ binsLeg <- function(data = NULL,
       descLeg[ind]
     })
 
-    aggDta <- data.frame(bins = setdiff(descLeg, data$bins))
-    data <- bind_rows(data, aggDta)
+    aggDta <- data.frame(bins = c(setdiff(descLeg, data$bins)))
+    data <- bind_rows(data, aggDta, d)
     data_graph <- dplyr::left_join(data, dataLeft, by = "a")
     print(unique(data_graph$bins))
     data_graph <- fillColors(data_graph, 'bins' , colors = colors, colorScale = 'discrete', highlightValue = NULL, highlightValueColor = NULL, numeric = F, labelWrap = 12)
@@ -156,9 +165,11 @@ binsLeg <- function(data = NULL,
   } else {
       z <- rev(round(seq(max(vector), min(vector), length.out = bins), nDig))
       labelsMap <- paste0(formatL[1], format(z, nsmall = nDig, big.mark = marks[1], decimal.mark = marks[2]), formatL[2])
+      data <- bind_rows(data, d[,-3])
       data_graph <- dplyr::left_join(data, dataLeft, by = "a")
       data_graph <- fillColors(data_graph, col , colors = colors, colorScale = 'continuous', highlightValue = NULL, highlightValueColor = NULL, numeric = T, labelWrap = 12)
       data_graph <- data_graph %>%  select(bins = col, everything())
+      print(unique(data_graph$bins))
       data_graph$breaks <- c(z, rep(NA, dim(data_graph)[1]-length(z)))
       data_graph$labels <- c(labelsMap, rep(NA, dim(data_graph)[1]-length(z)))
   }

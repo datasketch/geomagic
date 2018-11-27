@@ -9,8 +9,8 @@ library(geomagic)
 # Examples Continuos Choropleth GcdNum------------------------------------------------
 
 
-data <- data.frame(a = c('COL', 'COL', 'ARG', 'BRA', 'USA'),
-                   b = c(1, 2, 1, 1, 2))
+data <- data.frame(a = c('COL', 'COL', 'ARG', 'BRA', 'USA', 'MEX'),
+                   b = c(1, 2, 1, 1, 2, NA))
 
 gg_choropleth_map_GcdNum.(data = data,
                           legend = list(bins = 3),
@@ -59,6 +59,7 @@ gg_choropleth_map_GcdNum.(data = data,
 gg_choropleth_map_GcdNum.(data = data,
                           border = list(color = 'blue'),
                           fill = list(color = c('#FD3AAA'),
+                                      opacity = 0.4,
                                       scale = 'discrete'),
                           legend = list(bins = 3), nDigits = 4)
 
@@ -80,7 +81,9 @@ gg_choropleth_map_GcdNum.(data = NULL,
 
 gg_choropleth_map_GcdNum.(data = NULL,
                           mapName = "mex_states",
-                          fill = list(text = TRUE))
+                          fill = list(
+                            opacity = 0.4,
+                            showText = TRUE, sizeText = 2))
 
 # opts <- list(titleLabel = "HOLA PERRA",
 #              subtitle = "",
