@@ -32,8 +32,8 @@ gg_choropleth_map_GcdNum. <- function(data = NULL,
                              orientation = c(90, 0, 0))
   projections <- modifyList(projectionsDefault, projections)
 
-  legendDefault <- list(bins = 7,
-                        limit = 0.5,
+  legendDefault <- list(bins = 5,
+                        limit = 0.1,
                         mode = 'quantile',
                         position = 'left',
                         title = NULL,
@@ -141,6 +141,7 @@ gg_choropleth_map_GcdNum. <- function(data = NULL,
   if (sum(fill$showText) != 0) {
     if (fill$optText == 'code') centroides$name <- centroides$id
     if (!is.null(data)) {
+      data$b <- round(data$b, ifelse(is.null(nDigits), 2, nDigits))
       centroides <- left_join(centroides, data, by = c('id' = 'a'))
       if (sum(fill$showText) == 2) centroides$name <- paste0(centroides$name, '\n', centroides$b)
       if (sum(fill$showText) == 1 && fill$showText[1]) centroides$name <- centroides$id
@@ -175,6 +176,60 @@ gg_choropleth_map_GcdNum. <- function(data = NULL,
         g <- g
       }
   }
+
+  g
+}
+
+
+
+#' Ggplot choropleths by geographical code
+#'
+#' Ggplot choropleths by geographical code
+#'
+#' @name gg_choropleth_Gcd
+#' @param x A data.frame
+#' @return leaflet viz
+#' @section ctypes: Gcd
+#' @export
+#' @examples
+#' gg_choropleth_Gcd(sampleData("Gcd", nrow = 10))
+gg_choropleth_Gcd. <- function(data = NULL,
+                              mapName = "world_countries",
+                              title = NULL,
+                              subtitle = NULL,
+                              caption = NULL,
+                              count = TRUE,
+                              legend = list(),
+                              border = list(),
+                              labelWrap = 12,
+                              agg = 'sum',
+                              fill = list(),
+                              marks = c(".", ","),
+                              nDigits = NULL,
+                              projections = list(),
+                              percentage = FALSE,
+                              format = c('', ''),
+                              theme = NULL
+                              ) {
+
+
+  if (!is.null(data)) {
+    f <- fringe(data)
+    nms <- getClabels(f)
+    data <- f$d
+    if (count) {
+    data <- data  %>%
+              dplyr::group_by(a) %>%
+                dplyr::summarise(conteo = n())
+    } else {
+      data <- data %>% distinct(a)
+      data$conteo <- 1:dim(data)[1]
+    }
+  }
+
+  g <- gg_choropleth_map_GcdNum.(data = data, mapName = mapName, title = title, subtitle = subtitle, caption = caption, legend = legend, border = border, labelWrap = labelWrap, agg = agg, fill = fill, marks = marks, nDigits = nDigits, projections = projections, percentage = percentage, format = format, theme = theme)
+
+  if (!count) g <- g + guides(fill=FALSE)
 
   g
 }

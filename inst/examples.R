@@ -6,24 +6,19 @@ install()
 library(geomagic)
 
 
-# Examples Continuos Choropleth GcdNum------------------------------------------------
+# Examples Choropleth GcdNum------------------------------------------------
 
-gg_choropleth_map_GcdNum.(data = NULL,
-                          legend = list(bins = 3),
-                          marks = c('','.'),
-                          fill = list(showText = c(T, F),
-                                      propText = 'all',
-                                      sizeText = 3)) #all, onlyData,and a number
+gg_choropleth_map_GcdNum.(data = NULL)
 
 
-data <- data.frame(a = c('COL', 'COL', 'ARG', 'BRA', 'USA', 'MEX'),
-                   b = c(1, 2, 1, 1, 2, NA))
+data <- data.frame(pais = c('COL', 'COL', 'ARG', 'BRA', 'USA', 'MEX'),
+                   total = c(1, 2, 1, 1, 2, NA))
 gg_choropleth_map_GcdNum.(data = data,
                           legend = list(bins = 3),
                           marks = c('','.'),
-                          fill = list(showText = c(T, F),
+                          fill = list(showText = c(T, T),
                                       optText = 'name',
-                                      propText = 'onlyData',
+                                      propText = 'onlyData',  #all, onlyData,and a number
                                       sizeText = 3))
 
 gg_choropleth_map_GcdNum.(data = data,
@@ -40,6 +35,8 @@ gg_choropleth_map_GcdNum.(data = data,
                           caption = 'créditos del mapa',
                           projections = list(type = "ortho"))
 
+data <- data.frame(pais = c('COL',  'ARG', 'BRA', 'USA', 'MEX'),
+                   total = c(1, 1, 1, 1, 1))
 gg_choropleth_map_GcdNum.(data = data,
                           legend = list(bins = 3),
                           marks = c('','.'),
@@ -94,6 +91,16 @@ gg_choropleth_map_GcdNum.(data = NULL,
                           fill = list(
                             opacity = 0.4,
                             showText = TRUE, sizeText = 2))
+
+
+data <- data.frame(a = c('COL', 'COL', 'ARG', 'BRA', 'BRA', 'BRA', 'BRA', 'USA', 'MEX'))
+gg_choropleth_Gcd.(data = data)
+gg_choropleth_Gcd.(data = data,
+                   fill = list(scale = 'discrete'),
+                   legend = list(bins = 3))
+gg_choropleth_Gcd.(data = data, count = F)
+gg_choropleth_Gcd.(data = data, count = F, fill = list(scale = 'discrete'))
+
 
 # opts <- list(titleLabel = "HOLA PERRA",
 #              subtitle = "",
