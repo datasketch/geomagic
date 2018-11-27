@@ -5,11 +5,11 @@
 \title{Bubbles map
 Bubbles map}
 \usage{
-gg_bubbles_map_GcdNum.(data = NULL, mapName, opts = list(titleLabel = "",
-  subtitle = "", caption = "", fillLabel = "", prop_text = "only_data",
-  color_point = "red", leg_pos = "right", titleLeg = "", text = FALSE, text_size
-  = 2, color_map = "gray", color_frontier = "white", scale_point = 3, alpha =
-  0.5))
+gg_bubbles_map_GcdNum.(data = NULL, mapName, opts = list(titleLabel =
+  "", subtitle = "", caption = "", fillLabel = "", prop_text = "only_data",
+  color_point = "red", leg_pos = "right", titleLeg = "", text = FALSE,
+  text_size = 2, color_map = "gray", color_frontier = "white", scale_point
+  = 3, alpha = 0.5))
 }
 \arguments{
 \item{x}{A code.}

@@ -8,91 +8,158 @@ library(geomagic)
 
 # Examples Continuos Choropleth GcdNum------------------------------------------------
 
-gg_choropleth_map_GcdNum.(data = NULL, mapName = "col_dc_districts")
+
+data <- data.frame(a = c('COL', 'COL', 'ARG', 'BRA', 'USA'),
+                   b = c(1, 2, 1, 1, 2))
+
+gg_choropleth_map_GcdNum.(data = data,
+                          legend = list(bins = 3),
+                          marks = c('','.'))
+
+gg_choropleth_map_GcdNum.(data = data,
+                          legend = list(bins = 5),
+                          marks = c('','.'),
+                          fill = list(background = "darkblue"))
+
+gg_choropleth_map_GcdNum.(data = data,
+                          legend = list(bins = 5,
+                                        title = 'blabla'),
+                          marks = c('','.'),
+                          title = 'título del mapa',
+                          subtitle = 'subtitulo del mapa',
+                          caption = 'créditos del mapa',
+                          projections = list(type = "ortho"))
+
+gg_choropleth_map_GcdNum.(data = data,
+                          legend = list(bins = 3),
+                          marks = c('','.'),
+                          projections = list(type = "ortho",
+                                             orientation = c(41, -74, 0)))
+
+gg_choropleth_map_GcdNum.(data = data,
+                          legend = list(bins = 5),
+                          marks = c('','.'),
+                          fill = list(color = c('orange', 'black')),
+                          percentage = TRUE)
+
+gg_choropleth_map_GcdNum.(data = data,
+                          fill = list(scale = 'discrete'),
+                          legend = list(bins = 3),
+                          nDigits = 2)
+
+gg_choropleth_map_GcdNum.(data = data,
+                          fill = list(scale = 'discrete',
+                                      color = c('#FD2AAA', '#00FD12')),
+                          legend = list(bins = 3,
+                                        title = 'legend',
+                                        position =  c(0, 0.2)),
+                          nDigits = 2,
+                          percentage = TRUE)
+
+gg_choropleth_map_GcdNum.(data = data,
+                          border = list(color = 'blue'),
+                          fill = list(color = c('#FD3AAA'),
+                                      scale = 'discrete'),
+                          legend = list(bins = 3), nDigits = 4)
+
 gg_choropleth_map_GcdNum.(data = NULL, mapName = "col_departments")
-gg_choropleth_map_GcdNum.(data = NULL, mapName = "col_municipalities")
-gg_choropleth_map_GcdNum.(data = NULL, mapName = "cri_provinces")
-gg_choropleth_map_GcdNum.(data = NULL, mapName = "latam_countries")
-gg_choropleth_map_GcdCat.(data = NULL, mapName = "mex_states")
-
-opts <- list(titleLabel = "HOLA PERRA",
-             subtitle = "",
-             caption = "",
-             reverse = FALSE,
-             fillLabel = NULL,
-             text = TRUE,
-             text_size = 1.8,
-             prop_text = 0.5,
-             leg_pos = "right",
-             titleLeg = '',
-             color_map = "gray",
-             color_frontier = "white",
-             highC = "#a0a336",
-             lowC = "#e1e2e0",
-             Bcolor = "transparent")
-
-df <- data.frame(loc = c('9', '7','2', '3', '4', '5', '1', '11', '1', '10', '12', '13', '14', '15', '16'), num =runif(15))
-
-gg_choropleth_bogota_GcdNum.(data = df, opts = opts)
-
-opts <- list(titleLabel = "",
-             subtitle = "",
-             caption = "",
-             reverse = FALSE,
-             fillLabel = NULL,
-             text = TRUE,
-             text_size = 0.5,
-             prop_text = 'all',
-             leg_pos = "right",
-             titleLeg = '',
-             scale_point = 1.5,
-             color_map = "gray",
-             color_point = 'red',
-             alpha = 0.1,
-             color_frontier = "white",
-             Bcolor = 'red')
+gg_choropleth_map_GcdNum.(data = NULL,
+                          mapName = "col_departments",
+                          projections = list(ratio = 1,
+                                             type = "mercator"))
 
 
+gg_choropleth_map_GcdNum.(data = NULL,
+                          mapName = "latam_countries",
+                          projections = list(type = "mercator",
+                                             ratio = 1))
+gg_choropleth_map_GcdNum.(data = NULL,
+                          mapName = "latam_countries",
+                          projections = list(type = "azequalarea",
+                                             orientation = c(36.92, 297.6, 0)))
 
-long <- runif(100, -76.937433, -69.635037)
-lat <- runif(100, 2.342537, 6.276997)
-fg <- data.frame(long = long, lat = lat) #num = round(runif(length(lat), 1, 5), 0))
-gg_bubble_GcdLonLat.(data = fg, mapName = 'col_departments', opts = opts)
+gg_choropleth_map_GcdNum.(data = NULL,
+                          mapName = "mex_states",
+                          fill = list(text = TRUE))
 
-deptos <- c("05", "08", "11", "13", "15", "17", "18", "19", "20", "23", "25", "27", "41", "44", "47", "50")
-data <- data.frame(id = deptos, num = sample(LETTERS[1:5],16, replace = TRUE))
-gg_choropleth_map_GcdCat.(data = data, mapName = "col_departments", text = FALSE)
-
-gg_choropleth_map_GcdCat.(data = data, mapName = "col_departments",
-                          opts = list(text = FALSE, palette = "amalia_light")
-)
-
-
-gg_choropleth_map_GcdCat.(data = data, mapName = "col_departments",
-                          opts = list(text = FALSE, palette = "viridis")
-                          )
-
-
-
-###
-gg_choropleth_map_GcdNum.(data = NULL, mapName = "world_countries", opts = opts)
-
-
-deptos <- c("05", "08", "11", "13", "15", "17", "18", "19", "20", "23", "25", "27", "41", "44", "47", "50")
-dataGcdNum <- data.frame(id = deptos, num = runif(length(deptos), 0, 1))
-gg_choropleth_map_GcdNum.(data = dataGcdNum, mapName = "col_departments", text = FALSE)
-
-
-
-# Examples bubbles GcdNum--------------------------------------------------
-
-df_points <-data.frame(ciu = c('BHS', 'VGB', 'BRA', 'BOL', 'COL', 'CHL'), runif(6))
-gg_bubbles_map_GcdNum.(df_points, mapName = "latam_countries")
-
-
-# Examples choropleth with Cat --------------------------------------------
-df_points <-data.frame(ciu = c('USA', 'VGB', 'BRA', 'BOL', 'COL', 'CHL', 'CHL'), color = c('RED', 'RED', 'BLUE', 'GRAY', 'GRAY', 'BLUE', 'GREEN'))
-gg_choropleth_map_GcdCat.(data = df_points, mapName = "world_countries")
+# opts <- list(titleLabel = "HOLA PERRA",
+#              subtitle = "",
+#              caption = "",
+#              reverse = FALSE,
+#              fillLabel = NULL,
+#              text = TRUE,
+#              text_size = 1.8,
+#              prop_text = 0.5,
+#              leg_pos = "right",
+#              titleLeg = '',
+#              color_map = "gray",
+#              color_frontier = "white",
+#              highC = "#a0a336",
+#              lowC = "#e1e2e0",
+#              Bcolor = "transparent")
+#
+# df <- data.frame(loc = c('9', '7','2', '3', '4', '5', '1', '11', '1', '10', '12', '13', '14', '15', '16'), num =runif(15))
+#
+# gg_choropleth_bogota_GcdNum.(data = df, opts = opts)
+#
+# opts <- list(titleLabel = "",
+#              subtitle = "",
+#              caption = "",
+#              reverse = FALSE,
+#              fillLabel = NULL,
+#              text = TRUE,
+#              text_size = 0.5,
+#              prop_text = 'all',
+#              leg_pos = "right",
+#              titleLeg = '',
+#              scale_point = 1.5,
+#              color_map = "gray",
+#              color_point = 'red',
+#              alpha = 0.1,
+#              color_frontier = "white",
+#              Bcolor = 'red')
+#
+#
+#
+# long <- runif(100, -76.937433, -69.635037)
+# lat <- runif(100, 2.342537, 6.276997)
+# fg <- data.frame(long = long, lat = lat) #num = round(runif(length(lat), 1, 5), 0))
+# gg_bubble_GcdLonLat.(data = fg, mapName = 'col_departments', opts = opts)
+#
+# deptos <- c("05", "08", "11", "13", "15", "17", "18", "19", "20", "23", "25", "27", "41", "44", "47", "50")
+# data <- data.frame(id = deptos, num = sample(LETTERS[1:5],16, replace = TRUE))
+# gg_choropleth_map_GcdCat.(data = data, mapName = "col_departments", text = FALSE)
+#
+# gg_choropleth_map_GcdCat.(data = data, mapName = "col_departments",
+#                           opts = list(text = FALSE, palette = "amalia_light")
+# )
+#
+#
+# gg_choropleth_map_GcdCat.(data = data, mapName = "col_departments",
+#                           opts = list(text = FALSE, palette = "viridis")
+#                           )
+#
+#
+#
+# ###
+# gg_choropleth_map_GcdNum.(data = NULL, mapName = "world_countries", opts = opts)
+#
+#
+# deptos <- c("05", "08", "11", "13", "15", "17", "18", "19", "20", "23", "25", "27", "41", "44", "47", "50")
+# dataGcdNum <- data.frame(id = deptos, num = runif(length(deptos), 0, 1))
+# gg_choropleth_map_GcdNum.(data = dataGcdNum, mapName = "col_departments", text = FALSE)
+#
+#
+#
+# # Examples bubbles GcdNum--------------------------------------------------
+#
+# df_points <-data.frame(ciu = c('BHS', 'VGB', 'BRA', 'BOL', 'COL', 'CHL'), runif(6))
+# gg_bubbles_map_GcdNum.(df_points, mapName = "latam_countries")
+#
+#
+# # Examples choropleth with Cat --------------------------------------------
+# df_points <-data.frame(ciu = c('USA', 'VGB', 'BRA', 'BOL', 'COL', 'CHL', 'CHL'), color = c('RED', 'RED', 'BLUE', 'GRAY', 'GRAY', 'BLUE', 'GREEN'))
+# gg_choropleth_map_GcdCat.(data = df_points, mapName = "world_countries")
 
 
 

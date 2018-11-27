@@ -1,3 +1,16 @@
+# aggregation
+#'@export
+agg <- function(aggregation,...){
+  f <- NULL
+  if(aggregation == "sum")
+    f <- sum(..., na.rm = TRUE)
+  if(aggregation == "mean")
+    f <- mean(..., na.rm = TRUE)
+  if(aggregation == "median")
+    f <- median(..., na.rm = TRUE)
+  f
+}
+
 # colores
 #' @export
 fillColors <- function (data, col, colors, colorScale, highlightValue, highlightValueColor,
@@ -47,11 +60,11 @@ fillColors <- function (data, col, colors, colorScale, highlightValue, highlight
   }
   if (numeric) {
     fillCol <- data.frame(a = cat,
-                          color = c(colors, colorNumeric(c(colors, ad), cat)(cat))[sample(1:length(cat))])
+                          color = unique(c(colors, colorNumeric(c(colors, ad), cat)(cat)))[sample(1:length(cat))])
     names(fillCol)[1] <- col
   } else {
     fillCol <- data.frame(a = cat,
-                          color = c(colors, colorFactor(c(colors, ad), cat)(cat))[sample(1:length(cat))])
+                          color = unique(c(colors, colorFactor(c(colors, ad), cat)(cat)))[sample(1:length(cat))])
     names(fillCol)[1] <- col
   }
 
@@ -88,23 +101,23 @@ dsColorsHex <- function(hex = FALSE) {
 #' @export
 binsLeg <- function(data = NULL,
                     col = 'b',
-                    scale = 'discrete',
-                    mode = 'quantile',
-                    bins = 5,
+                    scale = NULL,
+                    mode = NULL,
+                    bins = NULL,
+                    percent = FALSE,
                     nDigits = NULL,
-                    marks = c(',', '.'),
-                    format = c(NULL, NULL),
+                    marks = NULL,
+                    formatL = c(NULL, NULL),
                     colors = NULL,
                     dataLeft = NULL, ...){
 
 
-  data <- data.frame(a = c('COL', 'COL', 'ARG', 'BRA', 'USA'), b = c(1, 2, 1, 1, 2))
   data <- data[order(data[[col]]),]
-  data[[col]] <- round(data[[col]], 2)
-  vector <- data[[col]]
-
   nDig <- 2
   if (!is.null(nDigits)) nDig <- nDigits
+  vector <- data[[col]]
+
+  if (percent) formatL[2] <- '%'
 
   sumBins <- 1/(10^nDig)
 
@@ -112,13 +125,13 @@ binsLeg <- function(data = NULL,
     if (scale == 'quantile') {
       z <- round(as.vector(quantile(unique(vector), probs = c(0, cumsum(rep((1/bins), bins))))), nDig)
     } else {
-      z <- rev(round(seq(max(vector), min(vector), length.out = bins + 1  ), nDig))
+      z <- round(rev(seq(max(vector), min(vector), length.out = bins + 1  )), nDig)
     }
 
     lisBins<- map(1:length(z), function(x){
-      d <- c(paste0(format[1], z[x], format[2]), paste0(format[1], z[x+1], format[2]))
+      d <- c(paste0(formatL[1], format(z[x], big.mark = marks[1], decimal.mark = marks[2], nsmall = nDig), formatL[2]), paste0(formatL[1], format(z[x + 1],  big.mark = marks[1], decimal.mark = marks[2], nsmall = nDig), formatL[2]))
       if (x >= 2) {
-        d <- c(paste0(format[1], z[x] + sumBins, format[2]), paste0(format[1], z[x+1], format[2]))
+        d <- c(paste0(formatL[1], format((z[x] + sumBins), nsmall = nDig, big.mark = marks[1], decimal.mark = marks[2]), formatL[2]), paste0(formatL[1], format(z[x + 1], nsmall = nDig, big.mark = marks[1], decimal.mark = marks[2]), formatL[2]))
       }
       paste(d, collapse = " - ")
     })
@@ -135,23 +148,31 @@ binsLeg <- function(data = NULL,
     aggDta <- data.frame(bins = setdiff(descLeg, data$bins))
     data <- bind_rows(data, aggDta)
     data_graph <- dplyr::left_join(data, dataLeft, by = "a")
+    print(unique(data_graph$bins))
     data_graph <- fillColors(data_graph, 'bins' , colors = colors, colorScale = 'discrete', highlightValue = NULL, highlightValueColor = NULL, numeric = F, labelWrap = 12)
     data_graph$bins <- as.factor(data_graph$bins)
     data_graph$bins <- factor(data_graph$bins, levels = descLeg)
 
   } else {
-      z <- rev(round(seq(max(vector), min(vector), length.out = bins + 1)), nDig)
+      z <- rev(round(seq(max(vector), min(vector), length.out = bins), nDig))
+      labelsMap <- paste0(formatL[1], format(z, nsmall = nDig, big.mark = marks[1], decimal.mark = marks[2]), formatL[2])
+      data_graph <- dplyr::left_join(data, dataLeft, by = "a")
+      data_graph <- fillColors(data_graph, col , colors = colors, colorScale = 'continuous', highlightValue = NULL, highlightValueColor = NULL, numeric = T, labelWrap = 12)
+      data_graph <- data_graph %>%  select(bins = col, everything())
+      data_graph$breaks <- c(z, rep(NA, dim(data_graph)[1]-length(z)))
+      data_graph$labels <- c(labelsMap, rep(NA, dim(data_graph)[1]-length(z)))
   }
-
+ data_graph
 }
 
 
 # layerMap and dataMap
 #' @export
-layerMap <- function(mapName) {
+layerMap <- function(mapName, borderColor, borderWeigth, fillColor, fillOpacity ) {
   ggmap <- geodataMeta(mapName)
   ggmap$path <- file.path("geodata",ggmap$geoname,paste0(ggmap$basename,".topojson"))
   ggmap$centroides <- file.path("geodata",ggmap$geoname,paste0(ggmap$basename,".csv"))
+  centroides <- read_csv(system.file(ggmap$centroides,package = "geodata"))
 
   tj <- topojson_read(system.file(ggmap$path,package = "geodata"))
 
@@ -162,9 +183,9 @@ layerMap <- function(mapName) {
   data_map <- left_join(data_map, data_info)
   graph <- ggplot() +
     geom_map(data = data_map, map = data_map,
-             aes(map_id = id, x = long, y = lat, group = group), fill = fill$color,
-             color = border$color, size = border$weigth, alpha= fill$opacity) +
+             aes(map_id = id, x = long, y = lat, group = group), fill = fillColor,
+             color = borderColor, size = borderWeigth, alpha= fillOpacity) +
     theme_map()
-  result <- list(data_map, graph)
+  result <- list(data_map, graph, centroides)
   result
 }

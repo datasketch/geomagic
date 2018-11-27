@@ -5,7 +5,12 @@
 \title{Choropleth map
 Choropleth map}
 \usage{
-gg_choropleth_map_GcdNum.(data = NULL, mapName, opts = NULL, ...)
+gg_choropleth_map_GcdNum.(data = NULL, mapName = "world_countries",
+  title = NULL, subtitle = NULL, caption = NULL, legend = list(),
+  border = list(), labelWrap = 12, agg = "sum", fill = list(),
+  marks = c(".", ","), nDigits = NULL, projections = list(),
+  percentage = FALSE, format = c("", ""), showText = c(TRUE, TRUE),
+  theme = NULL)
 }
 \arguments{
 \item{x}{A code.}
