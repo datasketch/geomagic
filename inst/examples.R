@@ -8,16 +8,26 @@ library(geomagic)
 
 # Examples Continuos Choropleth GcdNum------------------------------------------------
 
+gg_choropleth_map_GcdNum.(data = NULL,
+                          legend = list(bins = 3),
+                          marks = c('','.'),
+                          fill = list(showText = c(T, F),
+                                      propText = 'all',
+                                      sizeText = 3)) #all, onlyData,and a number
+
 
 data <- data.frame(a = c('COL', 'COL', 'ARG', 'BRA', 'USA', 'MEX'),
                    b = c(1, 2, 1, 1, 2, NA))
-
 gg_choropleth_map_GcdNum.(data = data,
                           legend = list(bins = 3),
-                          marks = c('','.'))
+                          marks = c('','.'),
+                          fill = list(showText = c(T, F),
+                                      optText = 'name',
+                                      propText = 'onlyData',
+                                      sizeText = 3))
 
 gg_choropleth_map_GcdNum.(data = data,
-                          legend = list(bins = 5),
+                          legend = list(bins = 5, limit = 0.1),
                           marks = c('','.'),
                           fill = list(background = "darkblue"))
 

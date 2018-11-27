@@ -51,7 +51,9 @@ gg_choropleth_map_GcdNum. <- function(data = NULL,
                       scale = 'continuous',
                       nullColor = '#eeeeee',
                       background = '#ffffff',
-                      showText = FALSE,
+                      showText = c(FALSE,FALSE),
+                      optText = 'code',
+                      propText = 'onlyData',
                       sizeText = 1)
   fill <- modifyList(fillDefault, fill)
 
@@ -70,7 +72,7 @@ gg_choropleth_map_GcdNum. <- function(data = NULL,
     nms <- getClabels(f)
     data <- f$d
     flab <- legend$title %||% nms[2]
-    data$a <- as.character(data$a)
+    data$a <- as.character(toupper(tolower(data$a)))
     data_map$a <- as.character(data_map$id)
 
     data <- data  %>%
@@ -129,17 +131,49 @@ gg_choropleth_map_GcdNum. <- function(data = NULL,
   if (!is.null(projections$type)) g <- g  + coord_map(projections$type, orientation = projections$orientation)
 
   g <- g + theme(legend.position= legend$position,
-            plot.background = element_rect(fill = fill$background, linetype = 'blank'),
-            panel.background = element_rect(fill = fill$background,
-                                            colour = fill$background,
-                                            size = 1.5,
-                                            linetype = 'blank'),
-            legend.background = element_rect(colour = legend$background,
-                                             fill = legend$fill))
-  if (fill$showText) {
-  g <- g + geom_text(data = centroides,
-                             aes(label = name, x = lon, y = lat,
-                                 check_overlap = TRUE), size = fill$sizeText)
+                 plot.background = element_rect(fill = fill$background, linetype = 'blank'),
+                 panel.background = element_rect(fill = fill$background,
+                                                 colour = fill$background,
+                                                 size = 1.5,
+                                                 linetype = 'blank'),
+                 legend.background = element_rect(colour = legend$background,
+                                                  fill = legend$fill))
+  if (sum(fill$showText) != 0) {
+    if (fill$optText == 'code') centroides$name <- centroides$id
+    if (!is.null(data)) {
+      centroides <- left_join(centroides, data, by = c('id' = 'a'))
+      if (sum(fill$showText) == 2) centroides$name <- paste0(centroides$name, '\n', centroides$b)
+      if (sum(fill$showText) == 1 && fill$showText[1]) centroides$name <- centroides$id
+      if (sum(fill$showText) == 1 && fill$showText[2]) centroides$name <- centroides$b
+    }
+
+    if (fill$propText == 'all') {
+      g <- g + geom_text(data = centroides,
+                         aes(label = name, x = lon, y = lat,
+                             check_overlap = TRUE), size = fill$sizeText)
+    } else if (fill$propText == 'onlyData') {
+      if(!is.null(data)){
+        dat_text <- data.frame(id = data$a)
+        dat_text$id <- as.character(dat_text$id)
+        dat_text <- dat_text %>% dplyr::inner_join(., centroides, by = c("id"))
+        g <- g + geom_text(data = dat_text,
+                           aes(label = name, x = lon, y = lat,
+                               check_overlap = TRUE), size = fill$sizeText)
+      }else{
+        g <- g
+      }
+    } else
+      if (!is.null(data)) {
+        dat_text <- data.frame(id = data$a)
+        dat_text <- sample_frac(dat_text, fill$propText)
+        dat_text$id <- as.character(dat_text$id)
+        dat_text <- dat_text %>% dplyr::inner_join(., centroides, by = c("id"))
+        g <- g + geom_text(data = dat_text,
+                           aes(label = name, x = lon, y = lat,
+                               check_overlap = TRUE), size = fill$sizeText)
+      } else {
+        g <- g
+      }
   }
 
   g
