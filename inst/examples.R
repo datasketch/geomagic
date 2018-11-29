@@ -98,8 +98,22 @@ gg_choropleth_Gcd.(data = data)
 gg_choropleth_Gcd.(data = data,
                    fill = list(scale = 'discrete'),
                    legend = list(bins = 3))
-gg_choropleth_Gcd.(data = data, count = F)
-gg_choropleth_Gcd.(data = data, count = F, fill = list(scale = 'discrete'))
+
+gg_choropleth_Gcd.(data = data,
+                   count = F)
+
+gg_choropleth_Gcd.(data = data,
+                   count = F,
+                   fill = list(scale = 'discrete'))
+
+
+
+dataGdcCat <- sampleData('Gcd-Cat', 100)
+gg_choropleth_map_GcdCat.(data = dataGdcCat)
+gg_choropleth_map_GcdCat.(data = dataGdcCat,
+                          fill = list(scale = 'discrete',
+                                      showText = c(TRUE, TRUE)))
+
 
 
 # opts <- list(titleLabel = "HOLA PERRA",

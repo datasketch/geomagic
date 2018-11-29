@@ -27,6 +27,3 @@ Choropleth map
  Gcd-Num
 }
 
-\examples{
-NULL
-}
