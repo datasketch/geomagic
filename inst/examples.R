@@ -13,6 +13,17 @@ gg_choropleth_map_GcdNum.(data = NULL)
 
 data <- data.frame(pais = c('COL', 'COL', 'ARG', 'BRA', 'USA', 'MEX'),
                    total = c(1, 2, 1, 1, 2, NA))
+
+dataej <- read_csv('cERCso.csv')
+data <- dataej %>% select(laboris, exercitation)
+gg_choropleth_map_GcdNum.(data = data,
+                          fill = list(scale = 'discrete',
+                                      mode = 'no',
+                                      optText = 'name',
+                                      showText = c(TRUE, FALSE)),
+                          legend = list(bins = 4),
+                          percentage = TRUE)
+
 gg_choropleth_map_GcdNum.(data = data,
                           legend = list(bins = 3),
                           marks = c('','.'),
@@ -94,25 +105,88 @@ gg_choropleth_map_GcdNum.(data = NULL,
 
 
 data <- data.frame(a = c('COL', 'COL', 'ARG', 'BRA', 'BRA', 'BRA', 'BRA', 'USA', 'MEX'))
+data <- dataej %>% select(laboris)
+gg_choropleth_Gcd.(data = NULL)
 gg_choropleth_Gcd.(data = data)
 gg_choropleth_Gcd.(data = data,
-                   fill = list(scale = 'discrete'),
-                   legend = list(bins = 3))
+                   mapName = 'africa_countries',
+                   fill = list(scale = 'discrete',
+                               showText = c(TRUE, FALSE),
+                               sizeText = 3,
+                               optText = 'name',
+                               mode = 'no',
+                               background = '#000000',
+                               opacity = 0.7,
+                               color = c('red', 'yellow', 'green')
+                               ),
+                   format = c('$', 'ana'),
+                   marks = c('.', ','),
+                   nDigits = 4,
+                   legend = list(bins = 3,
+                                 fill = '#ffffff',
+                                 background = '#ffffff',
+                                 position = c(0, 0.2),
+                                 title = 'legend'),
+                   percentage = TRUE,
+                   projections = list(ratio = 1,
+                                      type = "mercator") )
 
 gg_choropleth_Gcd.(data = data,
                    count = F)
 
 gg_choropleth_Gcd.(data = data,
                    count = F,
-                   fill = list(scale = 'discrete'))
+                   fill = list(scale = 'discrete',
+                               optText = 'name', #mirar porq no funciona
+                               sizeText = 3,
+                               showText = c(TRUE, FALSE)))
 
 
 
-dataGdcCat <- sampleData('Gcd-Cat', 100)
-gg_choropleth_map_GcdCat.(data = dataGdcCat)
-gg_choropleth_map_GcdCat.(data = dataGdcCat,
+data <- sampleData('Gcd-Cat', 100)
+gg_choropleth_map_GcdCat.(data = NULL)
+gg_choropleth_map_GcdCat.(data = NULL,
+                          fill = list(showText = c(TRUE, FALSE)))
+gg_choropleth_map_GcdCat.(data = data,
+                          fill = list(showText = c(TRUE, FALSE),
+                                      optText = 'name'))
+gg_choropleth_map_GcdCat.(data = data,
+                          fill = list(scale = 'discrete'),
+                          projections = list(type = "ortho"))
+gg_choropleth_map_GcdCat.(data = data,
+                          count = TRUE,
                           fill = list(scale = 'discrete',
                                       showText = c(TRUE, TRUE)))
+
+
+
+
+
+
+# By name -----------------------------------------------------------------
+
+data <- sampleData('Gnm', 100)
+gg_choropleth_Gnm.(data = NULL)
+gg_choropleth_Gnm.(data = data)
+
+dataGn <- sampleData('Gnm-Num', 100)
+gg_choropleth_map_GnmNum.(data = dataGn)
+gg_choropleth_map_GnmNum.(data = dataGn, mapName = 'latam_countries' )
+gg_choropleth_map_GnmNum.(data = dataGn,
+                          mapName = 'latam_countries',
+                          projections = list(type = "mercator",
+                                             ratio = 1))
+
+dataGc <- sampleData('Gnm-Cat')
+gg_choropleth_map_GnmCat.(data = NULL)
+gg_choropleth_map_GnmCat.(data = NULL,
+                          fill = list(
+                            background = '#FDAA11'
+                          ))
+gg_choropleth_map_GnmCat.(data = dataGc,
+                          fill = list(
+                            background = '#FDAA11'
+                          ))
 
 
 
