@@ -6,9 +6,11 @@
 Choropleth map}
 \usage{
 gg_choropleth_map_GcdCat.(data = NULL, mapName = "world_countries",
-  title = NULL, subtitle = NULL, caption = NULL, count = TRUE,
-  legend = list(), border = list(), labelWrap = 12, fill = list(),
-  marks = c(".", ","), projections = list(), theme = NULL)
+  title = NULL, subtitle = NULL, caption = NULL, count = FALSE,
+  legend = list(), border = list(), titleStyle = list(),
+  labelWrap = 12, agg = "sum", fill = list(), marks = c(".", ","),
+  nDigits = NULL, projections = list(), percentage = FALSE,
+  format = c("", ""), theme = NULL)
 }
 \arguments{
 \item{x}{A code.}

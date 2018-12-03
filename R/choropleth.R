@@ -15,6 +15,7 @@ gg_choropleth_map_GcdNum. <- function(data = NULL,
                                       caption = NULL,
                                       legend = list(),
                                       border = list(),
+                                      titleStyle = list(),
                                       labelWrap = 12,
                                       agg = 'sum',
                                       fill = list(),
@@ -47,6 +48,12 @@ gg_choropleth_map_GcdNum. <- function(data = NULL,
   borderDefault <- list(weigth = 0.25,
                         color = '#000000')
   border <- modifyList(borderDefault, border)
+
+  titleStyleDefault <- list( color = '#000000',
+                             sizeTitle = 13,
+                             sizeSubtitle = 11,
+                             sizeCaption = 9)
+  titleStyle <- modifyList(titleStyleDefault, titleStyle)
 
   fillDefault <- list(color = NULL,
                       naColor = 'orange',
@@ -118,6 +125,7 @@ gg_choropleth_map_GcdNum. <- function(data = NULL,
         values = as.character(unique(data_graph$color)),
         na.value = fill$naColor)
     }
+
     g <- g +
       labs(x = "",
            y = "",
@@ -127,13 +135,20 @@ gg_choropleth_map_GcdNum. <- function(data = NULL,
            fill= flab)
 
   } else {
-    g <- graph
+    g <- graph + labs(x = "",
+                   y = "",
+                   title = title,
+                   subtitle = subtitle,
+                   caption = caption)
   }
 
   if (!is.null(projections$ratio)) g <- g + coord_equal(ratio= projections$ratio)
   if (!is.null(projections$type)) g <- g  + coord_map(projections$type, orientation = projections$orientation)
 
   g <- g + theme(legend.position= legend$position,
+                 plot.title = element_text(color= titleStyle$color, size= titleStyle$sizeTitle),
+                 plot.subtitle = element_text(color=titleStyle$color, size= titleStyle$sizeSubtitle),
+                 plot.caption = element_text(color= titleStyle$color, size= titleStyle$sizeCaption),
                  plot.background = element_rect(fill = fill$background, linetype = 'blank'),
                  panel.background = element_rect(fill = fill$background,
                                                  colour = fill$background,
@@ -180,6 +195,7 @@ gg_choropleth_map_GcdNum. <- function(data = NULL,
       }
   }
 
+
   g
 }
 
@@ -204,6 +220,7 @@ gg_choropleth_Gcd. <- function(data = NULL,
                                count = FALSE,
                                legend = list(),
                                border = list(),
+                               titleStyle = list(),
                                labelWrap = 12,
                                agg = 'sum',
                                fill = list(),
@@ -230,7 +247,7 @@ gg_choropleth_Gcd. <- function(data = NULL,
     }
   }
 
-  g <- gg_choropleth_map_GcdNum.(data = data, mapName = mapName, title = title, subtitle = subtitle, caption = caption, legend = legend, border = border, labelWrap = labelWrap, agg = agg, fill = fill, marks = marks, nDigits = nDigits, projections = projections, percentage = percentage, format = format, theme = theme)
+  g <- gg_choropleth_map_GcdNum.(data = data, mapName = mapName, title = title, subtitle = subtitle, caption = caption, legend = legend, border = border,titleStyle = titleStyle, labelWrap = labelWrap, agg = agg, fill = fill, marks = marks, nDigits = nDigits, projections = projections, percentage = percentage, format = format, theme = theme)
 
   if (!count) g <- g + guides(fill=FALSE)
 
@@ -259,6 +276,7 @@ gg_choropleth_map_GcdCat. <- function(data = NULL,
                                       count = FALSE,
                                       legend = list(),
                                       border = list(),
+                                      titleStyle = list(),
                                       labelWrap = 12,
                                       agg = 'sum',
                                       fill = list(),
@@ -290,6 +308,12 @@ gg_choropleth_map_GcdCat. <- function(data = NULL,
   borderDefault <- list(weigth = 0.25,
                         color = '#000000')
   border <- modifyList(borderDefault, border)
+
+  titleStyleDefault <- list( color = '#000000',
+                             sizeTitle = 13,
+                             sizeSubtitle = 11,
+                             sizeCaption = 9)
+  titleStyle <- modifyList(titleStyleDefault, titleStyle)
 
   fillDefault <- list(color = NULL,
                       naColor = 'orange',
@@ -383,8 +407,20 @@ gg_choropleth_map_GcdCat. <- function(data = NULL,
         }
     }
     }
+    g <- g +
+      labs(x = "",
+           y = "",
+           title = title,
+           subtitle = subtitle,
+           caption = caption,
+           fill= flab)
   } else {
-    g <- graph
+    g <- graph +
+      labs(x = "",
+           y = "",
+           title = title,
+           subtitle = subtitle,
+           caption = caption)
    if (sum(fill$showText) != 0) {
      if (fill$optText == 'code') centroides$name <- centroides$id
        g <- g + geom_text(data = centroides,
@@ -393,18 +429,15 @@ gg_choropleth_map_GcdCat. <- function(data = NULL,
    }
   }
 
-  g <- g +
-    labs(x = "",
-         y = "",
-         title = title,
-         subtitle = subtitle,
-         caption = caption,
-         fill= flab)
+
 
   if (!is.null(projections$ratio)) g <- g + coord_equal(ratio= projections$ratio)
   if (!is.null(projections$type)) g <- g  + coord_map(projections$type, orientation = projections$orientation)
 
   g <- g + theme(legend.position= legend$position,
+                 plot.title = element_text(color= titleStyle$color, size= titleStyle$sizeTitle),
+                 plot.subtitle = element_text(color=titleStyle$color, size= titleStyle$sizeSubtitle),
+                 plot.caption = element_text(color= titleStyle$color, size= titleStyle$sizeCaption),
                  plot.background = element_rect(fill = fill$background, linetype = 'blank'),
                  panel.background = element_rect(fill = fill$background,
                                                  colour = fill$background,
@@ -434,6 +467,7 @@ gg_choropleth_map_GnmNum. <- function(data = NULL,
                                       caption = NULL,
                                       legend = list(),
                                       border = list(),
+                                      titleStyle = list(),
                                       labelWrap = 12,
                                       agg = 'sum',
                                       fill = list(),
@@ -467,6 +501,12 @@ gg_choropleth_map_GnmNum. <- function(data = NULL,
                         color = '#000000')
   border <- modifyList(borderDefault, border)
 
+  titleStyleDefault <- list( color = '#000000',
+                             sizeTitle = 13,
+                             sizeSubtitle = 11,
+                             sizeCaption = 9)
+
+  titleStyle <- modifyList(titleStyleDefault, titleStyle)
   fillDefault <- list(color = NULL,
                       naColor = 'orange',
                       opacity = 0.7,
@@ -487,6 +527,7 @@ gg_choropleth_map_GnmNum. <- function(data = NULL,
   data_map <- mapResults[[1]]
   graph <- mapResults[[2]]
   centroides <- mapResults[[3]]
+  centroides$name <- str_to_title(iconv(as.character(tolower(centroides$name)), to="ASCII//TRANSLIT"))
 
   if (!is.null(data)) {
 
@@ -546,13 +587,20 @@ gg_choropleth_map_GnmNum. <- function(data = NULL,
            fill= flab)
 
   } else {
-    g <- graph
+    g <- graph + labs(x = "",
+                      y = "",
+                      title = title,
+                      subtitle = subtitle,
+                      caption = caption)
   }
 
   if (!is.null(projections$ratio)) g <- g + coord_equal(ratio= projections$ratio)
   if (!is.null(projections$type)) g <- g  + coord_map(projections$type, orientation = projections$orientation)
 
   g <- g + theme(legend.position= legend$position,
+                 plot.title = element_text(color= titleStyle$color, size= titleStyle$sizeTitle),
+                 plot.subtitle = element_text(color=titleStyle$color, size= titleStyle$sizeSubtitle),
+                 plot.caption = element_text(color= titleStyle$color, size= titleStyle$sizeCaption),
                  plot.background = element_rect(fill = fill$background, linetype = 'blank'),
                  panel.background = element_rect(fill = fill$background,
                                                  colour = fill$background,
@@ -623,6 +671,7 @@ gg_choropleth_Gnm. <- function(data = NULL,
                                count = FALSE,
                                legend = list(),
                                border = list(),
+                               titleStyle = list(),
                                labelWrap = 12,
                                agg = 'sum',
                                fill = list(),
@@ -649,7 +698,7 @@ gg_choropleth_Gnm. <- function(data = NULL,
     }
   }
 
-  g <- gg_choropleth_map_GnmNum.(data = data, mapName = mapName, title = title, subtitle = subtitle, caption = caption, legend = legend, border = border, labelWrap = labelWrap, agg = agg, fill = fill, marks = marks, nDigits = nDigits, projections = projections, percentage = percentage, format = format, theme = theme)
+  g <- gg_choropleth_map_GnmNum.(data = data, mapName = mapName, title = title, subtitle = subtitle, caption = caption, legend = legend, border = border,titleStyle = titleStyle, labelWrap = labelWrap, agg = agg, fill = fill, marks = marks, nDigits = nDigits, projections = projections, percentage = percentage, format = format, theme = theme)
 
   if (!count) g <- g + guides(fill=FALSE)
 
@@ -678,6 +727,7 @@ gg_choropleth_map_GnmCat. <- function(data = NULL,
                                       count = FALSE,
                                       legend = list(),
                                       border = list(),
+                                      titleStyle = list(),
                                       labelWrap = 12,
                                       agg = 'sum',
                                       fill = list(),
@@ -710,6 +760,12 @@ gg_choropleth_map_GnmCat. <- function(data = NULL,
                         color = '#000000')
   border <- modifyList(borderDefault, border)
 
+  titleStyleDefault <- list( color = '#000000',
+                             sizeTitle = 13,
+                             sizeSubtitle = 11,
+                             sizeCaption = 9)
+
+  titleStyle <- modifyList(titleStyleDefault, titleStyle)
   fillDefault <- list(color = NULL,
                       naColor = 'orange',
                       opacity = 0.7,
@@ -730,6 +786,7 @@ gg_choropleth_map_GnmCat. <- function(data = NULL,
   data_map <- mapResults[[1]]
   graph <- mapResults[[2]]
   centroides <- mapResults[[3]]
+  centroides$name <- str_to_title(iconv(as.character(tolower(centroides$name)), to="ASCII//TRANSLIT"))
 
   if (!is.null(data)) {
 
@@ -812,7 +869,11 @@ gg_choropleth_map_GnmCat. <- function(data = NULL,
       }
     }
   } else {
-    g <- graph
+    g <- graph +  labs(x = "",
+                       y = "",
+                       title = title,
+                       subtitle = subtitle,
+                       caption = caption)
     if (sum(fill$showText) != 0) {
       if (fill$optText == 'code') centroides$name <- centroides$id
       g <- g + geom_text(data = centroides,
@@ -825,6 +886,9 @@ gg_choropleth_map_GnmCat. <- function(data = NULL,
   if (!is.null(projections$type)) g <- g  + coord_map(projections$type, orientation = projections$orientation)
 
   g <- g + theme(legend.position= legend$position,
+                 plot.title = element_text(color= titleStyle$color, size= titleStyle$sizeTitle),
+                 plot.subtitle = element_text(color=titleStyle$color, size= titleStyle$sizeSubtitle),
+                 plot.caption = element_text(color= titleStyle$color, size= titleStyle$sizeCaption),
                  plot.background = element_rect(fill = fill$background, linetype = 'blank'),
                  panel.background = element_rect(fill = fill$background,
                                                  colour = fill$background,
