@@ -239,6 +239,31 @@ gg_bubbles_map_GcdNum.(data = dataC,
                       )
 
 
+gg_bubbles_map_GcdCatNum.(data = NULL)
+gg_bubbles_map_GcdCatNum.(data = NULL,
+                          title = 'Esto es un título',
+                          subtitle = 'Esto es un subtitulo',
+                          caption = 'esto son los créditos',
+                          border = list(weigth = 0.5,
+                                        color = '#FAACCA'),
+                          fill = list(showText = c(T, T),
+                                      propText = 'all',
+                                      #optText = 'name',
+                                      sizeText = 3,
+                                      color = '#FAC12A',
+                                      background = '#FDCAA0'))
+
+dataCN <- sampleData('Gcd-Cat-Num', 10000)
+gg_bubbles_map_GcdCatNum.(data = dataCN)
+gg_bubbles_map_GcdCatNum.(data = dataCN,
+                          legend = list(title = c('titulo 1', 'titulo 2')))
+gg_bubbles_map_GcdCatNum.(data = dataCN,
+                          legend = list(showLeg = c(TRUE, FALSE)))
+
+
+gg_bubbles_map_GcdCatNum.(data = dataCN,
+                          legend = list(showLeg = c(FALSE, FALSE)))
+
 
 # opts <- list(titleLabel = "HOLA PERRA",
 #              subtitle = "",
