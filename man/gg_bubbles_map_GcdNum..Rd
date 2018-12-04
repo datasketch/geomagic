@@ -2,6 +2,7 @@
 % Please edit documentation in R/bubbles.R
 \name{gg_bubbles_map_GcdNum.}
 \alias{gg_bubbles_map_GcdNum.}
+\alias{gg_bubbles_map_GcdCatNum.}
 \title{Bubbles map
 Bubbles map}
 \usage{
@@ -11,23 +12,42 @@ gg_bubbles_map_GcdNum.(data = NULL, mapName = "world_countries",
   titleStyle = list(), labelWrap = 12, agg = "sum", fill = list(),
   marks = c(".", ","), nDigits = NULL, projections = list(),
   percentage = FALSE, format = c("", ""), theme = NULL)
+
+gg_bubbles_map_GcdCatNum.(data = NULL, mapName = "world_countries",
+  title = NULL, subtitle = NULL, caption = NULL, minSize = 0.3,
+  maxSize = 10, legend = list(), border = list(),
+  titleStyle = list(), labelWrap = 12, agg = "sum", fill = list(),
+  marks = c(".", ","), nDigits = NULL, projections = list(),
+  percentage = FALSE, format = c("", ""), theme = NULL)
 }
 \arguments{
+\item{x}{A code.}
+
+\item{y}{A number.}
+
 \item{x}{A code.}
 
 \item{y}{A number.}
 }
 \value{
 The sum of \code{x} and \code{y}.
+
+The sum of \code{x} and \code{y}.
 }
 \description{
+Bubbles map
+Bubbles map
+
 Bubbles map
 Bubbles map
 }
 \section{ftypes}{
  Gcd-Num
+
+ Gcd-Num
 }
 
 \examples{
+NULL
 NULL
 }
