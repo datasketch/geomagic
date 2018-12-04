@@ -334,6 +334,8 @@ gg_bubbles_map_GlnGlt.(data = dataN)
 gg_bubbles_map_GlnGlt.(data = dataN,
                           minSize = 3,
                           maxSize = 7,
+                       nDigits = 4,
+                       fill = list(color = 'green'),
                           legend = list(bins = 3,
                                         title = 'titulo'))
 
@@ -356,8 +358,8 @@ gg_bubbles_map_GlnGltCatNum.(data = NULL,
                        caption = 'esto son los créditos')
 
 dataCN <- sampleData('Gln-Glt-Cat-Num')
-gg_bubbles_map_GlnGltCatNum.(data = dataCN )
+gg_bubbles_map_GlnGltCatNum.(data = dataCN, nDigits = 4)
 
 
-dataCN <- sampleData('Gnm-Num', 10000)
-gg_bubbles_map_GnmNum.(data = dataCN)
+dataCN <- sampleData('Gnm-Cat-Num', 10000)
+gg_bubbles_map_GnmCatNum.(data = dataCN)

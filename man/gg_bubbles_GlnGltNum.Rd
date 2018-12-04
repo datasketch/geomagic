@@ -26,5 +26,5 @@ Ggplot bubbles by latitud and longitud
 }
 
 \examples{
-gg_bubbles_map_GlnGlt(sampleData("Gln-Glt-Num", nrow = 10))
+gg_bubbles_map_GlnGltNum.(sampleData("Gln-Glt-Num", nrow = 10))
 }

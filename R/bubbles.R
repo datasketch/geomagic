@@ -956,25 +956,25 @@ gg_bubbles_map_GnmNum. <- function(data = NULL,
 #' @examples
 #' NULL
 gg_bubbles_map_GnmCatNum. <- function(
-  data = NULL,
-  mapName = "world_countries",
-  title = NULL,
-  subtitle = NULL,
-  caption = NULL,
-  minSize = 0.3,
-  maxSize = 10,
-  legend = list(),
-  border = list(),
-  titleStyle = list(),
-  labelWrap = 12,
-  agg = 'sum',
-  fill = list(),
-  marks = c(".", ","),
-  nDigits = NULL,
-  projections = list(),
-  percentage = FALSE,
-  format = c('', ''),
-  theme = NULL) {
+                                data = NULL,
+                                mapName = "world_countries",
+                                title = NULL,
+                                subtitle = NULL,
+                                caption = NULL,
+                                minSize = 0.3,
+                                maxSize = 10,
+                                legend = list(),
+                                border = list(),
+                                titleStyle = list(),
+                                labelWrap = 12,
+                                agg = 'sum',
+                                fill = list(),
+                                marks = c(".", ","),
+                                nDigits = NULL,
+                                projections = list(),
+                                percentage = FALSE,
+                                format = c('', ''),
+                                theme = NULL) {
 
   if (!mapName %in% availableGeodata()) {
     stop("Pick an available map for the mapName argument (geodata::availableGeodata())")
@@ -1030,12 +1030,17 @@ gg_bubbles_map_GnmCatNum. <- function(
     data <- f$d
     flab1 <- legend$title[1] %||% nms[2]
     flab2 <- legend$title[2] %||% nms[3]
-    data$a <- as.character(toupper(tolower(data$a)))
-
+    data$a <- str_to_title(iconv(as.character(tolower(data$a)), to="ASCII//TRANSLIT"))
+    nDig <- 2
+    if (!is.null(nDigits)) nDig <- nDigits
 
     data <- data  %>%
-      group_by(a, b) %>%
-      dplyr::summarise(d = agg(agg, c))
+             group_by(a, b) %>%
+              dplyr::summarise(c = round(agg(agg, c), nDig)) %>%
+               arrange(-c) %>%
+                mutate(ind = 1:length(b)) %>%
+                 filter(ind == 1) %>%
+                  select(a, b, c)
 
 
     if (percentage) {
@@ -1043,10 +1048,9 @@ gg_bubbles_map_GnmCatNum. <- function(
       format[2] <- '%'
     }
 
-    nDig <- 2
-    if (!is.null(nDigits)) nDig <- nDigits
 
-    centroides$a <- toupper(centroides$name)
+
+    centroides$a <- str_to_title(iconv(as.character(tolower(centroides$name)), to="ASCII//TRANSLIT"))
     data_graph <- dplyr::inner_join(data, centroides, by = "a")
     data_graph <- fillColors(data_graph, 'b', fill$color, 'discrete', NA, NA, labelWrap, F)
     data_graph <- data_graph %>% drop_na(c)
