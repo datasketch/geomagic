@@ -357,3 +357,7 @@ gg_bubbles_map_GlnGltCatNum.(data = NULL,
 
 dataCN <- sampleData('Gln-Glt-Cat-Num')
 gg_bubbles_map_GlnGltCatNum.(data = dataCN )
+
+
+dataCN <- sampleData('Gnm-Num', 10000)
+gg_bubbles_map_GnmNum.(data = dataCN)
