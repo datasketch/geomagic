@@ -6,25 +6,42 @@ install()
 library(geomagic)
 
 
-# Examples Choropleth GcdNum------------------------------------------------
+
+# Choropleth --------------------------------------------------------------
+
+# Examples GcdNum ---------------------------------------------------------
 
 gg_choropleth_map_GcdNum.(data = NULL)
 gg_choropleth_map_GcdNum.(data = NULL,
                           fill = list(
                             showText = c(TRUE, FALSE),
-                            propText = 'all')
-                          )
+                            propText = 'all'))
+gg_choropleth_map_GcdNum.(data = NULL,
+                          fill = list(
+                            showText = c(TRUE, FALSE),
+                            propText = 'all',
+                            optText = 'name'))
 
-data <- data.frame(pais = c('COL', 'COL', 'ARG', 'BRA', 'USA', 'MEX'),
-                   total = c(1, 2, 1, 1, 2, NA))
+dataGN <- sampleData('Gcd-Num')
+gg_choropleth_map_GcdNum.(data = dataGN)
+gg_choropleth_map_GcdNum.(data = dataGN, nDigits = 0)
+gg_choropleth_map_GcdNum.(data = dataGN,
+                          title = 'Este es un título',
+                          subtitle = 'este es el sutitulo',
+                          captio = 'créditos',
+                          agg = 'mean', format = c('$', ''))
 
-gg_choropleth_map_GcdNum.(data = data,
+
+gg_choropleth_map_GcdNum.(data = dataGN,
                           fill = list(scale = 'discrete',
                                       mode = 'no',
+                                      color = c('darkred', 'black'),
                                       optText = 'name',
                                       showText = c(TRUE, FALSE)),
-                          legend = list(bins = 4),
+                          legend = list(bins = 4,
+                                        title = ''),
                           percentage = TRUE)
+
 
 gg_choropleth_map_GcdNum.(data = data,
                           legend = list(bins = 3),
@@ -48,7 +65,7 @@ gg_choropleth_map_GcdNum.(data = data,
                           caption = 'créditos del mapa',
                           projections = list(type = "ortho"))
 
-data <- data.frame(pais = c('COL',  'ARG', 'BRA', 'USA', 'MEX'),
+data <- data.frame(pais = c('COL',  'ARG', 'BRA', 'RUS', 'MEX'),
                    total = c(1, 1, 1, 1, 1))
 gg_choropleth_map_GcdNum.(data = data,
                           legend = list(bins = 3),
@@ -59,7 +76,7 @@ gg_choropleth_map_GcdNum.(data = data,
 gg_choropleth_map_GcdNum.(data = data,
                           legend = list(bins = 5),
                           marks = c('','.'),
-                          fill = list(color = c('orange', 'black')),
+                          fill = list(color = c('orange')),
                           percentage = TRUE)
 
 gg_choropleth_map_GcdNum.(data = data,
@@ -94,7 +111,7 @@ gg_choropleth_map_GcdNum.(data = NULL,
                           mapName = "latam_countries",
                           projections = list(type = "mercator",
                                              ratio = 1))
-gg_choropleth_map_GcdNum.(data = NULL,
+gg_choropleth_map_GcdNum.(data = data,
                           mapName = "latam_countries",
                           projections = list(type = "azequalarea",
                                              orientation = c(36.92, 297.6, 0)))
@@ -118,7 +135,7 @@ gg_choropleth_Gcd.(data = data,
                                background = '#000000',
                                opacity = 0.7,
                                color = c('red', 'yellow', 'green')
-                               ),
+                   ),
                    format = c('$', 'ana'),
                    marks = c('.', ','),
                    nDigits = 4,
@@ -131,17 +148,23 @@ gg_choropleth_Gcd.(data = data,
                    projections = list(ratio = 1,
                                       type = "mercator") )
 
+
+# Examples Gcd ------------------------------------------------------------
+
 gg_choropleth_Gcd.(data = data,
                    count = F)
 
 gg_choropleth_Gcd.(data = data,
                    count = F,
                    fill = list(scale = 'discrete',
-                               optText = 'name', #mirar porq no funciona
+                               optText = 'name',
                                sizeText = 3,
                                showText = c(TRUE, FALSE)))
 
 
+
+
+# Examples GcdCat ---------------------------------------------------------
 
 data <- sampleData('Gcd-Cat', 100)
 gg_choropleth_map_GcdCat.(data = NULL,
@@ -162,11 +185,7 @@ gg_choropleth_map_GcdCat.(data = data,
                                       showText = c(TRUE, TRUE)))
 
 
-
-
-
-
-# By name -----------------------------------------------------------------
+# Examples Gnm ------------------------------------------------------------
 
 data <- sampleData('Gnm', 100)
 gg_choropleth_Gnm.(data = NULL, title = 'Mapa sin datos')
@@ -184,6 +203,11 @@ gg_choropleth_Gnm.(data = data, title = 'Mapa con datos',
                                background = '#000000'),
                    titleStyle = list(color = 'green'))
 
+
+
+# Examples GnmNum ---------------------------------------------------------
+
+
 dataGn <- sampleData('Gnm-Num', 100)
 gg_choropleth_map_GnmNum.(data = dataGn)
 gg_choropleth_map_GnmNum.(data = dataGn, mapName = 'latam_countries' )
@@ -191,6 +215,10 @@ gg_choropleth_map_GnmNum.(data = dataGn,
                           mapName = 'latam_countries',
                           projections = list(type = "mercator",
                                              ratio = 1))
+
+
+
+# Examples GnmCat ---------------------------------------------------------
 
 dataGc <- sampleData('Gnm-Cat')
 gg_choropleth_map_GnmCat.(data = NULL)
@@ -207,159 +235,63 @@ gg_choropleth_map_GnmCat.(data = dataGc,
 
 
 
-# Bubbles map Gcd Num -----------------------------------------------------
 
+
+# Bubbles -----------------------------------------------------------------
+
+# Examples GcdNum ---------------------------------------------------------
 gg_bubbles_map_GcdNum.(data = NULL)
-gg_bubbles_map_GcdNum.(data = NULL,
-                       title = 'Esto es un título',
-                       subtitle = 'esto es un subtitulo',
-                       caption = 'estos son los créditos',
-                       mapName = 'arg_provinces',
-                       fill = list(showText=c(TRUE, FALSE),
-                                   propText = 'all',
-                                   optText = 'name',
-                                   sizeText = 3),
-                       projections = list(ratio = 1,
-                                          type = "mercator"))
+dataN <- sampleData('Gcd-Num')
+gg_bubbles_map_GcdNum.(data = dataN)
 
 
-dataC <- sampleData('Gcd-Num', 1000)
-gg_bubbles_map_GcdNum.(data = dataC)
-gg_bubbles_map_GcdNum.(data = dataC,
-                       mapName = 'latam_countries',
-                       legend = list(bins = 3,
-                                     title = 'hola'),
-                       fill = list(showText=c(TRUE, FALSE),
-                                   propText = 'all',
-                                   optText = 'name',
-                                   sizeText = 3,
-                                   color = '#FAC12A'),
-                       projections = list(ratio = 1,
-                                          type = "mercator")
-                      )
+# Examples Gcd ------------------------------------------------------------
 
 
+
+# Examples GcdCatNum ------------------------------------------------------
 gg_bubbles_map_GcdCatNum.(data = NULL)
-gg_bubbles_map_GcdCatNum.(data = NULL,
-                          title = 'Esto es un título',
-                          subtitle = 'Esto es un subtitulo',
-                          caption = 'esto son los créditos',
-                          border = list(weigth = 0.5,
-                                        color = '#FAACCA'),
-                          fill = list(showText = c(T, T),
-                                      propText = 'all',
-                                      #optText = 'name',
-                                      sizeText = 3,
-                                      color = '#FAC12A',
-                                      background = '#FDCAA0'))
-
-dataCN <- sampleData('Gcd-Cat-Num', 10000)
+dataCN <- sampleData('Gcd-Cat-Num')
 gg_bubbles_map_GcdCatNum.(data = dataCN)
-gg_bubbles_map_GcdCatNum.(data = dataCN,
-                          legend = list(title = c('titulo 1', 'titulo 2')))
-gg_bubbles_map_GcdCatNum.(data = dataCN,
-                          legend = list(showLeg = c(TRUE, FALSE)))
-
-
-gg_bubbles_map_GcdCatNum.(data = dataCN,
-                          legend = list(showLeg = c(FALSE, FALSE)))
-
-gg_bubbles_map_GcdCatNum.(data = dataCN,
-                          percentage = TRUE,
-                          legend = list(
-                            bins = 7,
-                            fill = '#FDCCAA',
-                            background  = '#000000'))
-
-gg_bubbles_map_GcdCatNum.(data = dataCN,
-                          marks = c(',', '.'),
-                          format = c('$', 'ja'),
-                          legend = list(
-                            bins = 7,
-                            fill = '#FDCCAA',
-                            background  = '#000000'),
-                          fill = list(showText = c(TRUE, TRUE)))
 
 
 
+# Examples GcdCat ---------------------------------------------------------
+
+
+
+# Examples GlnGltNum ------------------------------------------------------
 gg_bubbles_map_GlnGltNum.(data = NULL)
-
-gg_bubbles_map_GlnGltNum.(data = NULL,
-                          title = 'Esto es un título',
-                          subtitle = 'Esto es un subtitulo',
-                          caption = 'esto son los créditos',
-                          border = list(weigth = 0.5,
-                                        color = '#000000'),
-                          fill = list(showText = c(T, T),
-                                      propText = 'all',
-                                      #optText = 'name',
-                                      sizeText = 3,
-                                      color = '#FAC12A',
-                                      background = '#FAC0C0'))
-
 dataN <- sampleData('Gln-Glt-Num')
 gg_bubbles_map_GlnGltNum.(data = dataN)
-gg_bubbles_map_GlnGltNum.(data = dataN,
-                          minSize = 3,
-                          maxSize = 7,
-                          legend = list(bins = 3,
-                                        title = 'titulo'))
 
-gg_bubbles_map_GlnGltNum.(data = dataN,
-                          minSize = 3,
-                          maxSize = 7,
-                          marks = c(',', 'x'),
-                          format = c('$', ''),
-                          fill = list(showText = c(F, T),
-                                      sizeText = 3))
-
-
+# Examples GlnGlt ---------------------------------------------------------
 gg_bubbles_map_GlnGlt.(data = NULL)
-
-gg_bubbles_map_GlnGlt.(data = NULL,
-                          title = 'Esto es un título',
-                          subtitle = 'Esto es un subtitulo',
-                          caption = 'esto son los créditos',
-                          border = list(weigth = 0.5,
-                                        color = '#000000'),
-                          fill = list(showText = c(T, T),
-                                      propText = 'all',
-                                      #optText = 'name',
-                                      sizeText = 3,
-                                      color = '#DAFFCC',
-                                      background = '#FAC0C0'))
-
 dataN <- sampleData('Gln-Glt')
 gg_bubbles_map_GlnGlt.(data = dataN)
-gg_bubbles_map_GlnGlt.(data = dataN,
-                          minSize = 3,
-                          maxSize = 7,
-                       nDigits = 4,
-                       fill = list(color = 'green'),
-                          legend = list(bins = 3,
-                                        title = 'titulo'))
-
-gg_bubbles_map_GlnGlt.(data = dataN,
-                       count = TRUE,
-                          minSize = 3,
-                          maxSize = 7,
-                          marks = c(',', 'x'),
-                          format = c('$', ''),
-                          fill = list(showText = c(F, T),
-                                      sizeText = 3))
 
 
 
+# Examples GlnGltCatNum ---------------------------------------------------
 gg_bubbles_map_GlnGltCatNum.(data = NULL)
-
-gg_bubbles_map_GlnGltCatNum.(data = NULL,
-                       title = 'Esto es un título',
-                       subtitle = 'Esto es un subtitulo',
-                       caption = 'esto son los créditos')
-
 dataCN <- sampleData('Gln-Glt-Cat-Num')
-gg_bubbles_map_GlnGltCatNum.(data = dataCN, nDigits = 4)
+gg_bubbles_map_GlnGltCatNum.(data = dataCN)
 
 
-dataCN <- sampleData('Gnm-Cat-Num', 10000)
+# Examples GlnGltCat ------------------------------------------------------
+gg_bubbles_map_GlnGltCat.(data = NULL)
+dataC <- sampleData('Gln-Glt-Cat')
+gg_bubbles_map_GlnGltCat.(data = dataC)
+
+
+# Examples GnmNum ---------------------------------------------------------
+gg_bubbles_map_GnmNum.(data = NULL)
+dataN <- sampleData('Gnm-Num')
+gg_bubbles_map_GnmNum.(data = dataN)
+
+
+# Examples GnmCatNum. -----------------------------------------------------
+gg_bubbles_map_GnmCatNum.(data = NULL)
+dataCN <- sampleData('Gnm-Cat-Num')
 gg_bubbles_map_GnmCatNum.(data = dataCN)
+

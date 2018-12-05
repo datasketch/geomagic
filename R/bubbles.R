@@ -101,7 +101,7 @@ gg_bubbles_map_GcdNum. <- function(data = NULL,
     data_graph <- fillColors(data_graph, 'c', fill$color, 'discrete', NA, NA, labelWrap, F)
     data_graph <- data_graph %>% drop_na(b)
     breaks <- round(as.vector(quantile(unique(data_graph$b), probs = c(0, cumsum(rep((1/(legend$bins-1)), (legend$bins-1)))))), nDig)
-    labels <- paste0( format[1] ,format(breaks, trim = T,  big.mark = marks[1], decimal.mark = marks[2]), format[2])
+    labels <- paste0( format[1] ,format(breaks, trim = T,  big.mark = marks[1], decimal.mark = marks[2], nsmall = nDig), format[2])
     g <- graph + geom_point(data = data_graph,
                             aes(x=lon, y=lat, size=b),
                             color = as.character(unique(data_graph$color)),
@@ -289,7 +289,7 @@ gg_bubbles_map_GcdCatNum. <- function(
     data_graph <- fillColors(data_graph, 'b', fill$color, 'discrete', NA, NA, labelWrap, F)
     data_graph <- data_graph %>% drop_na(c)
     breaks <- round(as.vector(quantile(unique(data_graph$c), probs = c(0, cumsum(rep((1/(legend$bins-1)), (legend$bins-1)))))), nDig)
-    labels <- paste0( format[1] ,format(breaks, trim = T,  big.mark = marks[1], decimal.mark = marks[2]), format[2])
+    labels <- paste0( format[1] ,format(breaks, trim = T,  big.mark = marks[1], decimal.mark = marks[2], nsmall = nDig), format[2])
     g <- graph + geom_point(data = data_graph,
                             aes(x=lon, y=lat, size=c, color = b ),
                             alpha = fill$opacity) +
@@ -374,8 +374,7 @@ gg_bubbles_map_GcdCatNum. <- function(
 
 
 
-#' Ggplot bubbles by latitud and longitud
-#'
+
 #' Ggplot bubbles by latitud and longitud
 #'
 #' @name gg_bubbles_GlnGltNum
@@ -480,7 +479,7 @@ gg_bubbles_map_GlnGltNum. <- function(data = NULL,
     data$ind <- 1
     data_graph <- fillColors(data, 'ind', fill$color, 'discrete', NA, NA, labelWrap, F)
     breaks <- round(as.vector(quantile(unique(data_graph$c), probs = c(0, cumsum(rep((1/(legend$bins-1)), (legend$bins-1)))))), nDig)
-    labels <- paste0( format[1] ,format(breaks, trim = T,  big.mark = marks[1], decimal.mark = marks[2]), format[2])
+    labels <- paste0( format[1] , format(breaks, trim = T,  big.mark = marks[1], decimal.mark = marks[2], nsmall = nDig), format[2])
     g <- graph + geom_point(data = data_graph,
                             aes(x=a, y=b, size=c),
                             color = as.character(unique(data_graph$color)),
@@ -597,10 +596,8 @@ gg_bubbles_map_GlnGlt. <-function(data = NULL,
 }
 
 
-
 #' Bubbles map
-#' Bubbles map
-#' @name gg_bubbles_map_GcdNum.
+#' @name gg_bubbles_map_GlnGltCatNum.
 #' @param x A code.
 #' @param y A number.
 #' @export
@@ -609,25 +606,25 @@ gg_bubbles_map_GlnGlt. <-function(data = NULL,
 #' @examples
 #' NULL
 gg_bubbles_map_GlnGltCatNum. <- function(
-                                         data = NULL,
-                                         mapName = "world_countries",
-                                         title = NULL,
-                                         subtitle = NULL,
-                                         caption = NULL,
-                                         minSize = 0.3,
-                                         maxSize = 10,
-                                         legend = list(),
-                                         border = list(),
-                                         titleStyle = list(),
-                                         labelWrap = 12,
-                                         agg = 'sum',
-                                         fill = list(),
-                                         marks = c(".", ","),
-                                         nDigits = NULL,
-                                         projections = list(),
-                                         percentage = FALSE,
-                                         format = c('', ''),
-                                         theme = NULL) {
+                                  data = NULL,
+                                  mapName = "world_countries",
+                                  title = NULL,
+                                  subtitle = NULL,
+                                  caption = NULL,
+                                  minSize = 0.3,
+                                  maxSize = 10,
+                                  legend = list(),
+                                  border = list(),
+                                  titleStyle = list(),
+                                  labelWrap = 12,
+                                  agg = 'sum',
+                                  fill = list(),
+                                  marks = c(".", ","),
+                                  nDigits = NULL,
+                                  projections = list(),
+                                  percentage = FALSE,
+                                  format = c('', ''),
+                                  theme = NULL) {
 
   if (!mapName %in% availableGeodata()) {
     stop("Pick an available map for the mapName argument (geodata::availableGeodata())")
@@ -688,10 +685,10 @@ gg_bubbles_map_GlnGltCatNum. <- function(
       dplyr::summarise(d = agg(agg, d))
 
 
-    # if (percentage) {
-    #   data$d <- (data[['c']] * 100) / sum(data[['c']], na.rm = TRUE)
-    #   format[2] <- '%'
-    # }
+    if (percentage) {
+      data$d <- (data[['d']] * 100) / sum(data[['d']], na.rm = TRUE)
+      format[2] <- '%'
+    }
 
     nDig <- 2
     if (!is.null(nDigits)) nDig <- nDigits
@@ -699,10 +696,11 @@ gg_bubbles_map_GlnGltCatNum. <- function(
     data_graph <- fillColors(data, 'c', fill$color, 'discrete', NA, NA, labelWrap, F)
     #data_graph <- data_graph %>% drop_na(d)
     breaks <- round(as.vector(quantile(unique(data_graph$d), probs = c(0, cumsum(rep((1/(legend$bins-1)), (legend$bins-1)))))), nDig)
-    labels <- paste0( format[1] ,format(breaks, trim = T,  big.mark = marks[1], decimal.mark = marks[2]), format[2])
-    g <- graph + geom_point(data = data_graph,
-                            aes(x=a, y=b, size=d, color = c ),
-                            alpha = fill$opacity) +
+    labels <- paste0( format[1] ,format(breaks, trim = T,  big.mark = marks[1], decimal.mark = marks[2], nsmall = nDig), format[2])
+    g <- graph +
+      geom_point(data = data_graph,
+                 aes(x=a, y=b, size=d, color = c ),
+                 alpha = fill$opacity) +
       scale_size(
         name = flab2,
         range = c(minSize, maxSize),
@@ -762,6 +760,60 @@ gg_bubbles_map_GlnGltCatNum. <- function(
            caption = caption)
 
 }
+
+
+#' Bubbles map
+#' @name gg_bubbles_map_GlnGltCat.
+#' @param x A code.
+#' @param y A number.
+#' @export
+#' @return The sum of \code{x} and \code{y}.
+#' @section ftypes: Gcd-Num
+#' @examples
+
+gg_bubbles_map_GlnGltCat. <- function(
+                                   data = NULL,
+                                   mapName = "world_countries",
+                                   title = NULL,
+                                   subtitle = NULL,
+                                   caption = NULL,
+                                   minSize = 0.3,
+                                   maxSize = 10,
+                                   count = FALSE,
+                                   legend = list(),
+                                   border = list(),
+                                   titleStyle = list(),
+                                   labelWrap = 12,
+                                   agg = 'sum',
+                                   fill = list(),
+                                   marks = c(".", ","),
+                                   nDigits = NULL,
+                                   projections = list(),
+                                   percentage = FALSE,
+                                   format = c('', ''),
+                                   theme = NULL) {
+
+  if (!is.null(data)) {
+    f <- fringe(data)
+    nms <- getClabels(f)
+    data <- f$d
+    if (count) {
+      data <- data  %>%
+        dplyr::group_by(a, b, c) %>%
+        dplyr::summarise(conteo = n())
+    } else {
+      data$conteo <- 1:dim(data)[1]
+    }
+  }
+
+  g <- gg_bubbles_map_GlnGltCatNum.(data = data, mapName = mapName,title = title, subtitle = subtitle, caption = caption, minSize = minSize,maxSize = maxSize,legend = legend,border = border, titleStyle = titleStyle,labelWrap = labelWrap,agg = agg,fill = fill, marks = marks, nDigits = nDigits,projections = projections, percentage = percentage, format = format, theme = theme)
+  if (!count) g <- g + guides(fill=FALSE)
+
+  g
+
+}
+
+
 
 
 
@@ -857,6 +909,7 @@ gg_bubbles_map_GnmNum. <- function(data = NULL,
       dplyr::group_by(a) %>%
       dplyr::summarise(b = ifelse(sum(is.na(b) == length(b)), b, agg(agg, b)))
 
+
     if (percentage) {
       data$b <- (data[['b']] * 100) / sum(data[['b']], na.rm = TRUE)
     }
@@ -867,7 +920,7 @@ gg_bubbles_map_GnmNum. <- function(data = NULL,
     data_graph <- fillColors(data_graph, 'c', fill$color, 'discrete', NA, NA, labelWrap, F)
     data_graph <- data_graph %>% drop_na(b)
     breaks <- round(as.vector(quantile(unique(data_graph$b), probs = c(0, cumsum(rep((1/(legend$bins-1)), (legend$bins-1)))))), nDig)
-    labels <- paste0( format[1] ,format(breaks, trim = T,  big.mark = marks[1], decimal.mark = marks[2]), format[2])
+    labels <- paste0( format[1] ,format(breaks, trim = T,  big.mark = marks[1], decimal.mark = marks[2], nsmall = nDig), format[2])
     g <- graph + geom_point(data = data_graph,
                             aes(x=lon, y=lat, size=b),
                             color = as.character(unique(data_graph$color)),
@@ -954,27 +1007,27 @@ gg_bubbles_map_GnmNum. <- function(data = NULL,
 #' @return The sum of \code{x} and \code{y}.
 #' @section ftypes: Gnm-Num
 #' @examples
-#' NULL
 gg_bubbles_map_GnmCatNum. <- function(
-                                data = NULL,
-                                mapName = "world_countries",
-                                title = NULL,
-                                subtitle = NULL,
-                                caption = NULL,
-                                minSize = 0.3,
-                                maxSize = 10,
-                                legend = list(),
-                                border = list(),
-                                titleStyle = list(),
-                                labelWrap = 12,
-                                agg = 'sum',
-                                fill = list(),
-                                marks = c(".", ","),
-                                nDigits = NULL,
-                                projections = list(),
-                                percentage = FALSE,
-                                format = c('', ''),
-                                theme = NULL) {
+                                      data = NULL,
+                                      mapName = "world_countries",
+                                      title = NULL,
+                                      subtitle = NULL,
+                                      caption = NULL,
+                                      minSize = 0.3,
+                                      maxSize = 10,
+                                      legend = list(),
+                                      border = list(),
+                                      titleStyle = list(),
+                                      labelWrap = 12,
+                                      agg = 'sum',
+                                      fill = list(),
+                                      marks = c(".", ","),
+                                      nDigits = NULL,
+                                      projections = list(),
+                                      percentage = FALSE,
+                                      format = c('', ''),
+                                      theme = NULL)
+{
 
   if (!mapName %in% availableGeodata()) {
     stop("Pick an available map for the mapName argument (geodata::availableGeodata())")
@@ -1035,12 +1088,12 @@ gg_bubbles_map_GnmCatNum. <- function(
     if (!is.null(nDigits)) nDig <- nDigits
 
     data <- data  %>%
-             group_by(a, b) %>%
-              dplyr::summarise(c = round(agg(agg, c), nDig)) %>%
-               arrange(-c) %>%
-                mutate(ind = 1:length(b)) %>%
-                 filter(ind == 1) %>%
-                  select(a, b, c)
+      group_by(a, b) %>%
+      dplyr::summarise(c = round(agg(agg, c), nDig)) %>%
+      arrange(-c) %>%
+      mutate(ind = 1:length(b)) %>%
+      filter(ind == 1) %>%
+      select(a, b, c)
 
 
     if (percentage) {
