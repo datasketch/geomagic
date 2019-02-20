@@ -44,6 +44,3 @@ Bubbles map
  Gnm-Num
 }
 
-\examples{
-NULL
-}

@@ -11,7 +11,9 @@ library(geomagic)
 
 # Examples GcdNum ---------------------------------------------------------
 
-gg_choropleth_map_GcdNum.(data = NULL)
+gg_choropleth_map_GcdNum.(data = NULL, mapName =  "american_countries", fill = list(
+  showText = c(TRUE, FALSE),
+  propText = 'all'))
 gg_choropleth_map_GcdNum.(data = NULL,
                           fill = list(
                             showText = c(TRUE, FALSE),
@@ -291,7 +293,9 @@ gg_bubbles_map_GnmNum.(data = dataN)
 
 
 # Examples GnmCatNum. -----------------------------------------------------
-gg_bubbles_map_GnmCatNum.(data = NULL)
+gg_bubbles_map_GnmCatNum.(data = NULL,
+                          fill = list( showText = c(TRUE, FALSE),
+                                       propText = 'all'))
 dataCN <- sampleData('Gnm-Cat-Num')
 gg_bubbles_map_GnmCatNum.(data = dataCN)
 
