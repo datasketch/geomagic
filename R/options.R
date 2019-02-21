@@ -6,12 +6,12 @@ getDefaultOpts <- function(...){
     projectionName = NULL,
     projectionOpts = list(
       ratio = NULL,
+      type = NULL,
       orientation = c(90, 0, 0)
     ),
     graticule = FALSE,
     palette = "viridis",
     customPalette = NA,
-    showText = c(FALSE, FALSE),
     scale = 'continuous',
     defaultFill = "#DDDDDD",
     naColor = "#CCCCCC",
@@ -19,11 +19,18 @@ getDefaultOpts <- function(...){
     borderWidth = 0.25,
     opacity = 0.7,
     agg = 'sum',
+    count = TRUE,
     percentage = FALSE,
     marks = c(".", ","),
     format = c('', ''),
     color = NULL,
     nDigits = NULL,
+    showText = c(FALSE, FALSE),
+    textMap = list(
+      optText = 'code',
+      propText = 'all',
+      size = 1
+    ),
     titles = list(
       title = list(
         text = "",
@@ -47,7 +54,8 @@ getDefaultOpts <- function(...){
     legend = list(
       background = 'transparent',
       show = TRUE,
-      fill = "",
+      fill = "transparent",
+      position = 'left',
       choropleth = list(
         type = "quantile",
         title = "",

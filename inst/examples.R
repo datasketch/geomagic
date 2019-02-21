@@ -11,47 +11,79 @@ library(geomagic)
 
 # Examples GcdNum ---------------------------------------------------------
 
-gg_choropleth_map_GcdNum.(data = NULL, mapName =  "american_countries", fill = list(
-  showText = c(TRUE, FALSE),
-  propText = 'all'))
-gg_choropleth_map_GcdNum.(data = NULL,
-                          fill = list(
+gg_choropleth_map_GcdNum()
+gg_choropleth_map_GcdNum(mapName =  "american_countries")
+
+gg_choropleth_map_GcdNum(data = NULL, mapName =  "american_countries",
+                          opts = list(
+                                 showText = c(TRUE, FALSE))
+                        )
+gg_choropleth_map_GcdNum(data = sampleData("Gcd-Num"), mapName =  "american_countries",
+                         opts = list(
+                         showText = c(TRUE, FALSE))
+)
+
+gg_choropleth_map_Gcd()
+gg_choropleth_map_Gcd(data = sampleData("Gcd"))
+
+gg_choropleth_map_GcdCat()
+gg_choropleth_map_GcdCat(sampleData("Gcd-Cat"), opts = list(count = F))
+
+gg_choropleth_map_GcdNum(data = NULL,
+                         opts = list(
                             showText = c(TRUE, FALSE),
+                            textMap = list(
                             propText = 'all'))
-gg_choropleth_map_GcdNum.(data = NULL,
-                          fill = list(
+                         )
+gg_choropleth_map_GcdNum(data = NULL,
+                         opts = list(
                             showText = c(TRUE, FALSE),
+                            textMap = list(
                             propText = 'all',
                             optText = 'name'))
+                         )
 
 dataGN <- sampleData('Gcd-Num')
-gg_choropleth_map_GcdNum.(data = dataGN)
-gg_choropleth_map_GcdNum.(data = dataGN, nDigits = 0)
-gg_choropleth_map_GcdNum.(data = dataGN,
-                          title = 'Este es un título',
-                          subtitle = 'este es el sutitulo',
-                          captio = 'créditos',
-                          agg = 'mean', format = c('$', ''))
+gg_choropleth_map_GcdNum(data = dataGN)
+gg_choropleth_map_GcdNum(data = dataGN, opts = list(nDigits = 0))
+gg_choropleth_map_GcdNum(data = dataGN,
+                         opts = list(
+                           titles = list(
+                             title = list(
+                               text = "Este es un título"
+                             ),
+                             subtitle = list(
+                               text = "este es el sutitulo"
+                             ),
+                             caption = list(
+                               text = "créditos"
+                             )
+                           ),
+                          agg = 'mean',
+                         format = c('$', '')
+                         ))
 
 
-gg_choropleth_map_GcdNum.(data = dataGN,
-                          fill = list(scale = 'discrete',
-                                      mode = 'no',
-                                      color = c('darkred', 'black'),
-                                      optText = 'name',
-                                      showText = c(TRUE, FALSE)),
-                          legend = list(bins = 4,
-                                        title = ''),
-                          percentage = TRUE)
+
+gg_choropleth_map_GcdNum(data = dataGN,
+                         opts = list(scale = 'discrete',
+                                     nLevels = 4,
+                                     mode = 'no',
+                                     color = c('darkred', 'black'),
+                                     showText = c(TRUE, FALSE),
+                                     percentage = TRUE)
+                         )
 
 
-gg_choropleth_map_GcdNum.(data = data,
-                          legend = list(bins = 3),
-                          marks = c('','.'),
-                          fill = list(showText = c(T, T),
-                                      optText = 'name',
+gg_choropleth_map_GcdNum(data = data,
+                          opts = list(
+                            marks = c('','.'),
+                            nlevels = 3,
+                            showText = c(T, T),
+                            textMap = list(optText = 'name',
                                       propText = 'onlyData',  #all, onlyData,and a number
-                                      sizeText = 3))
+                                      size = 3))
+                          )
 
 gg_choropleth_map_GcdNum.(data = data,
                           legend = list(bins = 5, limit = 0.1),
