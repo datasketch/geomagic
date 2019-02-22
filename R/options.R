@@ -3,6 +3,7 @@ getDefaultOpts <- function(...){
   dopts <- list(
     background = "transparent",
     nLevels = 5,
+    labelWrap = 12,
     projectionName = NULL,
     projectionOpts = list(
       ratio = NULL,
@@ -53,7 +54,7 @@ getDefaultOpts <- function(...){
     ),
     legend = list(
       background = 'transparent',
-      show = TRUE,
+      show = c(TRUE,TRUE),
       border = "transparent",
       color = 'black',
       position = 'left',
@@ -92,15 +93,17 @@ getDefaultOpts <- function(...){
       )
     ),
     bubbles = list(
-      borderWidth = 0.001,
-      borderColor = '#FF6A37',
-      fillOpacity = 0.5,
-      highlightOnHover = TRUE,
-      highlightFillColor = 'rgba(255, 106, 55, 0.3)',
-      highlightBorderColor = '#FB4B3A',
-      highlightBorderWidth = 1,
-      highlightFillOpacity = 0.7,
-      palette = "Set3"
+      minSize = 0.1,
+      maxSize = 10
+      # borderWidth = 0.001,
+      # borderColor = '#FF6A37',
+      # fillOpacity = 0.5,
+      # highlightOnHover = TRUE,
+      # highlightFillColor = 'rgba(255, 106, 55, 0.3)',
+      # highlightBorderColor = '#FB4B3A',
+      # highlightBorderWidth = 1,
+      # highlightFillOpacity = 0.7,
+      # palette = "Set3"
     )
   )
   dopts

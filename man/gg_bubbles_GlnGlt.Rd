@@ -2,15 +2,11 @@
 % Please edit documentation in R/bubbles.R
 \name{gg_bubbles_GlnGlt}
 \alias{gg_bubbles_GlnGlt}
-\alias{gg_bubbles_map_GlnGlt.}
+\alias{gg_bubbles_map_GlnGlt}
 \title{Ggplot bubbles by latitud and longitud}
 \usage{
-gg_bubbles_map_GlnGlt.(data = NULL, mapName = "world_countries",
-  title = NULL, subtitle = NULL, caption = NULL, count = FALSE,
-  minSize = 0.1, maxSize = 10, legend = list(), border = list(),
-  titleStyle = list(), labelWrap = 12, agg = "sum", fill = list(),
-  marks = c(".", ","), nDigits = NULL, projections = list(),
-  percentage = FALSE, format = c("", ""), theme = NULL)
+gg_bubbles_map_GlnGlt(data = NULL, mapName = "world_countries",
+  opts = NULL)
 }
 \arguments{
 \item{x}{A data.frame}
@@ -26,5 +22,5 @@ Ggplot bubbles by latitud and longitud
 }
 
 \examples{
-gg_bubbles_map_GlnGlt.(sampleData("Gln-Glt", nrow = 10))
+gg_bubbles_map_GlnGlt(sampleData("Gln-Glt", nrow = 10))
 }

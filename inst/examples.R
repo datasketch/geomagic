@@ -244,27 +244,23 @@ gg_choropleth_map_GnmNum(data = dataGn,
 
 dataGc <- sampleData('Gnm-Cat')
 gg_choropleth_map_GnmCat(data = NULL)
-gg_choropleth_map_GnmCat.(data = NULL,
-                          fill = list(
+gg_choropleth_map_GnmCat(data = NULL,
+                          opts = list(
                             background = '#FDAA11'
                           ))
-gg_choropleth_map_GnmCat.(data = dataGc,
-                          fill = list(
-                            background = '#FDAA11'
+gg_choropleth_map_GnmCat(data = dataGc,
+                          opts = list(
+                            background = '#FDAA11',
+                            nLevels = 3
                           ))
-
-
-
-
-
 
 
 # Bubbles -----------------------------------------------------------------
 
 # Examples GcdNum ---------------------------------------------------------
-gg_bubbles_map_GcdNum.(data = NULL)
+gg_bubbles_map_GcdNum(data = NULL)
 dataN <- sampleData('Gcd-Num')
-gg_bubbles_map_GcdNum.(data = dataN)
+gg_bubbles_map_GcdNum(data = dataN)
 
 
 # Examples Gcd ------------------------------------------------------------
@@ -272,50 +268,65 @@ gg_bubbles_map_GcdNum.(data = dataN)
 
 
 # Examples GcdCatNum ------------------------------------------------------
-gg_bubbles_map_GcdCatNum.(data = NULL)
+gg_bubbles_map_GcdCatNum(data = NULL)
 dataCN <- sampleData('Gcd-Cat-Num')
-gg_bubbles_map_GcdCatNum.(data = dataCN)
+gg_bubbles_map_GcdCatNum(data = dataCN)
 
 
 
 # Examples GcdCat ---------------------------------------------------------
 
-
-
 # Examples GlnGltNum ------------------------------------------------------
-gg_bubbles_map_GlnGltNum.(data = NULL)
+gg_bubbles_map_GlnGltNum(data = NULL)
 dataN <- sampleData('Gln-Glt-Num')
-gg_bubbles_map_GlnGltNum.(data = dataN)
+gg_bubbles_map_GlnGltNum(data = dataN)
 
 # Examples GlnGlt ---------------------------------------------------------
-gg_bubbles_map_GlnGlt.(data = NULL)
+gg_bubbles_map_GlnGlt(data = NULL)
 dataN <- sampleData('Gln-Glt')
-gg_bubbles_map_GlnGlt.(data = dataN)
+gg_bubbles_map_GlnGlt(data = dataN)
 
 
 
 # Examples GlnGltCatNum ---------------------------------------------------
-gg_bubbles_map_GlnGltCatNum.(data = NULL)
+gg_bubbles_map_GlnGltCatNum(data = NULL)
 dataCN <- sampleData('Gln-Glt-Cat-Num')
-gg_bubbles_map_GlnGltCatNum.(data = dataCN)
+gg_bubbles_map_GlnGltCatNum(data = dataCN,
+                            opts = list(
+                              bubbles = list(
+                                minSize = 0.1,
+                                maxSize = 5
+                            )))
 
 
 # Examples GlnGltCat ------------------------------------------------------
-gg_bubbles_map_GlnGltCat.(data = NULL)
+gg_bubbles_map_GlnGltCat(data = NULL)
 dataC <- sampleData('Gln-Glt-Cat')
-gg_bubbles_map_GlnGltCat.(data = dataC)
-
+gg_bubbles_map_GlnGltCat(data = dataC)
+gg_bubbles_map_GlnGltCat(data = dataC,
+                         opts = list(
+                           legend = list(
+                             show = c(TRUE,FALSE),
+                             title = c("lege1", "")
+                           )
+                         ))
+dataC <- sampleData('Gln-Glt-Cat', 1000)
+gg_bubbles_map_GlnGltCat(data = dataC,
+                         opts = list(
+                           legend = list(
+                             title = c("legend1", "legend2")
+                           )
+                         ))
 
 # Examples GnmNum ---------------------------------------------------------
-gg_bubbles_map_GnmNum.(data = NULL)
+gg_bubbles_map_GnmNum(data = NULL)
 dataN <- sampleData('Gnm-Num')
-gg_bubbles_map_GnmNum.(data = dataN)
+gg_bubbles_map_GnmNum(data = dataN)
 
 
 # Examples GnmCatNum. -----------------------------------------------------
-gg_bubbles_map_GnmCatNum.(data = NULL,
-                          fill = list( showText = c(TRUE, FALSE),
-                                       propText = 'all'))
+gg_bubbles_map_GnmCatNum(data = NULL,
+                          opts = list( showText = c(TRUE, FALSE)))
 dataCN <- sampleData('Gnm-Cat-Num')
-gg_bubbles_map_GnmCatNum.(data = dataCN)
+gg_bubbles_map_GnmCatNum(data = dataCN)
 

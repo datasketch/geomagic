@@ -6,11 +6,7 @@
 \title{Ggplot bubbles by latitud and longitud}
 \usage{
 gg_bubbles_map_GlnGltNum.(data = NULL, mapName = "world_countries",
-  title = NULL, subtitle = NULL, caption = NULL, minSize = 0.1,
-  maxSize = 10, legend = list(), border = list(),
-  titleStyle = list(), labelWrap = 12, agg = "sum", fill = list(),
-  marks = c(".", ","), nDigits = NULL, projections = list(),
-  percentage = FALSE, format = c("", ""), theme = NULL)
+  opts = NULL)
 }
 \arguments{
 \item{x}{A data.frame}
@@ -26,5 +22,5 @@ Ggplot bubbles by latitud and longitud
 }
 
 \examples{
-gg_bubbles_map_GlnGltNum.(sampleData("Gln-Glt-Num", nrow = 10))
+gg_bubbles_map_GlnGltNum(sampleData("Gln-Glt-Num", nrow = 10))
 }
