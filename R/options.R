@@ -54,11 +54,12 @@ getDefaultOpts <- function(...){
     legend = list(
       background = 'transparent',
       show = TRUE,
-      fill = "transparent",
+      border = "transparent",
+      color = 'black',
       position = 'left',
+      title = "",
       choropleth = list(
         type = "quantile",
-        title = "",
         #defaultFillTitle = NULL,
         #top = 1,
         #left = 1,

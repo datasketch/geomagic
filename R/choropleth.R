@@ -15,7 +15,7 @@ gg_choropleth_map_GcdNum <- function( data = NULL,
                                       opts = NULL) {
 
   if(!mapName %in% availableMaps())
-    stop("No map with that name, check available maps with availableDmaps()")
+    stop("No map with that name, check available maps with availableMaps()")
 
   opts <- getOpts(opts = opts)
 
@@ -33,7 +33,7 @@ gg_choropleth_map_GcdNum <- function( data = NULL,
     f <- fringe(data)
     nms <- getClabels(f)
     data <- f$d
-    flab <- opts$legend$choropleth$title %||% nms[2]
+    flab <- opts$legend$title %||% nms[2]
     data$a <- as.character(toupper(tolower(data$a)))
     data_map$a <- as.character(data_map$id)
 
@@ -106,7 +106,8 @@ gg_choropleth_map_GcdNum <- function( data = NULL,
                                                  colour = opts$background,
                                                  size = 1.5,
                                                  linetype = 'blank'),
-                 legend.background = element_rect(colour = opts$legend$background,
+                 legend.text=element_text(color=opts$legend$color),
+                 legend.background = element_rect(colour = opts$legend$border,
                                                   fill = opts$legend$background))
   if (sum(opts$showText) != 0) {
     if (opts$textMap$optText == 'code') centroides$name <- centroides$id
@@ -229,7 +230,7 @@ gg_choropleth_map_GcdCat <- function(data = NULL,
     f <- fringe(data)
     nms <- getClabels(f)
     data <- f$d
-    flab <- opts$legend$choropleth$title %||% nms[2]
+    flab <- opts$legend$title %||% nms[2]
     data$a <- as.character(toupper(tolower(data$a)))
     data_map$a <- as.character(data_map$id)
 
@@ -331,7 +332,8 @@ gg_choropleth_map_GcdCat <- function(data = NULL,
                                                  colour = opts$background,
                                                  size = 1.5,
                                                  linetype = 'blank'),
-                 legend.background = element_rect(colour = opts$legend$background,
+                 legend.text = element_text(color = opts$legend$color),
+                 legend.background = element_rect(colour = opts$legend$border,
                                                   fill = opts$legend$background))
 
 
@@ -350,27 +352,13 @@ gg_choropleth_map_GcdCat <- function(data = NULL,
 #' @section ftypes: Gnm-Num
 #' @examples
 
-gg_choropleth_map_GnmNum. <- function(data = NULL,
-                                      mapName = "world_countries",
-                                      title = NULL,
-                                      subtitle = NULL,
-                                      caption = NULL,
-                                      legend = list(),
-                                      border = list(),
-                                      titleStyle = list(),
-                                      labelWrap = 12,
-                                      agg = 'sum',
-                                      fill = list(),
-                                      marks = c(".", ","),
-                                      nDigits = NULL,
-                                      projections = list(),
-                                      percentage = FALSE,
-                                      format = c('', ''),
-                                      theme = NULL)
+gg_choropleth_map_GnmNum <- function(data = NULL,
+                                     mapName = "world_countries",
+                                     opts = NULL)
 {
 
   if(!mapName %in% availableMaps())
-    stop("No map with that name, check available maps with availableDmaps()")
+    stop("No map with that name, check available maps with availableMaps()")
 
   opts <- getOpts(opts = opts)
 
@@ -391,15 +379,15 @@ gg_choropleth_map_GnmNum. <- function(data = NULL,
     f <- fringe(data)
     nms <- getClabels(f)
     data <- f$d
-    flab <- opts$legend$choropleth$title %||% nms[2]
+    flab <- opts$legend$title %||% nms[2]
     data$a <- str_to_title(iconv(as.character(tolower(data$a)), to="ASCII//TRANSLIT"))
     data_map$a <- str_to_title(tolower(as.character(data_map$name)))
 
     data <- data  %>%
       dplyr::group_by(a) %>%
-      dplyr::summarise(b = ifelse(sum(is.na(b) == length(b)), b, agg(agg, b)))
+      dplyr::summarise(b = ifelse(sum(is.na(b) == length(b)), b, agg(opts$agg, b)))
 
-    if (percentage) {
+    if (opts$percentage) {
       data$b <- (data[['b']] * 100) / sum(data[['b']], na.rm = TRUE)
     }
 
@@ -429,7 +417,7 @@ gg_choropleth_map_GnmNum. <- function(data = NULL,
         colours = as.character(unique(data_graph$color)),
         labels =  as.character(unique(data_graph$labels[!is.na(data_graph$labels)])),
         breaks =  as.numeric(unique(data_graph$breaks[!is.na(data_graph$breaks)])),
-        limits = c(min(data_graph$breaks, na.rm = T) - legend$limit, max(data_graph$breaks, na.rm = T) + legend$limit))
+        limits = c(min(data_graph$breaks, na.rm = T) - opts$legend$choropleth$limit, max(data_graph$breaks, na.rm = T) + opts$legend$choropleth$limit))
     } else {
       g <- g + scale_fill_manual(
         values = as.character(unique(data_graph$color)),
@@ -463,7 +451,8 @@ gg_choropleth_map_GnmNum. <- function(data = NULL,
                                                  colour = opts$background,
                                                  size = 1.5,
                                                  linetype = 'blank'),
-                 legend.background = element_rect(colour = opts$legend$background,
+                 legend.text=element_text(color=opts$legend$color),
+                 legend.background = element_rect(color = opts$legend$border,
                                                   fill = opts$legend$background))
 
   if (sum(opts$showText) != 0) {
@@ -546,3 +535,150 @@ gg_choropleth_map_Gnm <- function(data = NULL,
 
   g
 }
+
+
+#' Choropleth map
+#' Choropleth map
+#' @name gg_choropleth_map_GnmCat
+#' @param x A code.
+#' @param y A number.
+#' @export
+#' @return The sum of \code{x} and \code{y}.
+#' @section ftypes: Gnm-Cat
+#' @examples
+
+
+gg_choropleth_map_GnmCat <- function(data = NULL,
+                                     mapName = "world_countries",
+                                     opts = NULL) {
+
+  if(!mapName %in% availableMaps())
+    stop("No map with that name, check available maps with availableMaps()")
+
+  opts <- getOpts(opts = opts)
+
+  mapResults <- layerMap(mapName = mapName,
+                         borderColor = opts$borderColor,
+                         borderWeigth = opts$borderWidth,
+                         fillColor = opts$defaultFill,
+                         fillOpacity = opts$opacity)
+
+  data_map <- mapResults[[1]]
+  graph <- mapResults[[2]]
+  centroides <- mapResults[[3]]
+
+  centroides$name <- str_to_title(iconv(as.character(tolower(centroides$name)), to="ASCII//TRANSLIT"))
+
+  if (!is.null(data)) {
+
+    f <- fringe(data)
+    nms <- getClabels(f)
+    data <- f$d
+    flab <- opts$legend$title %||% nms[2]
+    data$a <- str_to_title(iconv(as.character(tolower(data$a)), to="ASCII//TRANSLIT"))
+    data_map$a <- str_to_title(tolower(as.character(data_map$name)))
+
+
+    data <- data  %>%
+      group_by(a, b) %>%
+      summarise(conteo = n())
+
+
+    if (opts$count) {
+      data <- data %>% select(a, b = conteo)
+      g <- gg_choropleth_map_GnmNum(data = data, mapName = mapName, opts = opts)
+    } else {
+      data <- data %>%
+        arrange(-conteo) %>%
+        mutate(ind = 1:length(b)) %>%
+        filter(ind == 1) %>%
+        select(a, b)
+      data_graph <- dplyr::left_join(data, data_map, by = "a")
+      data_graph <- fillColors(data_graph, 'b' , colors = opts$color, colorScale = opts$scale, highlightValue = NULL, highlightValueColor = NULL, numeric = F, labelWrap = 12)
+      data_graph$b <- as.factor(data_graph$b)
+
+      g <- graph +
+        geom_map(data = data_graph, map = data_graph,
+                 aes(map_id = id, x = long, y = lat, fill = b),
+                 color = opts$borderColor, size = 0.25, alpha = opts$opacity) +
+        scale_fill_manual(values = as.character(unique(data_graph$color)),
+                          na.value = opts$naColor)
+      g <- g +
+        labs(x = "",
+             y = "",
+             title = opts$titles$title$text,
+             subtitle = opts$titles$subtitle$text,
+             caption = opts$titles$caption$text,
+             fill= flab)
+
+      if (sum(opts$showText) != 0) {
+        if (opts$textMap$optText == 'code') centroides$name <- centroides$id
+        if (!is.null(data)) {
+          centroides <- left_join(centroides, data, by = c('name' = 'a'))
+          if (sum(opts$showText) == 2) centroides$name <- paste0(centroides$name, '\n', centroides$b)
+          if (sum(opts$showText) == 1 && opts$showText[1]) centroides$name <- centroides$name
+          if (sum(opts$showText) == 1 && opts$showText[2]) centroides$name <- centroides$b
+        }
+
+        if (opts$textMap$propText == 'all') {
+          g <- g + geom_text(data = centroides,
+                             aes(label = name, x = lon, y = lat,
+                                 check_overlap = TRUE), size = opts$textMap$size)
+        } else if (opts$textMap$propText == 'onlyData') {
+          if(!is.null(data)){
+            dat_text <- data.frame(id = data$a)
+            dat_text$id <- as.character(dat_text$id)
+            dat_text <- dat_text %>% dplyr::inner_join(., centroides, by = c("id"))
+            g <- g + geom_text(data = dat_text,
+                               aes(label = name, x = lon, y = lat,
+                                   check_overlap = TRUE), size = opts$textMap$size)
+          }else{
+            g <- g
+          }
+        } else
+          if (!is.null(data)) {
+            dat_text <- data.frame(id = data$a)
+            dat_text <- sample_frac(dat_text, opts$textMap$propText)
+            dat_text$id <- as.character(dat_text$id)
+            dat_text <- dat_text %>% dplyr::inner_join(., centroides, by = c("id"))
+            g <- g + geom_text(data = dat_text,
+                               aes(label = name, x = lon, y = lat,
+                                   check_overlap = TRUE), size = opts$textMap$size)
+          } else {
+            g <- g
+          }
+      }
+    }
+  } else {
+    g <- graph +  labs(x = "",
+                       y = "",
+                       title = opts$titles$title$text,
+                       subtitle = opts$titles$subtitle$text,
+                       caption = opts$titles$caption$text)
+    if (sum(opts$showText) != 0) {
+      if (opts$textMap$optText == 'code') centroides$name <- centroides$id
+      g <- g + geom_text(data = centroides,
+                         aes(label = name, x = lon, y = lat,
+                             check_overlap = TRUE), size = opts$textMap$size)
+    }
+  }
+
+  if (!is.null(opts$projectionOpts$ratio)) g <- g + coord_equal(ratio = opts$projectionOpts$ratio)
+  if (!is.null(opts$projectionOpts$type)) g <- g  + coord_map(opts$projectionOpts$type, orientation = opts$projectionOpts$orientation)
+
+  g <- g + theme(legend.position= opts$legend$position,
+                 plot.title = element_text(color= opts$titles$title$color, size= opts$titles$title$size),
+                 plot.subtitle = element_text(color= opts$titles$subtitle$color, size= opts$titles$subtitle$size),
+                 plot.caption = element_text(color= opts$titles$caption$color, size= opts$titles$caption$size),
+                 plot.background = element_rect(fill = opts$background, linetype = 'blank'),
+                 panel.background = element_rect(fill = opts$background,
+                                                 colour = opts$background,
+                                                 size = 1.5,
+                                                 linetype = 'blank'),
+                 legend.text=element_text(color=opts$legend$color),
+                 legend.background = element_rect(colour = opts$legend$border,
+                                                  fill = opts$legend$background))
+  g
+
+}
+
