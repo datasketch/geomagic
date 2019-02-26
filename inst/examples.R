@@ -11,31 +11,31 @@ library(geomagic)
 
 # Examples GcdNum ---------------------------------------------------------
 
-gg_choropleth_map_GcdNum()
-gg_choropleth_map_GcdNum(mapName =  "american_countries")
+gg_choropleth_GcdNum()
+gg_choropleth_GcdNum(mapName =  "american_countries")
 
-gg_choropleth_map_GcdNum(data = NULL, mapName =  "american_countries",
+gg_choropleth_GcdNum(data = NULL, mapName =  "american_countries",
                          opts = list(
                            showText = c(TRUE, FALSE))
 )
-gg_choropleth_map_GcdNum(data = sampleData("Gcd-Num", 1000), mapName =  "american_countries",
+gg_choropleth_GcdNum(data = sampleData("Gcd-Num", 1000), mapName =  "american_countries",
                          opts = list(
                            showText = c(TRUE, FALSE))
 )
 
-gg_choropleth_map_Gcd()
-gg_choropleth_map_Gcd(data = sampleData("Gcd"))
+gg_choropleth_Gcd()
+gg_choropleth_Gcd(data = sampleData("Gcd"))
 
-gg_choropleth_map_GcdCat()
-gg_choropleth_map_GcdCat(sampleData("Gcd-Cat"), opts = list(count = F))
+gg_choropleth_GcdCat()
+gg_choropleth_GcdCat(sampleData("Gcd-Cat"), opts = list(count = F))
 
-gg_choropleth_map_GcdNum(data = NULL,
+gg_choropleth_GcdNum(data = NULL,
                          opts = list(
                            showText = c(TRUE, FALSE),
                            textMap = list(
                              propText = 'all'))
 )
-gg_choropleth_map_GcdNum(data = NULL,
+gg_choropleth_GcdNum(data = NULL,
                          opts = list(
                            showText = c(TRUE, FALSE),
                            textMap = list(
@@ -44,9 +44,9 @@ gg_choropleth_map_GcdNum(data = NULL,
 )
 
 dataGN <- sampleData('Gcd-Num')
-gg_choropleth_map_GcdNum(data = dataGN)
-gg_choropleth_map_GcdNum(data = dataGN, opts = list(nDigits = 0))
-gg_choropleth_map_GcdNum(data = dataGN,
+gg_choropleth_GcdNum(data = dataGN)
+gg_choropleth_GcdNum(data = dataGN, opts = list(nDigits = 0))
+gg_choropleth_GcdNum(data = dataGN,
                          opts = list(
                            titles = list(
                              title = list(
@@ -65,7 +65,7 @@ gg_choropleth_map_GcdNum(data = dataGN,
 
 
 
-gg_choropleth_map_GcdNum(data = dataGN,
+gg_choropleth_GcdNum(data = dataGN,
                          opts = list(scale = 'discrete',
                                      nLevels = 4,
                                      mode = 'no',
@@ -75,7 +75,7 @@ gg_choropleth_map_GcdNum(data = dataGN,
 )
 
 
-gg_choropleth_map_GcdNum(data = dataGN,
+gg_choropleth_GcdNum(data = dataGN,
                          opts = list(
                            marks = c('','.'),
                            nlevels = 3,
@@ -85,14 +85,14 @@ gg_choropleth_map_GcdNum(data = dataGN,
                                           size = 3))
 )
 
-gg_choropleth_map_GcdNum(data = dataGN,
+gg_choropleth_GcdNum(data = dataGN,
                          opts = list(
                            nLevels = 5,
                            limit = 0.1,
                            marks = c('','.'),
                            background = "darkblue"))
 
-gg_choropleth_map_GcdNum(data = dataGN,
+gg_choropleth_GcdNum(data = dataGN,
                          opts = list(nLevels = 5,
                                      titles = list(
                                        title = list(
@@ -104,7 +104,7 @@ gg_choropleth_map_GcdNum(data = dataGN,
 
 data <- data.frame(pais = c('COL',  'ARG', 'BRA', 'RUS', 'MEX'),
                    total = c(1, 1, 1, 1, 1))
-gg_choropleth_map_GcdNum(data = data,
+gg_choropleth_GcdNum(data = data,
                          opts = list(
                            nLevels = 3,
                            scale = 'discrete',
@@ -113,7 +113,7 @@ gg_choropleth_map_GcdNum(data = data,
                            projectionOpts = list(
                              orientation = c(41, -74, 0))))
 
-gg_choropleth_map_GcdNum(data = data,
+gg_choropleth_GcdNum(data = data,
                          opts = list(
                            nLevels = 1,
                            marks = c('','.'),
@@ -121,13 +121,13 @@ gg_choropleth_map_GcdNum(data = data,
                            percentage = TRUE)
 )
 
-gg_choropleth_map_GcdNum(data = data,
+gg_choropleth_GcdNum(data = data,
                          opts = list(
                            scale = 'discrete',
                            nDigits = 2))
 
 data <- sampleData('Gcd-Num', 500)
-gg_choropleth_map_GcdNum(data = data,
+gg_choropleth_GcdNum(data = data,
                          opts = list(
                            nLevels = 5,
                            scale = 'discrete',
@@ -137,8 +137,8 @@ gg_choropleth_map_GcdNum(data = data,
                            nDigits = 2))
 
 
-gg_choropleth_map_GcdNum(data = NULL, mapName = "col_departments")
-gg_choropleth_map_GcdNum(data = NULL,
+gg_choropleth_GcdNum(data = NULL, mapName = "col_departments")
+gg_choropleth_GcdNum(data = NULL,
                          mapName = "col_departments",
                          opts = list(
                            projectionName = "mercator",
@@ -146,9 +146,9 @@ gg_choropleth_map_GcdNum(data = NULL,
                              ratio = 1)))
 
 data <- data.frame(a = c('COL', 'COL', 'ARG', 'BRA', 'BRA', 'BRA', 'BRA', 'USA', 'MEX'))
-gg_choropleth_map_Gcd(data = NULL)
-gg_choropleth_map_Gcd(data = data, mapName =  "american_countries")
-gg_choropleth_map_Gcd(data = data,
+gg_choropleth_Gcd(data = NULL)
+gg_choropleth_Gcd(data = data, mapName =  "american_countries")
+gg_choropleth_Gcd(data = data,
                       mapName =  "american_countries",
                       opts = list(scale = 'discrete',
                                   showText = c(TRUE, FALSE),
@@ -165,17 +165,17 @@ gg_choropleth_map_Gcd(data = data,
 
 
 data <- sampleData('Gcd-Cat', 100)
-gg_choropleth_map_GcdCat(data = NULL)
-gg_choropleth_map_GcdCat(data = NULL,
+gg_choropleth_GcdCat(data = NULL)
+gg_choropleth_GcdCat(data = NULL,
                          opts = list(showText = c(TRUE, FALSE)))
-gg_choropleth_map_GcdCat(data = data,
+gg_choropleth_GcdCat(data = data,
                          opts = list(showText = c(TRUE, FALSE),
                                      textMap = list(
                                        optText = 'name'))
 )
-gg_choropleth_map_GcdCat(data = data,
+gg_choropleth_GcdCat(data = data,
                          opts = list(scale = 'discrete'))
-gg_choropleth_map_GcdCat.(data = data,
+gg_choropleth_GcdCat.(data = data,
                           count = TRUE,
                           fill = list(scale = 'discrete',
                                       showText = c(TRUE, TRUE)))
@@ -184,14 +184,14 @@ gg_choropleth_map_GcdCat.(data = data,
 # Examples Gnm ------------------------------------------------------------
 
 data <- sampleData('Gnm', 100)
-gg_choropleth_map_Gnm(data = NULL,
+gg_choropleth_Gnm(data = NULL,
                       opts = list(
                         titles = list(
                           title = list(
                             text =  'Mapa sin datos'))
                       ))
-gg_choropleth_map_Gnm(data = data)
-gg_choropleth_map_Gnm(data = data,
+gg_choropleth_Gnm(data = data)
+gg_choropleth_Gnm(data = data,
                       mapName = 'africa_countries',
                       opts = list(
                         titles = list(
@@ -228,9 +228,9 @@ gg_choropleth_map_Gnm(data = data,
 
 
 dataGn <- sampleData('Gnm-Num', 1000)
-gg_choropleth_map_GnmNum(data = dataGn)
-gg_choropleth_map_GnmNum(data = dataGn, mapName = 'latam_countries' )
-gg_choropleth_map_GnmNum(data = dataGn,
+gg_choropleth_GnmNum(data = dataGn)
+gg_choropleth_GnmNum(data = dataGn, mapName = 'latam_countries' )
+gg_choropleth_GnmNum(data = dataGn,
                          mapName = 'latam_countries',
                          opts = list(
                            projectionName = "mercator",
@@ -243,12 +243,12 @@ gg_choropleth_map_GnmNum(data = dataGn,
 # Examples GnmCat ---------------------------------------------------------
 
 dataGc <- sampleData('Gnm-Cat')
-gg_choropleth_map_GnmCat(data = NULL)
-gg_choropleth_map_GnmCat(data = NULL,
+gg_choropleth_GnmCat(data = NULL)
+gg_choropleth_GnmCat(data = NULL,
                           opts = list(
                             background = '#FDAA11'
                           ))
-gg_choropleth_map_GnmCat(data = dataGc,
+gg_choropleth_GnmCat(data = dataGc,
                           opts = list(
                             background = '#FDAA11',
                             nLevels = 3
@@ -258,9 +258,9 @@ gg_choropleth_map_GnmCat(data = dataGc,
 # Bubbles -----------------------------------------------------------------
 
 # Examples GcdNum ---------------------------------------------------------
-gg_bubbles_map_GcdNum(data = NULL)
+gg_bubbles_GcdNum(data = NULL)
 dataN <- sampleData('Gcd-Num')
-gg_bubbles_map_GcdNum(data = dataN)
+gg_bubbles_GcdNum(data = dataN)
 
 
 # Examples Gcd ------------------------------------------------------------
@@ -268,30 +268,30 @@ gg_bubbles_map_GcdNum(data = dataN)
 
 
 # Examples GcdCatNum ------------------------------------------------------
-gg_bubbles_map_GcdCatNum(data = NULL)
+gg_bubbles_GcdCatNum(data = NULL)
 dataCN <- sampleData('Gcd-Cat-Num')
-gg_bubbles_map_GcdCatNum(data = dataCN)
+gg_bubbles_GcdCatNum(data = dataCN)
 
 
 
 # Examples GcdCat ---------------------------------------------------------
 
 # Examples GlnGltNum ------------------------------------------------------
-gg_bubbles_map_GlnGltNum(data = NULL)
+gg_bubbles_GlnGltNum(data = NULL)
 dataN <- sampleData('Gln-Glt-Num')
-gg_bubbles_map_GlnGltNum(data = dataN)
+gg_bubbles_GlnGltNum(data = dataN)
 
 # Examples GlnGlt ---------------------------------------------------------
-gg_bubbles_map_GlnGlt(data = NULL)
+gg_bubbles_GlnGlt(data = NULL)
 dataN <- sampleData('Gln-Glt')
-gg_bubbles_map_GlnGlt(data = dataN)
+gg_bubbles_GlnGlt(data = dataN)
 
 
 
 # Examples GlnGltCatNum ---------------------------------------------------
-gg_bubbles_map_GlnGltCatNum(data = NULL)
+gg_bubbles_GlnGltCatNum(data = NULL)
 dataCN <- sampleData('Gln-Glt-Cat-Num')
-gg_bubbles_map_GlnGltCatNum(data = dataCN,
+gg_bubbles_GlnGltCatNum(data = dataCN,
                             opts = list(
                               bubbles = list(
                                 minSize = 0.1,
@@ -300,10 +300,10 @@ gg_bubbles_map_GlnGltCatNum(data = dataCN,
 
 
 # Examples GlnGltCat ------------------------------------------------------
-gg_bubbles_map_GlnGltCat(data = NULL)
+gg_bubbles_GlnGltCat(data = NULL)
 dataC <- sampleData('Gln-Glt-Cat')
-gg_bubbles_map_GlnGltCat(data = dataC)
-gg_bubbles_map_GlnGltCat(data = dataC,
+gg_bubbles_GlnGltCat(data = dataC)
+gg_bubbles_GlnGltCat(data = dataC,
                          opts = list(
                            legend = list(
                              show = c(TRUE,FALSE),
@@ -311,7 +311,7 @@ gg_bubbles_map_GlnGltCat(data = dataC,
                            )
                          ))
 dataC <- sampleData('Gln-Glt-Cat', 1000)
-gg_bubbles_map_GlnGltCat(data = dataC,
+gg_bubbles_GlnGltCat(data = dataC,
                          opts = list(
                            legend = list(
                              title = c("legend1", "legend2")
@@ -319,14 +319,14 @@ gg_bubbles_map_GlnGltCat(data = dataC,
                          ))
 
 # Examples GnmNum ---------------------------------------------------------
-gg_bubbles_map_GnmNum(data = NULL)
+gg_bubbles_GnmNum(data = NULL)
 dataN <- sampleData('Gnm-Num')
-gg_bubbles_map_GnmNum(data = dataN)
+gg_bubbles_GnmNum(data = dataN)
 
 
 # Examples GnmCatNum. -----------------------------------------------------
-gg_bubbles_map_GnmCatNum(data = NULL,
+gg_bubbles_GnmCatNum(data = NULL,
                           opts = list( showText = c(TRUE, FALSE)))
 dataCN <- sampleData('Gnm-Cat-Num')
-gg_bubbles_map_GnmCatNum(data = dataCN)
+gg_bubbles_GnmCatNum(data = dataCN)
 

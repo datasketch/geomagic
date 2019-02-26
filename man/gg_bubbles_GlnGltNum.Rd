@@ -2,10 +2,9 @@
 % Please edit documentation in R/bubbles.R
 \name{gg_bubbles_GlnGltNum}
 \alias{gg_bubbles_GlnGltNum}
-\alias{gg_bubbles_map_GlnGltNum.}
 \title{Ggplot bubbles by latitud and longitud}
 \usage{
-gg_bubbles_map_GlnGltNum.(data = NULL, mapName = "world_countries",
+gg_bubbles_GlnGltNum(data = NULL, mapName = "world_countries",
   opts = NULL)
 }
 \arguments{
@@ -22,5 +21,5 @@ Ggplot bubbles by latitud and longitud
 }
 
 \examples{
-gg_bubbles_map_GlnGltNum(sampleData("Gln-Glt-Num", nrow = 10))
+gg_bubbles_GlnGltNum(sampleData("Gln-Glt-Num", nrow = 10))
 }

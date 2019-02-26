@@ -1,6 +1,6 @@
 #' Bubbles map
 #' Bubbles map
-#' @name gg_bubbles_map_GcdNum
+#' @name gg_bubbles_GcdNum
 #' @param x A code.
 #' @param y A number.
 #' @export
@@ -8,7 +8,7 @@
 #' @section ftypes: Gcd-Num
 #' @examples
 #' NULL
-gg_bubbles_map_GcdNum <- function(data = NULL,
+gg_bubbles_GcdNum <- function(data = NULL,
                                   mapName = "world_countries",
                                   opts = NULL) {
   if(!mapName %in% availableMaps())
@@ -130,7 +130,7 @@ gg_bubbles_map_GcdNum <- function(data = NULL,
 
 
 #' Bubbles map
-#' @name gg_bubbles_map_GcdNum
+#' @name gg_bubbles_GcdNum
 #' @param x A code.
 #' @param y A number.
 #' @export
@@ -138,7 +138,7 @@ gg_bubbles_map_GcdNum <- function(data = NULL,
 #' @section ftypes: Gcd-Num
 #' @examples
 #' NULL
-gg_bubbles_map_GcdCatNum <- function(data = NULL,
+gg_bubbles_GcdCatNum <- function(data = NULL,
                                      mapName = "world_countries",
                                      opts = NULL) {
 
@@ -283,9 +283,9 @@ gg_bubbles_map_GcdCatNum <- function(data = NULL,
 #' @section ctypes: Gln-Glt-Num
 #' @export
 #' @examples
-#' gg_bubbles_map_GlnGltNum(sampleData("Gln-Glt-Num", nrow = 10))
+#' gg_bubbles_GlnGltNum(sampleData("Gln-Glt-Num", nrow = 10))
 
-gg_bubbles_map_GlnGltNum <- function(data = NULL,
+gg_bubbles_GlnGltNum <- function(data = NULL,
                                       mapName = "world_countries",
                                       opts = NULL) {
 
@@ -401,9 +401,9 @@ gg_bubbles_map_GlnGltNum <- function(data = NULL,
 #' @section ctypes: Gln-Glt
 #' @export
 #' @examples
-#' gg_bubbles_map_GlnGlt(sampleData("Gln-Glt", nrow = 10))
+#' gg_bubbles_GlnGlt(sampleData("Gln-Glt", nrow = 10))
 
-gg_bubbles_map_GlnGlt <-function(data = NULL,
+gg_bubbles_GlnGlt <-function(data = NULL,
                                  mapName = "world_countries",
                                  opts = NULL) {
 
@@ -422,7 +422,7 @@ gg_bubbles_map_GlnGlt <-function(data = NULL,
     }
   }
 
-  g <- gg_bubbles_map_GlnGltNum(data = data, mapName = mapName, opts = NULL)
+  g <- gg_bubbles_GlnGltNum(data = data, mapName = mapName, opts = NULL)
 
   if (!opts$count) g <- g + guides(fill=FALSE)
 
@@ -431,7 +431,7 @@ gg_bubbles_map_GlnGlt <-function(data = NULL,
 
 
 #' Bubbles map
-#' @name gg_bubbles_map_GlnGltCatNum
+#' @name gg_bubbles_GlnGltCatNum
 #' @param x A code.
 #' @param y A number.
 #' @export
@@ -439,7 +439,7 @@ gg_bubbles_map_GlnGlt <-function(data = NULL,
 #' @section ftypes: Gcd-Num
 #' @examples
 #' NULL
-gg_bubbles_map_GlnGltCatNum <- function(data = NULL,
+gg_bubbles_GlnGltCatNum <- function(data = NULL,
                                         mapName = "world_countries",
                                         opts = NULL) {
 
@@ -557,7 +557,7 @@ gg_bubbles_map_GlnGltCatNum <- function(data = NULL,
 
 
 #' Bubbles map
-#' @name gg_bubbles_map_GlnGltCat
+#' @name gg_bubbles_GlnGltCat
 #' @param x A code.
 #' @param y A number.
 #' @export
@@ -565,7 +565,7 @@ gg_bubbles_map_GlnGltCatNum <- function(data = NULL,
 #' @section ftypes: Gcd-Num
 #' @examples
 
-gg_bubbles_map_GlnGltCat <- function(data = NULL,
+gg_bubbles_GlnGltCat <- function(data = NULL,
                                      mapName = "world_countries",
                                      opts = NULL) {
   opts <- getOpts(opts = opts)
@@ -583,7 +583,7 @@ gg_bubbles_map_GlnGltCat <- function(data = NULL,
     }
   }
 
-  g <- gg_bubbles_map_GlnGltCatNum(data = data, mapName = mapName, opts = opts)
+  g <- gg_bubbles_GlnGltCatNum(data = data, mapName = mapName, opts = opts)
   if (!opts$count) g <- g + guides(fill=FALSE)
 
   g
@@ -595,7 +595,7 @@ gg_bubbles_map_GlnGltCat <- function(data = NULL,
 
 
 #' Bubbles map
-#' @name gg_bubbles_map_GnmNum
+#' @name gg_bubbles_GnmNum
 #' @param x A code.
 #' @param y A number.
 #' @export
@@ -603,7 +603,7 @@ gg_bubbles_map_GlnGltCat <- function(data = NULL,
 #' @section ftypes: Gnm-Num
 #' @examples
 
-gg_bubbles_map_GnmNum <- function(data = NULL,
+gg_bubbles_GnmNum <- function(data = NULL,
                                    mapName = "world_countries",
                                    opts = NULL) {
 
@@ -727,14 +727,14 @@ gg_bubbles_map_GnmNum <- function(data = NULL,
 
 
 #' Bubbles map
-#' @name gg_bubbles_map_GnmNum.
+#' @name gg_bubbles_GnmNum.
 #' @param x A code.
 #' @param y A number.
 #' @export
 #' @return The sum of \code{x} and \code{y}.
 #' @section ftypes: Gnm-Num
 #' @examples
-gg_bubbles_map_GnmCatNum <- function(data = NULL,
+gg_bubbles_GnmCatNum <- function(data = NULL,
                                      mapName = "world_countries",
                                      opts = NULL)
 {

@@ -2,10 +2,9 @@
 % Please edit documentation in R/choropleth.R
 \name{gg_choropleth_Gcd}
 \alias{gg_choropleth_Gcd}
-\alias{gg_choropleth_map_Gcd}
 \title{Ggplot choropleths by geographical code}
 \usage{
-gg_choropleth_map_Gcd(data = NULL, mapName = "world_countries",
+gg_choropleth_Gcd(data = NULL, mapName = "world_countries",
   opts = NULL)
 }
 \arguments{

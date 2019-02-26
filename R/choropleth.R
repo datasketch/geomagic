@@ -1,16 +1,16 @@
 #' Choropleth map
 #' Choropleth map
-#' @name gg_choropleth_map_GcdNum
+#' @name gg_choropleth_GcdNum
 #' @param x A code.
 #' @param y A number.
 #' @export
 #' @return The sum of \code{x} and \code{y}.
 #' @section ftypes: Gcd-Num
 #' @examples
-#'gg_choropleth_map_GcdNum()
-#'gg_choropleth_map_GcdNum(data = sampleData("Gcd-Num"))
-#'gg_choropleth_map_GcdNum(data = sampleData("Gcd-Num", 1000), mapName = "american_countries")
-gg_choropleth_map_GcdNum <- function( data = NULL,
+#'gg_choropleth_GcdNum()
+#'gg_choropleth_GcdNum(data = sampleData("Gcd-Num"))
+#'gg_choropleth_GcdNum(data = sampleData("Gcd-Num", 1000), mapName = "american_countries")
+gg_choropleth_GcdNum <- function( data = NULL,
                                       mapName = "world_countries",
                                       opts = NULL) {
 
@@ -163,7 +163,7 @@ gg_choropleth_map_GcdNum <- function( data = NULL,
 #' @export
 #' @examples
 #' gg_choropleth_Gcd(sampleData("Gcd", nrow = 10))
-gg_choropleth_map_Gcd <- function(data = NULL,
+gg_choropleth_Gcd <- function(data = NULL,
                                   mapName = "world_countries",
                                   opts = NULL) {
 
@@ -183,7 +183,7 @@ gg_choropleth_map_Gcd <- function(data = NULL,
     }
   }
 
-  g <- gg_choropleth_map_GcdNum(data = data, mapName = mapName, opts = opts)
+  g <- gg_choropleth_GcdNum(data = data, mapName = mapName, opts = opts)
 
   if (!opts$count) g <- g + guides(fill=FALSE)
 
@@ -195,7 +195,7 @@ gg_choropleth_map_Gcd <- function(data = NULL,
 
 #' Choropleth map
 #' Choropleth map
-#' @name gg_choropleth_map_GcdCat
+#' @name gg_choropleth_GcdCat
 #' @param x A code.
 #' @param y A number.
 #' @export
@@ -204,7 +204,7 @@ gg_choropleth_map_Gcd <- function(data = NULL,
 #' @examples
 
 
-gg_choropleth_map_GcdCat <- function(data = NULL,
+gg_choropleth_GcdCat <- function(data = NULL,
                                      mapName = "world_countries",
                                      opts = NULL) {
 
@@ -242,7 +242,7 @@ gg_choropleth_map_GcdCat <- function(data = NULL,
 
     if (opts$count) {
       data <- data %>% select(a, b = conteo)
-      g <- gg_choropleth_map_GcdNum(data = data, mapName = mapName, opts = opts)
+      g <- gg_choropleth_GcdNum(data = data, mapName = mapName, opts = opts)
     } else {
       data <- data %>%
         arrange(-conteo) %>%
@@ -344,7 +344,7 @@ gg_choropleth_map_GcdCat <- function(data = NULL,
 
 #' Choropleth map
 #' Choropleth map
-#' @name gg_choropleth_map_GnmNum.
+#' @name gg_choropleth_GnmNum.
 #' @param x A code.
 #' @param y A number.
 #' @export
@@ -352,7 +352,7 @@ gg_choropleth_map_GcdCat <- function(data = NULL,
 #' @section ftypes: Gnm-Num
 #' @examples
 
-gg_choropleth_map_GnmNum <- function(data = NULL,
+gg_choropleth_GnmNum <- function(data = NULL,
                                      mapName = "world_countries",
                                      opts = NULL)
 {
@@ -501,14 +501,14 @@ gg_choropleth_map_GnmNum <- function(data = NULL,
 #'
 #' Ggplot choropleths by geographical code
 #'
-#' @name gg_choropleth_map_Gnm
+#' @name gg_choropleth_Gnm
 #' @param x A data.frame
 #' @return leaflet viz
 #' @section ctypes: Gnm
 #' @export
 #' @examples
-#' gg_choropleth_map_Gnm(sampleData("Gnm", nrow = 10))
-gg_choropleth_map_Gnm <- function(data = NULL,
+#' gg_choropleth_Gnm(sampleData("Gnm", nrow = 10))
+gg_choropleth_Gnm <- function(data = NULL,
                                   mapName = "world_countries",
                                   opts = NULL)
 {
@@ -529,7 +529,7 @@ gg_choropleth_map_Gnm <- function(data = NULL,
     }
   }
 
-  g <- gg_choropleth_map_GnmNum(data = data, mapName = mapName, opts = opts)
+  g <- gg_choropleth_GnmNum(data = data, mapName = mapName, opts = opts)
 
   if (!opts$count) g <- g + guides(fill=FALSE)
 
@@ -539,7 +539,7 @@ gg_choropleth_map_Gnm <- function(data = NULL,
 
 #' Choropleth map
 #' Choropleth map
-#' @name gg_choropleth_map_GnmCat
+#' @name gg_choropleth_GnmCat
 #' @param x A code.
 #' @param y A number.
 #' @export
@@ -548,7 +548,7 @@ gg_choropleth_map_Gnm <- function(data = NULL,
 #' @examples
 
 
-gg_choropleth_map_GnmCat <- function(data = NULL,
+gg_choropleth_GnmCat <- function(data = NULL,
                                      mapName = "world_countries",
                                      opts = NULL) {
 
@@ -586,7 +586,7 @@ gg_choropleth_map_GnmCat <- function(data = NULL,
 
     if (opts$count) {
       data <- data %>% select(a, b = conteo)
-      g <- gg_choropleth_map_GnmNum(data = data, mapName = mapName, opts = opts)
+      g <- gg_choropleth_GnmNum(data = data, mapName = mapName, opts = opts)
     } else {
       data <- data %>%
         arrange(-conteo) %>%
