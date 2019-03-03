@@ -66,7 +66,7 @@ gg_bubbles_GcdNum <- function(data = NULL,
   }
 
   if (!is.null(opts$projectionOpts$ratio)) g <- g + coord_equal(ratio = opts$projectionOpts$ratio)
-  if (!is.null(opts$projectionOpts$type)) g <- g  + coord_map(opts$projectionOpts$type, orientation = opts$projectionOpts$orientation)
+  if (!is.null(opts$projectionName)) g <- g  + coord_map(opts$projectionName, orientation = opts$projectionOpts$orientation)
 
   g <-  g + theme(legend.position= opts$legend$position,
                   plot.title = element_text(color= opts$titles$title$color, size= opts$titles$title$size),
@@ -117,6 +117,11 @@ gg_bubbles_GcdNum <- function(data = NULL,
       } else {
         g <- g
       }
+  }
+
+  if (opts$graticule) {
+    g <- g + theme(panel.grid.major = element_line(colour = gray(0.5), linetype = "dashed",
+                                                   size = 0.5))
   }
 
   g + labs(x = "",
@@ -210,7 +215,7 @@ gg_bubbles_GcdCatNum <- function(data = NULL,
   }
 
   if (!is.null(opts$projectionOpts$ratio)) g <- g + coord_equal(ratio = opts$projectionOpts$ratio)
-  if (!is.null(opts$projectionOpts$type)) g <- g  + coord_map(opts$projectionOpts$type, orientation = opts$projectionOpts$orientation)
+  if (!is.null(opts$projectionName)) g <- g  + coord_map(opts$projectionName, orientation = opts$projectionOpts$orientation)
 
   g <-  g + theme(legend.position= opts$legend$position,
                   plot.title = element_text(color= opts$titles$title$color, size= opts$titles$title$size),
@@ -261,6 +266,11 @@ gg_bubbles_GcdCatNum <- function(data = NULL,
       } else {
         g <- g
       }
+  }
+
+  if (opts$graticule) {
+    g <- g + theme(panel.grid.major = element_line(colour = gray(0.5), linetype = "dashed",
+                                                   size = 0.5))
   }
 
   g + labs(x = "",
@@ -345,7 +355,7 @@ gg_bubbles_GlnGltNum <- function(data = NULL,
   }
 
   if (!is.null(opts$projectionOpts$ratio)) g <- g + coord_equal(ratio = opts$projectionOpts$ratio)
-  if (!is.null(opts$projectionOpts$type)) g <- g  + coord_map(opts$projectionOpts$type, orientation = opts$projectionOpts$orientation)
+  if (!is.null(opts$projectionName)) g <- g  + coord_map(opts$projectionName, orientation = opts$projectionOpts$orientation)
 
   g <-  g + theme(legend.position= opts$legend$position,
                   plot.title = element_text(color= opts$titles$title$color, size= opts$titles$title$size),
@@ -378,6 +388,11 @@ gg_bubbles_GlnGltNum <- function(data = NULL,
                          aes(label = name, x = lon, y = lat,
                              check_overlap = TRUE), size = opts$textMap$size)
     }
+  }
+
+  if (opts$graticule) {
+    g <- g + theme(panel.grid.major = element_line(colour = gray(0.5), linetype = "dashed",
+                                                   size = 0.5))
   }
 
   g + labs(x = "",
@@ -512,7 +527,7 @@ gg_bubbles_GlnGltCatNum <- function(data = NULL,
   }
 
   if (!is.null(opts$projectionOpts$ratio)) g <- g + coord_equal(ratio = opts$projectionOpts$ratio)
-  if (!is.null(opts$projectionOpts$type)) g <- g  + coord_map(opts$projectionOpts$type, orientation = opts$projectionOpts$orientation)
+  if (!is.null(opts$projectionName)) g <- g  + coord_map(opts$projectionName, orientation = opts$projectionOpts$orientation)
 
   g <-  g + theme(legend.position= opts$legend$position,
                   plot.title = element_text(color= opts$titles$title$color, size= opts$titles$title$size),
@@ -545,6 +560,11 @@ gg_bubbles_GlnGltCatNum <- function(data = NULL,
                          aes(label = name, x = lon, y = lat,
                              check_overlap = TRUE), size = opts$textMap$size)
     }
+  }
+
+  if (opts$graticule) {
+    g <- g + theme(panel.grid.major = element_line(colour = gray(0.5), linetype = "dashed",
+                                                   size = 0.5))
   }
 
   g + labs(x = "",
@@ -585,6 +605,7 @@ gg_bubbles_GlnGltCat <- function(data = NULL,
 
   g <- gg_bubbles_GlnGltCatNum(data = data, mapName = mapName, opts = opts)
   if (!opts$count) g <- g + guides(fill=FALSE)
+
 
   g
 
@@ -663,7 +684,7 @@ gg_bubbles_GnmNum <- function(data = NULL,
   }
 
   if (!is.null(opts$projectionOpts$ratio)) g <- g + coord_equal(ratio = opts$projectionOpts$ratio)
-  if (!is.null(opts$projectionOpts$type)) g <- g  + coord_map(opts$projectionOpts$type, orientation = opts$projectionOpts$orientation)
+  if (!is.null(opts$projectionName)) g <- g  + coord_map(opts$projectionName, orientation = opts$projectionOpts$orientation)
 
   g <- g + theme(legend.position= opts$legend$position,
                  plot.title = element_text(color= opts$titles$title$color, size= opts$titles$title$size),
@@ -714,6 +735,12 @@ gg_bubbles_GnmNum <- function(data = NULL,
       } else {
         g <- g
       }
+  }
+
+
+  if (opts$graticule) {
+    g <- g + theme(panel.grid.major = element_line(colour = gray(0.5), linetype = "dashed",
+                                                   size = 0.5))
   }
 
   g + labs(x = "",
@@ -807,7 +834,7 @@ gg_bubbles_GnmCatNum <- function(data = NULL,
   }
 
   if (!is.null(opts$projectionOpts$ratio)) g <- g + coord_equal(ratio = opts$projectionOpts$ratio)
-  if (!is.null(opts$projectionOpts$type)) g <- g  + coord_map(opts$projectionOpts$type, orientation = opts$projectionOpts$orientation)
+  if (!is.null(opts$projectionName)) g <- g  + coord_map(opts$projectionName, orientation = opts$projectionOpts$orientation)
 
   g <-  g + theme(legend.position= opts$legend$position,
                   plot.title = element_text(color= opts$titles$title$color, size= opts$titles$title$size),
@@ -859,6 +886,12 @@ gg_bubbles_GnmCatNum <- function(data = NULL,
       } else {
         g <- g
       }
+  }
+
+
+  if (opts$graticule) {
+    g <- g + theme(panel.grid.major = element_line(colour = gray(0.5), linetype = "dashed",
+                                                   size = 0.5))
   }
 
   g + labs(x = "",

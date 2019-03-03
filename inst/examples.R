@@ -12,8 +12,8 @@ library(geomagic)
 # Examples GcdNum ---------------------------------------------------------
 
 gg_choropleth_GcdNum()
+gg_choropleth_GcdNum(opts = list(graticule = T))
 gg_choropleth_GcdNum(mapName =  "american_countries")
-
 gg_choropleth_GcdNum(data = NULL, mapName =  "american_countries",
                          opts = list(
                            showText = c(TRUE, FALSE))

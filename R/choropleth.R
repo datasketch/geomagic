@@ -95,7 +95,7 @@ gg_choropleth_GcdNum <- function( data = NULL,
   }
 
   if (!is.null(opts$projectionOpts$ratio)) g <- g + coord_equal(ratio = opts$projectionOpts$ratio)
-  if (!is.null(opts$projectionOpts$type)) g <- g  + coord_map(opts$projectionOpts$type, orientation = opts$projectionOpts$orientation)
+  if (!is.null(opts$projectionName)) g <- g  + coord_map(opts$projectionName, orientation = opts$projectionOpts$orientation)
 
   g <- g + theme(legend.position= opts$legend$position,
                  plot.title = element_text(color= opts$titles$title$color, size= opts$titles$title$size),
@@ -147,6 +147,12 @@ gg_choropleth_GcdNum <- function( data = NULL,
         g <- g
       }
   }
+
+  if (opts$graticule) {
+   g <- g + theme(panel.grid.major = element_line(colour = gray(0.5), linetype = "dashed",
+                                          size = 0.5))
+  }
+
   g
 }
 
@@ -321,7 +327,7 @@ gg_choropleth_GcdCat <- function(data = NULL,
 
 
   if (!is.null(opts$projectionOpts$ratio)) g <- g + coord_equal(ratio = opts$projectionOpts$ratio)
-  if (!is.null(opts$projectionOpts$type)) g <- g  + coord_map(opts$projectionOpts$type, orientation = opts$projectionOpts$orientation)
+  if (!is.null(opts$projectionName)) g <- g  + coord_map(opts$projectionName, orientation = opts$projectionOpts$orientation)
 
   g <- g + theme(legend.position= opts$legend$position,
                  plot.title = element_text(color= opts$titles$title$color, size= opts$titles$title$size),
@@ -337,6 +343,11 @@ gg_choropleth_GcdCat <- function(data = NULL,
                                                   fill = opts$legend$background))
 
 
+
+  if (opts$graticule) {
+    g <- g + theme(panel.grid.major = element_line(colour = gray(0.5), linetype = "dashed",
+                                                   size = 0.5))
+  }
   g
 }
 
@@ -440,7 +451,7 @@ gg_choropleth_GnmNum <- function(data = NULL,
            caption = opts$titles$caption$text)
   }
   if (!is.null(opts$projectionOpts$ratio)) g <- g + coord_equal(ratio = opts$projectionOpts$ratio)
-  if (!is.null(opts$projectionOpts$type)) g <- g  + coord_map(opts$projectionOpts$type, orientation = opts$projectionOpts$orientation)
+  if (!is.null(opts$projectionName)) g <- g  + coord_map(opts$projectionName, orientation = opts$projectionOpts$orientation)
 
   g <- g + theme(legend.position= opts$legend$position,
                  plot.title = element_text(color= opts$titles$title$color, size= opts$titles$title$size),
@@ -492,6 +503,11 @@ gg_choropleth_GnmNum <- function(data = NULL,
       } else {
         g <- g
       }
+  }
+
+  if (opts$graticule) {
+    g <- g + theme(panel.grid.major = element_line(colour = gray(0.5), linetype = "dashed",
+                                                   size = 0.5))
   }
 
   g
@@ -664,7 +680,7 @@ gg_choropleth_GnmCat <- function(data = NULL,
   }
 
   if (!is.null(opts$projectionOpts$ratio)) g <- g + coord_equal(ratio = opts$projectionOpts$ratio)
-  if (!is.null(opts$projectionOpts$type)) g <- g  + coord_map(opts$projectionOpts$type, orientation = opts$projectionOpts$orientation)
+  if (!is.null(opts$projectionName)) g <- g  + coord_map(opts$projectionName, orientation = opts$projectionOpts$orientation)
 
   g <- g + theme(legend.position= opts$legend$position,
                  plot.title = element_text(color= opts$titles$title$color, size= opts$titles$title$size),
@@ -678,6 +694,11 @@ gg_choropleth_GnmCat <- function(data = NULL,
                  legend.text=element_text(color=opts$legend$color),
                  legend.background = element_rect(colour = opts$legend$border,
                                                   fill = opts$legend$background))
+
+  if (opts$graticule) {
+    g <- g + theme(panel.grid.major = element_line(colour = gray(0.5), linetype = "dashed",
+                                                   size = 0.5))
+  }
   g
 
 }

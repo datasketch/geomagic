@@ -7,7 +7,6 @@ getDefaultOpts <- function(...){
     projectionName = NULL,
     projectionOpts = list(
       ratio = NULL,
-      type = NULL,
       orientation = c(90, 0, 0)
     ),
     graticule = FALSE,
