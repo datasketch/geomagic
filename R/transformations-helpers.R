@@ -170,7 +170,7 @@ binsLeg <- function(data = NULL,
       if (sumNa > 0) data <- bind_rows(data, d[,-3])
       data_graph <- dplyr::left_join(data, dataLeft, by = "a")
       data_graph <- fillColors(data_graph, col , colors = colors, colorScale = 'continuous', highlightValue = NULL, highlightValueColor = NULL, numeric = T, labelWrap = 12)
-      data_graph <- data_graph %>%  select(bins = col, everything())
+      data_graph <- data_graph %>%  dplyr::select(bins = col, everything())
       data_graph$breaks <- c(z, rep(NA, dim(data_graph)[1]-length(z)))
       data_graph$labels <- c(labelsMap, rep(NA, dim(data_graph)[1]-length(z)))
   }
@@ -188,8 +188,8 @@ layerMap <- function(mapName, borderColor, borderWeigth, fillColor, fillOpacity 
 
   tj <- topojson_read(system.file(ggmap$path,package = "geodata"))
 
-  data_map <- fortify(tj) %>% mutate(.id = as.numeric(id)) %>% select(-id)
-  data_info <- tj@data %>% mutate(.id = 0:(nrow(.)-1)) #%>% select(-id)
+  data_map <- fortify(tj) %>% mutate(.id = as.numeric(id)) %>% dplyr::select(-id)
+  data_info <- tj@data %>% mutate(.id = 0:(nrow(.)-1)) #%>% dplyr::select(-id)
 
 
   data_map <- left_join(data_map, data_info)

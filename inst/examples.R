@@ -23,7 +23,20 @@ gg_choropleth_GcdNum(data = sampleData("Gcd-Num", 1000), mapName =  "american_co
                            showText = c(TRUE, FALSE))
 )
 
-gg_choropleth_Gcd()
+
+dt <- data.frame(id = c("05002",
+                        "00000",
+                        "05004",
+                        "05021",
+                        "05030",
+                        "05031",
+                        "05034",
+                        "05036",
+                        "05038",
+                        "05040",
+                        "05042"),
+                 num= runif(11, 1, 100))
+gg_choropleth_GcdNum(data = dt, mapName = "col_municipalities")
 gg_choropleth_Gcd(data = sampleData("Gcd"))
 
 gg_choropleth_GcdCat()

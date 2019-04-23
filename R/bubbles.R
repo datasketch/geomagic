@@ -177,7 +177,7 @@ gg_bubbles_GcdCatNum <- function(data = NULL,
       arrange(-c) %>%
       mutate(ind = 1:length(b)) %>%
       filter(ind == 1) %>%
-      select(a, b, c)
+      dplyr::select(a, b, c)
 
 
     if (opts$percentage) {
@@ -797,7 +797,7 @@ gg_bubbles_GnmCatNum <- function(data = NULL,
       arrange(-c) %>%
       mutate(ind = 1:length(b)) %>%
       filter(ind == 1) %>%
-      select(a, b, c)
+      dplyr::select(a, b, c)
 
 
     if (opts$percentage) {

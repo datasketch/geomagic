@@ -247,14 +247,14 @@ gg_choropleth_GcdCat <- function(data = NULL,
 
 
     if (opts$count) {
-      data <- data %>% select(a, b = conteo)
+      data <- data %>% dplyr::select(a, b = conteo)
       g <- gg_choropleth_GcdNum(data = data, mapName = mapName, opts = opts)
     } else {
       data <- data %>%
         arrange(-conteo) %>%
         mutate(ind = 1:length(b)) %>%
         filter(ind == 1) %>%
-        select(a, b)
+        dplyr::select(a, b)
       data_graph <- dplyr::left_join(data, data_map, by = "a")
       data_graph <- fillColors(data_graph, 'b' , colors = opts$color, colorScale = opts$scale, highlightValue = NULL, highlightValueColor = NULL, numeric = F, labelWrap = 12)
       data_graph$b <- as.factor(data_graph$b)
@@ -601,14 +601,14 @@ gg_choropleth_GnmCat <- function(data = NULL,
 
 
     if (opts$count) {
-      data <- data %>% select(a, b = conteo)
+      data <- data %>% dplyr::select(a, b = conteo)
       g <- gg_choropleth_GnmNum(data = data, mapName = mapName, opts = opts)
     } else {
       data <- data %>%
         arrange(-conteo) %>%
         mutate(ind = 1:length(b)) %>%
         filter(ind == 1) %>%
-        select(a, b)
+        dplyr::select(a, b)
       data_graph <- dplyr::left_join(data, data_map, by = "a")
       data_graph <- fillColors(data_graph, 'b' , colors = opts$color, colorScale = opts$scale, highlightValue = NULL, highlightValueColor = NULL, numeric = F, labelWrap = 12)
       data_graph$b <- as.factor(data_graph$b)
