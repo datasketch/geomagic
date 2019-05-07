@@ -65,13 +65,17 @@ gg_choropleth_GcdNum <- function( data = NULL,
                color = opts$borderColor, size = 0.25, alpha = opts$opacity)
 
     if (opts$scale == 'continuous') {
-      g <- g + scale_fill_gradientn(
-        aesthetics = "fill",
-        na.value = opts$naColor,
-        colours = as.character(unique(data_graph$color)),
-        labels =  as.character(unique(data_graph$labels[!is.na(data_graph$labels)])),
-        breaks =  as.numeric(unique(data_graph$breaks[!is.na(data_graph$breaks)])),
-        limits = c(min(data_graph$breaks, na.rm = T) - opts$legend$choropleth$limit, max(data_graph$breaks, na.rm = T) + opts$legend$choropleth$limit))
+      g <- g + scale_fill_viridis_c(option = "plasma")
+        # scale_fill_viridis_c(#limits = c(-.3,.3),
+        #   high = "#d9cfd6", low = "#664e6a",aesthetics = "fill",
+        #   space = "Lab", na.value = opts$naColor)
+      # g <- g + scale_fill_gradientn(
+      #   aesthetics = "fill",
+      #   na.value = opts$naColor,
+      #   colours = as.character(unique(data_graph$color)),
+      #   labels =  as.character(unique(data_graph$labels[!is.na(data_graph$labels)])),
+      #   breaks =  as.numeric(unique(data_graph$breaks[!is.na(data_graph$breaks)])),
+      #   limits = c(min(data_graph$breaks, na.rm = T) - opts$legend$choropleth$limit, max(data_graph$breaks, na.rm = T) + opts$legend$choropleth$limit))
     } else {
       g <- g + scale_fill_manual(
         values = as.character(unique(data_graph$color)),
@@ -251,9 +255,9 @@ gg_choropleth_GcdCat <- function(data = NULL,
       g <- gg_choropleth_GcdNum(data = data, mapName = mapName, opts = opts)
     } else {
       data <- data %>%
-        arrange(-conteo) %>%
-        mutate(ind = 1:length(b)) %>%
-        filter(ind == 1) %>%
+        dplyr::arrange(-conteo) %>%
+        dplyr::mutate(ind = 1:length(b)) %>%
+        dplyr::filter(ind == 1) %>%
         dplyr::select(a, b)
       data_graph <- dplyr::left_join(data, data_map, by = "a")
       data_graph <- fillColors(data_graph, 'b' , colors = opts$color, colorScale = opts$scale, highlightValue = NULL, highlightValueColor = NULL, numeric = F, labelWrap = 12)
@@ -606,8 +610,8 @@ gg_choropleth_GnmCat <- function(data = NULL,
     } else {
       data <- data %>%
         arrange(-conteo) %>%
-        mutate(ind = 1:length(b)) %>%
-        filter(ind == 1) %>%
+        dplyr::mutate(ind = 1:length(b)) %>%
+        dplyr::filter(ind == 1) %>%
         dplyr::select(a, b)
       data_graph <- dplyr::left_join(data, data_map, by = "a")
       data_graph <- fillColors(data_graph, 'b' , colors = opts$color, colorScale = opts$scale, highlightValue = NULL, highlightValueColor = NULL, numeric = F, labelWrap = 12)

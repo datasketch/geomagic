@@ -188,11 +188,11 @@ layerMap <- function(mapName, borderColor, borderWeigth, fillColor, fillOpacity 
 
   tj <- topojson_read(system.file(ggmap$path,package = "geodata"))
 
-  data_map <- fortify(tj) %>% mutate(.id = as.numeric(id)) %>% dplyr::select(-id)
-  data_info <- tj@data %>% mutate(.id = 0:(nrow(.)-1)) #%>% dplyr::select(-id)
+  data_map <- fortify(tj) %>% dplyr::mutate(.id = as.numeric(id)) %>% dplyr::select(-id)
+  data_info <- tj@data %>% dplyr::mutate(.id = 0:(nrow(.)-1)) #%>% dplyr::select(-id)
 
 
-  data_map <- left_join(data_map, data_info)
+  data_map <- dplyr::left_join(data_map, data_info)
   graph <- ggplot() +
     geom_map(data = data_map, map = data_map,
              aes(map_id = id, x = long, y = lat, group = group), fill = fillColor,

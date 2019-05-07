@@ -204,6 +204,10 @@ gg_choropleth_Gnm(data = NULL,
                             text =  'Mapa sin datos'))
                       ))
 gg_choropleth_Gnm(data = data)
+
+data2 <- data.frame(id = "Bogotá", num = 100)
+gg_choropleth_GnmNum(data = data2, mapName = "col_departments")
+
 gg_choropleth_Gnm(data = data,
                       mapName = 'africa_countries',
                       opts = list(
