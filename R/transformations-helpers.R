@@ -186,7 +186,8 @@ layerMap <- function(mapName, borderColor, borderWeigth, fillColor, fillOpacity 
   ggmap$centroides <- file.path("geodata",ggmap$geoname,paste0(ggmap$basename,".csv"))
   centroides <- read_csv(system.file(ggmap$centroides,package = "geodata"))
 
-  tj <- topojson_read(system.file(ggmap$path,package = "geodata"))
+  tj <- rgdal::readOGR(system.file(ggmap$path,package = "geodata"))
+#topojson_read(system.file(ggmap$path,package = "geodata"))
 
   data_map <- fortify(tj) %>% dplyr::mutate(.id = as.numeric(id)) %>% dplyr::select(-id)
   data_info <- tj@data %>% dplyr::mutate(.id = 0:(nrow(.)-1)) #%>% dplyr::select(-id)

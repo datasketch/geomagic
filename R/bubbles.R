@@ -9,17 +9,17 @@
 #' @examples
 #' NULL
 gg_bubbles_GcdNum <- function(data = NULL,
-                                  mapName = "world_countries",
-                                  opts = NULL) {
+                              mapName = "world_countries",
+                              opts = NULL) {
   if(!mapName %in% availableMaps())
     stop("No map with that name, check available maps with availableMaps()")
 
   opts <- getOpts(opts = opts)
 
   mapResults <- layerMap(mapName = mapName,
-                         borderColor = opts$borderColor,
-                         borderWeigth = opts$borderWidth,
-                         fillColor = opts$defaultFill,
+                         borderColor = opts$border_color,
+                         borderWeigth =opts$border_width,
+                         fillColor = opts$default_color,
                          fillOpacity = opts$opacity)
 
   graph <- mapResults[[2]]
@@ -29,7 +29,7 @@ gg_bubbles_GcdNum <- function(data = NULL,
     f <- fringe(data)
     nms <- getClabels(f)
     data <- f$d
-    flab <- opts$legend$title %||% nms[2]
+    flab <- opts$legend_title %||% nms[2]
     data$a <- as.character(toupper(tolower(data$a)))
 
     nDig <- 2
@@ -56,79 +56,79 @@ gg_bubbles_GcdNum <- function(data = NULL,
                             alpha = opts$opacity) +
       scale_size(
         name = flab,
-        range = c(opts$bubbles$minSize, opts$bubbles$maxSize),
+        range = c(opts$min_radius, opts$max_radius),
         breaks = breaks,
         labels = labels)
-    if (!opts$legend$show) g <- g + guides(size = opts$legend$show)
+    if (!opts$legend_show) g <- g + guides(size = opts$legend_show)
 
   }else{
     g <- graph
   }
 
-  if (!is.null(opts$projectionOpts$ratio)) g <- g + coord_equal(ratio = opts$projectionOpts$ratio)
-  if (!is.null(opts$projectionName)) g <- g  + coord_map(opts$projectionName, orientation = opts$projectionOpts$orientation)
+  if (!is.null(opts$projection_ratio)) g <- g + coord_equal(ratio = opts$projection_ratio)
+  if (!is.null(opts$projectionName)) g <- g  + coord_map(opts$projectionName, orientation = opts$projection_orientation)
 
-  g <-  g + theme(legend.position= opts$legend$position,
-                  plot.title = element_text(color= opts$titles$title$color, size= opts$titles$title$size),
-                  plot.subtitle = element_text(color= opts$titles$subtitle$color, size= opts$titles$subtitle$size),
-                  plot.caption = element_text(color= opts$titles$caption$color, size= opts$titles$caption$size),
+  g <-  g + theme(legend.position= opts$legend_position,
+                  plot.title = element_text(color= opts$title_color, size= opts$title_size),
+                  plot.subtitle = element_text(color= opts$subtitle_color, size= opts$subtitle_size),
+                  plot.caption = element_text(color= opts$caption_color, size= opts$caption_size),
                   plot.background = element_rect(fill = opts$background, linetype = 'blank'),
                   panel.background = element_rect(fill = opts$background,
                                                   colour = opts$background,
                                                   size = 1.5,
                                                   linetype = 'blank'),
-                  legend.text=element_text(color=opts$legend$color),
-                  legend.background = element_rect(colour = opts$legend$border,
-                                                   fill = opts$legend$background))
-  if (sum(opts$showText) != 0) {
-    if (opts$textMap$optText == 'code') centroides$name <- centroides$id
+                  legend.text=element_text(color=opts$legend_color),
+                  legend.background = element_rect(colour = opts$legend_borderColor,
+                                                   fill = opts$legend_background))
+  if (sum(opts$text_show) != 0) {
+    if (opts$text_option == 'code') centroides$name <- centroides$id
     if (!is.null(data)) {
       data$b <- round(data$b, ifelse(is.null(opts$nDigits), 2, opts$nDigits))
       centroides <- left_join(centroides, data, by = c('id' = 'a'))
-      if (sum(opts$showText) == 2) centroides$name <- paste0(centroides$name, '\n', centroides$b)
-      if (sum(opts$showText) == 1 && opts$showText[1]) centroides$name <- centroides$name
-      if (sum(opts$showText) == 1 && opts$showText[2]) centroides$name <- centroides$b
+      if (sum(opts$text_show) == 2) centroides$name <- paste0(centroides$name, '\n', centroides$b)
+      if (sum(opts$text_show) == 1 && opts$text_show[1]) centroides$name <- centroides$name
+      if (sum(opts$text_show) == 1 && opts$text_show[2]) centroides$name <- centroides$b
     }
 
-    if (opts$textMap$propText == 'all') {
+    if (opts$text_proportion == 'all') {
       g <- g + geom_text(data = centroides,
                          aes(label = name, x = lon, y = lat,
-                             check_overlap = TRUE), size = opts$textMap$size)
-    } else if (opts$textMap$propText == 'onlyData') {
+                             check_overlap = TRUE), size = opts$text_size)
+    } else if (opts$text_proportion == 'onlyData') {
       if(!is.null(data)){
         dat_text <- data.frame(id = data$a)
         dat_text$id <- as.character(dat_text$id)
         dat_text <- dat_text %>% dplyr::inner_join(., centroides, by = c("id"))
         g <- g + geom_text(data = dat_text,
                            aes(label = name, x = lon, y = lat,
-                               check_overlap = TRUE), size = opts$textMap$size)
+                               check_overlap = TRUE), size = opts$text_size)
       }else{
         g <- g
       }
     } else
       if (!is.null(data)) {
         dat_text <- data.frame(id = data$a)
-        dat_text <- sample_frac(dat_text, opts$textMap$propText)
+        dat_text <- sample_frac(dat_text, opts$text_proportion)
         dat_text$id <- as.character(dat_text$id)
         dat_text <- dat_text %>% dplyr::inner_join(., centroides, by = c("id"))
         g <- g + geom_text(data = dat_text,
                            aes(label = name, x = lon, y = lat,
-                               check_overlap = TRUE), size = opts$textMap$size)
+                               check_overlap = TRUE), size = opts$text_size)
       } else {
         g <- g
       }
   }
 
   if (opts$graticule) {
-    g <- g + theme(panel.grid.major = element_line(colour = gray(0.5), linetype = "dashed",
-                                                   size = 0.5))
+    g <- g + theme(panel.grid.major = element_line(colour = opts$graticule_color, linetype = "dashed",
+                                                   size = opts$graticule_weight))
   }
 
   g + labs(x = "",
            y = "",
-           title = opts$titles$title$text,
-           subtitle = opts$titles$subtitle$text,
-           caption = opts$titles$caption$text)
+           title = opts$title,
+           subtitle = opts$subtitle,
+           caption = opts$caption)
 
 }
 
@@ -144,8 +144,8 @@ gg_bubbles_GcdNum <- function(data = NULL,
 #' @examples
 #' NULL
 gg_bubbles_GcdCatNum <- function(data = NULL,
-                                     mapName = "world_countries",
-                                     opts = NULL) {
+                                 mapName = "world_countries",
+                                 opts = NULL) {
 
   if(!mapName %in% availableMaps())
     stop("No map with that name, check available maps with availableMaps()")
@@ -153,9 +153,9 @@ gg_bubbles_GcdCatNum <- function(data = NULL,
   opts <- getOpts(opts = opts)
 
   mapResults <- layerMap(mapName = mapName,
-                         borderColor = opts$borderColor,
-                         borderWeigth = opts$borderWidth,
-                         fillColor = opts$defaultFill,
+                         borderColor = opts$border_color,
+                         borderWeigth =opts$border_width,
+                         fillColor = opts$default_color,
                          fillOpacity = opts$opacity)
 
   graph <- mapResults[[2]]
@@ -166,8 +166,8 @@ gg_bubbles_GcdCatNum <- function(data = NULL,
     f <- fringe(data)
     nms <- getClabels(f)
     data <- f$d
-    flab1 <- opts$legend$title[1] %||% nms[2]
-    flab2 <- opts$legend$title[2] %||% nms[3]
+    flab1 <- opts$legend_title[1] %||% nms[2]
+    flab2 <- opts$legend_title[2] %||% nms[3]
     data$a <- as.character(toupper(tolower(data$a)))
 
 
@@ -199,85 +199,84 @@ gg_bubbles_GcdCatNum <- function(data = NULL,
                             alpha = opts$opacity) +
       scale_size(
         name = flab2,
-        range = c(opts$bubbles$minSize, opts$bubbles$maxSize),
+        range = c(opts$min_radius, opts$max_radius),
         breaks = breaks,
         labels = labels) +
       scale_color_manual(
         name = flab1,
         values = as.character(unique(data_graph$color)),
         na.value = opts$naColor)
-    if (!opts$legend$show[1]) g <- g + guides(color = opts$legend$show[1])
-    if (!opts$legend$show[2]) g <- g + guides(size = opts$legend$show[2])
+    if (!opts$legend_show[1]) g <- g + guides(color = opts$legend_show[1])
+    if (!opts$legend_show[2]) g <- g + guides(size = opts$legend_show[2])
 
 
   }else{
     g <- graph
   }
 
-  if (!is.null(opts$projectionOpts$ratio)) g <- g + coord_equal(ratio = opts$projectionOpts$ratio)
-  if (!is.null(opts$projectionName)) g <- g  + coord_map(opts$projectionName, orientation = opts$projectionOpts$orientation)
+  if (!is.null(opts$projection_ratio)) g <- g + coord_equal(ratio = opts$projection_ratio)
+  if (!is.null(opts$projectionName)) g <- g  + coord_map(opts$projectionName, orientation = opts$projection_orientation)
 
-  g <-  g + theme(legend.position= opts$legend$position,
-                  plot.title = element_text(color= opts$titles$title$color, size= opts$titles$title$size),
-                  plot.subtitle = element_text(color= opts$titles$subtitle$color, size= opts$titles$subtitle$size),
-                  plot.caption = element_text(color= opts$titles$caption$color, size= opts$titles$caption$size),
+  g <-  g + theme(legend.position= opts$legend_position,
+                  plot.title = element_text(color= opts$title_color, size= opts$title_size),
+                  plot.subtitle = element_text(color= opts$subtitle_color, size= opts$subtitle_size),
+                  plot.caption = element_text(color= opts$caption_color, size= opts$caption_size),
                   plot.background = element_rect(fill = opts$background, linetype = 'blank'),
                   panel.background = element_rect(fill = opts$background,
                                                   colour = opts$background,
                                                   size = 1.5,
                                                   linetype = 'blank'),
-                  legend.text=element_text(color=opts$legend$color),
-                  legend.background = element_rect(colour = opts$legend$border,
-                                                   fill = opts$legend$background))
-  if (sum(opts$showText) != 0) {
-    if (opts$textMap$optText == 'code') centroides$name <- centroides$id
+                  legend.text=element_text(color=opts$legend_color),
+                  legend.background = element_rect(colour = opts$legend_borderColor,
+                                                   fill = opts$legend_background))
+  if (sum(opts$text_show) != 0) {
+    if (opts$text_option == 'code') centroides$name <- centroides$id
     if (!is.null(data)) {
       data$c <- round(data$c, ifelse(is.null(opts$nDigits), 2, opts$nDigits))
       centroides <- left_join(centroides, data, by = c('id' = 'a'))
-      if (sum(opts$showText) == 2) centroides$name <- paste0(centroides$name, '\n', centroides$c)
-      if (sum(opts$showText) == 1 && opts$showText[1]) centroides$name <- centroides$name
-      if (sum(opts$showText) == 1 && opts$showText[2]) centroides$name <- centroides$b
+      if (sum(opts$text_show) == 2) centroides$name <- paste0(centroides$name, '\n', centroides$c)
+      if (sum(opts$text_show) == 1 && opts$text_show[1]) centroides$name <- centroides$name
+      if (sum(opts$text_show) == 1 && opts$text_show[2]) centroides$name <- centroides$b
     }
 
-    if (opts$textMap$propText == 'all') {
+    if (opts$text_proportion == 'all') {
       g <- g + geom_text(data = centroides,
                          aes(label = name, x = lon, y = lat,
-                             check_overlap = TRUE), size = opts$textMap$size)
-    } else if (opts$textMap$propText == 'onlyData') {
+                             check_overlap = TRUE), size = opts$text_size)
+    } else if (opts$text_proportion == 'onlyData') {
       if(!is.null(data)){
         dat_text <- data.frame(id = data$a)
         dat_text$id <- as.character(dat_text$id)
         dat_text <- dat_text %>% dplyr::inner_join(., centroides, by = c("id"))
         g <- g + geom_text(data = dat_text,
                            aes(label = name, x = lon, y = lat,
-                               check_overlap = TRUE), size = opts$textMap$size)
+                               check_overlap = TRUE), size = opts$text_size)
       }else{
         g <- g
       }
     } else
       if (!is.null(data)) {
         dat_text <- data.frame(id = data$a)
-        dat_text <- sample_frac(dat_text, opts$textMap$propText)
+        dat_text <- sample_frac(dat_text, opts$text_proportion)
         dat_text$id <- as.character(dat_text$id)
         dat_text <- dat_text %>% dplyr::inner_join(., centroides, by = c("id"))
         g <- g + geom_text(data = dat_text,
                            aes(label = name, x = lon, y = lat,
-                               check_overlap = TRUE), size = opts$textMap$size)
+                               check_overlap = TRUE), size = opts$text_size)
       } else {
         g <- g
       }
   }
 
   if (opts$graticule) {
-    g <- g + theme(panel.grid.major = element_line(colour = gray(0.5), linetype = "dashed",
-                                                   size = 0.5))
-  }
+    g <- g + theme(panel.grid.major = element_line(colour = opts$graticule_color, linetype = "dashed",
+                                                   size = opts$graticule_weight))  }
 
   g + labs(x = "",
            y = "",
-           title = opts$titles$title$text,
-           subtitle = opts$titles$subtitle$text,
-           caption = opts$titles$caption$text)
+           title = opts$title,
+           subtitle = opts$subtitle,
+           caption = opts$caption)
 
 }
 
@@ -296,8 +295,8 @@ gg_bubbles_GcdCatNum <- function(data = NULL,
 #' gg_bubbles_GlnGltNum(sampleData("Gln-Glt-Num", nrow = 10))
 
 gg_bubbles_GlnGltNum <- function(data = NULL,
-                                      mapName = "world_countries",
-                                      opts = NULL) {
+                                 mapName = "world_countries",
+                                 opts = NULL) {
 
   if(!mapName %in% availableMaps())
     stop("No map with that name, check available maps with availableMaps()")
@@ -305,9 +304,9 @@ gg_bubbles_GlnGltNum <- function(data = NULL,
   opts <- getOpts(opts = opts)
 
   mapResults <- layerMap(mapName = mapName,
-                         borderColor = opts$borderColor,
-                         borderWeigth = opts$borderWidth,
-                         fillColor = opts$defaultFill,
+                         borderColor = opts$border_color,
+                         borderWeigth =opts$border_width,
+                         fillColor = opts$default_color,
                          fillOpacity = opts$opacity)
 
   graph <- mapResults[[2]]
@@ -317,7 +316,7 @@ gg_bubbles_GlnGltNum <- function(data = NULL,
     f <- fringe(data)
     nms <- getClabels(f)
     data <- f$d
-    flab <- opts$legend$title %||% nms[3]
+    flab <- opts$legend_title %||% nms[3]
     data <- data %>% drop_na(a, b)
 
 
@@ -345,61 +344,61 @@ gg_bubbles_GlnGltNum <- function(data = NULL,
                             alpha = opts$opacity) +
       scale_size(
         name = flab,
-        range = c(opts$bubbles$minSize, opts$bubbles$maxSize),
+        range = c(opts$min_radius, opts$max_radius),
         breaks = breaks,
         labels = labels)
-    if (!opts$legend$show) g <- g + guides(size = opts$legend$show)
+    if (!opts$legend_show) g <- g + guides(size = opts$legend_show)
 
   }else{
     g <- graph
   }
 
-  if (!is.null(opts$projectionOpts$ratio)) g <- g + coord_equal(ratio = opts$projectionOpts$ratio)
-  if (!is.null(opts$projectionName)) g <- g  + coord_map(opts$projectionName, orientation = opts$projectionOpts$orientation)
+  if (!is.null(opts$projection_ratio)) g <- g + coord_equal(ratio = opts$projection_ratio)
+  if (!is.null(opts$projectionName)) g <- g  + coord_map(opts$projectionName, orientation = opts$projection_orientation)
 
-  g <-  g + theme(legend.position= opts$legend$position,
-                  plot.title = element_text(color= opts$titles$title$color, size= opts$titles$title$size),
-                  plot.subtitle = element_text(color= opts$titles$subtitle$color, size= opts$titles$subtitle$size),
-                  plot.caption = element_text(color= opts$titles$caption$color, size= opts$titles$caption$size),
+  g <-  g + theme(legend.position= opts$legend_position,
+                  plot.title = element_text(color= opts$title_color, size= opts$title_size),
+                  plot.subtitle = element_text(color= opts$subtitle_color, size= opts$subtitle_size),
+                  plot.caption = element_text(color= opts$caption_color, size= opts$caption_size),
                   plot.background = element_rect(fill = opts$background, linetype = 'blank'),
                   panel.background = element_rect(fill = opts$background,
                                                   colour = opts$background,
                                                   size = 1.5,
                                                   linetype = 'blank'),
-                  legend.text=element_text(color=opts$legend$color),
-                  legend.background = element_rect(colour = opts$legend$border,
-                                                   fill = opts$legend$background))
+                  legend.text=element_text(color=opts$legend_color),
+                  legend.background = element_rect(colour = opts$legend_borderColor,
+                                                   fill = opts$legend_background))
 
-  if (sum(opts$showText) != 0) {
-    if (opts$textMap$optText == 'code') centroides$name <- centroides$id
+  if (sum(opts$text_show) != 0) {
+    if (opts$text_option == 'code') centroides$name <- centroides$id
     if (!is.null(data)) {
       data$c <- round(data$c, ifelse(is.null(opts$nDigits), 2, opts$nDigits))
-      if (opts$showText[2]) {
+      if (opts$text_show[2]) {
         g <- g + geom_text(data = data,
                            aes(label = c, x = a, y = b,
-                               check_overlap = TRUE), size = opts$textMap$size)}
-      if (opts$showText[1]) {
+                               check_overlap = TRUE), size = opts$text_size)}
+      if (opts$text_show[1]) {
         g <- g + geom_text(data = centroides,
                            aes(label = name, x = lon, y = lat,
-                               check_overlap = TRUE), size = opts$textMap$size)}
+                               check_overlap = TRUE), size = opts$text_size)}
 
     } else{
       g <- g + geom_text(data = centroides,
                          aes(label = name, x = lon, y = lat,
-                             check_overlap = TRUE), size = opts$textMap$size)
+                             check_overlap = TRUE), size = opts$text_size)
     }
   }
 
   if (opts$graticule) {
-    g <- g + theme(panel.grid.major = element_line(colour = gray(0.5), linetype = "dashed",
-                                                   size = 0.5))
+    g <- g + theme(panel.grid.major = element_line(colour = opts$graticule_color, linetype = "dashed",
+                                                   size = opts$graticule_weight))
   }
 
   g + labs(x = "",
            y = "",
-           title = opts$titles$title$text,
-           subtitle = opts$titles$subtitle$text,
-           caption = opts$titles$caption$text)
+           title = opts$title,
+           subtitle = opts$subtitle,
+           caption = opts$caption)
 
 }
 
@@ -419,8 +418,8 @@ gg_bubbles_GlnGltNum <- function(data = NULL,
 #' gg_bubbles_GlnGlt(sampleData("Gln-Glt", nrow = 10))
 
 gg_bubbles_GlnGlt <-function(data = NULL,
-                                 mapName = "world_countries",
-                                 opts = NULL) {
+                             mapName = "world_countries",
+                             opts = NULL) {
 
   opts <- getOpts(opts = opts)
 
@@ -455,8 +454,8 @@ gg_bubbles_GlnGlt <-function(data = NULL,
 #' @examples
 #' NULL
 gg_bubbles_GlnGltCatNum <- function(data = NULL,
-                                        mapName = "world_countries",
-                                        opts = NULL) {
+                                    mapName = "world_countries",
+                                    opts = NULL) {
 
   if(!mapName %in% availableMaps())
     stop("No map with that name, check available maps with availableMaps()")
@@ -464,9 +463,9 @@ gg_bubbles_GlnGltCatNum <- function(data = NULL,
   opts <- getOpts(opts = opts)
 
   mapResults <- layerMap(mapName = mapName,
-                         borderColor = opts$borderColor,
-                         borderWeigth = opts$borderWidth,
-                         fillColor = opts$defaultFill,
+                         borderColor = opts$border_color,
+                         borderWeigth =opts$border_width,
+                         fillColor = opts$default_color,
                          fillOpacity = opts$opacity)
 
   graph <- mapResults[[2]]
@@ -477,8 +476,8 @@ gg_bubbles_GlnGltCatNum <- function(data = NULL,
     f <- fringe(data)
     nms <- getClabels(f)
     data <- f$d
-    flab1 <- opts$legend$title[1] %||% nms[3]
-    flab2 <- opts$legend$title[2] %||% nms[4]
+    flab1 <- opts$legend_title[1] %||% nms[3]
+    flab2 <- opts$legend_title[2] %||% nms[4]
 
     data <- data  %>%
       group_by(a, b, c) %>%
@@ -512,66 +511,66 @@ gg_bubbles_GlnGltCatNum <- function(data = NULL,
       g <- g +
         scale_size(
           name = flab2,
-          range = c(opts$bubbles$minSize, opts$bubbles$maxSize),
+          range = c(opts$min_radius, opts$max_radius),
           breaks = breaks,
           labels = labels)
     }
 
 
-    if (!opts$legend$show[1]) g <- g + guides(color = opts$legend$show[1])
-    if (!opts$legend$show[2]) g <- g + guides(size = opts$legend$show[2])
+    if (!opts$legend_show[1]) g <- g + guides(color = opts$legend_show[1])
+    if (!opts$legend_show[2]) g <- g + guides(size = opts$legend_show[2])
 
 
   }else{
     g <- graph
   }
 
-  if (!is.null(opts$projectionOpts$ratio)) g <- g + coord_equal(ratio = opts$projectionOpts$ratio)
-  if (!is.null(opts$projectionName)) g <- g  + coord_map(opts$projectionName, orientation = opts$projectionOpts$orientation)
+  if (!is.null(opts$projection_ratio)) g <- g + coord_equal(ratio = opts$projection_ratio)
+  if (!is.null(opts$projectionName)) g <- g  + coord_map(opts$projectionName, orientation = opts$projection_orientation)
 
-  g <-  g + theme(legend.position= opts$legend$position,
-                  plot.title = element_text(color= opts$titles$title$color, size= opts$titles$title$size),
-                  plot.subtitle = element_text(color= opts$titles$subtitle$color, size= opts$titles$subtitle$size),
-                  plot.caption = element_text(color= opts$titles$caption$color, size= opts$titles$caption$size),
+  g <-  g + theme(legend.position= opts$legend_position,
+                  plot.title = element_text(color= opts$title_color, size= opts$title_size),
+                  plot.subtitle = element_text(color= opts$subtitle_color, size= opts$subtitle_size),
+                  plot.caption = element_text(color= opts$caption_color, size= opts$caption_size),
                   plot.background = element_rect(fill = opts$background, linetype = 'blank'),
                   panel.background = element_rect(fill = opts$background,
                                                   colour = opts$background,
                                                   size = 1.5,
                                                   linetype = 'blank'),
-                  legend.text=element_text(color=opts$legend$color),
-                  legend.background = element_rect(colour = opts$legend$border,
-                                                   fill = opts$legend$background))
+                  legend.text=element_text(color=opts$legend_color),
+                  legend.background = element_rect(colour = opts$legend_borderColor,
+                                                   fill = opts$legend_background))
 
-  if (sum(opts$showText) != 0) {
-    if (opts$textMap$optText == 'code') centroides$name <- centroides$id
+  if (sum(opts$text_show) != 0) {
+    if (opts$text_option == 'code') centroides$name <- centroides$id
     if (!is.null(data)) {
       data$c <- round(data$c, ifelse(is.null(opts$nDigits), 2, opts$nDigits))
-      if (opts$showText[2]) {
+      if (opts$text_show[2]) {
         g <- g + geom_text(data = data,
                            aes(label = c, x = a, y = b,
-                               check_overlap = TRUE), size = opts$textMap$size)}
-      if (opts$showText[1]) {
+                               check_overlap = TRUE), size = opts$text_size)}
+      if (opts$text_show[1]) {
         g <- g + geom_text(data = centroides,
                            aes(label = name, x = lon, y = lat,
-                               check_overlap = TRUE), size = opts$textMap$size)}
+                               check_overlap = TRUE), size = opts$text_size)}
 
     } else{
       g <- g + geom_text(data = centroides,
                          aes(label = name, x = lon, y = lat,
-                             check_overlap = TRUE), size = opts$textMap$size)
+                             check_overlap = TRUE), size = opts$text_size)
     }
   }
 
   if (opts$graticule) {
-    g <- g + theme(panel.grid.major = element_line(colour = gray(0.5), linetype = "dashed",
-                                                   size = 0.5))
+    g <- g + theme(panel.grid.major = element_line(colour = opts$graticule_color, linetype = "dashed",
+                                                   size = opts$graticule_weight))
   }
 
   g + labs(x = "",
            y = "",
-           title = opts$titles$title$text,
-           subtitle = opts$titles$subtitle$text,
-           caption = opts$titles$caption$text)
+           title = opts$title,
+           subtitle = opts$subtitle,
+           caption = opts$caption)
 
 }
 
@@ -586,8 +585,8 @@ gg_bubbles_GlnGltCatNum <- function(data = NULL,
 #' @examples
 
 gg_bubbles_GlnGltCat <- function(data = NULL,
-                                     mapName = "world_countries",
-                                     opts = NULL) {
+                                 mapName = "world_countries",
+                                 opts = NULL) {
   opts <- getOpts(opts = opts)
 
   if (!is.null(data)) {
@@ -625,8 +624,8 @@ gg_bubbles_GlnGltCat <- function(data = NULL,
 #' @examples
 
 gg_bubbles_GnmNum <- function(data = NULL,
-                                   mapName = "world_countries",
-                                   opts = NULL) {
+                              mapName = "world_countries",
+                              opts = NULL) {
 
   if(!mapName %in% availableMaps())
     stop("No map with that name, check available maps with availableMaps()")
@@ -634,9 +633,9 @@ gg_bubbles_GnmNum <- function(data = NULL,
   opts <- getOpts(opts = opts)
 
   mapResults <- layerMap(mapName = mapName,
-                         borderColor = opts$borderColor,
-                         borderWeigth = opts$borderWidth,
-                         fillColor = opts$defaultFill,
+                         borderColor = opts$border_color,
+                         borderWeigth =opts$border_width,
+                         fillColor = opts$default_color,
                          fillOpacity = opts$opacity)
 
   graph <- mapResults[[2]]
@@ -646,7 +645,7 @@ gg_bubbles_GnmNum <- function(data = NULL,
     f <- fringe(data)
     nms <- getClabels(f)
     data <- f$d
-    flab <- opts$legend$title %||% nms[2]
+    flab <- opts$legend_title %||% nms[2]
     data$a <- as.character(toupper(tolower(data$a)))
 
     nDig <- 2
@@ -674,64 +673,64 @@ gg_bubbles_GnmNum <- function(data = NULL,
                             alpha = opts$opacity) +
       scale_size(
         name = flab,
-        range = c(opts$bubbles$minSize, opts$bubbles$maxSize),
+        range = c(opts$min_radius, opts$max_radius),
         breaks = breaks,
         labels = labels)
-    if (!opts$legend$show) g <- g + guides(size = opts$legend$show)
+    if (!opts$legend_show) g <- g + guides(size = opts$legend_show)
 
   }else{
     g <- graph
   }
 
-  if (!is.null(opts$projectionOpts$ratio)) g <- g + coord_equal(ratio = opts$projectionOpts$ratio)
-  if (!is.null(opts$projectionName)) g <- g  + coord_map(opts$projectionName, orientation = opts$projectionOpts$orientation)
+  if (!is.null(opts$projection_ratio)) g <- g + coord_equal(ratio = opts$projection_ratio)
+  if (!is.null(opts$projectionName)) g <- g  + coord_map(opts$projectionName, orientation = opts$projection_orientation)
 
-  g <- g + theme(legend.position= opts$legend$position,
-                 plot.title = element_text(color= opts$titles$title$color, size= opts$titles$title$size),
-                 plot.subtitle = element_text(color= opts$titles$subtitle$color, size= opts$titles$subtitle$size),
-                 plot.caption = element_text(color= opts$titles$caption$color, size= opts$titles$caption$size),
+  g <- g + theme(legend.position= opts$legend_position,
+                 plot.title = element_text(color= opts$title_color, size= opts$title_size),
+                 plot.subtitle = element_text(color= opts$subtitle_color, size= opts$subtitle_size),
+                 plot.caption = element_text(color= opts$caption_color, size= opts$caption_size),
                  plot.background = element_rect(fill = opts$background, linetype = 'blank'),
                  panel.background = element_rect(fill = opts$background,
                                                  colour = opts$background,
                                                  size = 1.5,
                                                  linetype = 'blank'),
-                 legend.text=element_text(color=opts$legend$color),
-                 legend.background = element_rect(colour = opts$legend$border,
-                                                  fill = opts$legend$background))
-  if (sum(opts$showText) != 0) {
-    if (opts$textMap$optText == 'code') centroides$name <- centroides$id
+                 legend.text=element_text(color=opts$legend_color),
+                 legend.background = element_rect(colour = opts$legend_borderColor,
+                                                  fill = opts$legend_background))
+  if (sum(opts$text_show) != 0) {
+    if (opts$text_option == 'code') centroides$name <- centroides$id
     if (!is.null(data)) {
       data$b <- round(data$b, ifelse(is.null(opts$nDigits), 2, opts$nDigits))
       centroides <- left_join(centroides, data, by = c('id' = 'a'))
-      if (sum(opts$showText) == 2) centroides$name <- paste0(centroides$name, '\n', centroides$b)
-      if (sum(opts$showText) == 1 && opts$showText[1]) centroides$name <- centroides$name
-      if (sum(opts$showText) == 1 && opts$showText[2]) centroides$name <- centroides$b
+      if (sum(opts$text_show) == 2) centroides$name <- paste0(centroides$name, '\n', centroides$b)
+      if (sum(opts$text_show) == 1 && opts$text_show[1]) centroides$name <- centroides$name
+      if (sum(opts$text_show) == 1 && opts$text_show[2]) centroides$name <- centroides$b
     }
 
-    if (opts$textMap$propText == 'all') {
+    if (opts$text_proportion == 'all') {
       g <- g + geom_text(data = centroides,
                          aes(label = name, x = lon, y = lat,
-                             check_overlap = TRUE), size = opts$textMap$size)
-    } else if (opts$textMap$propText == 'onlyData') {
+                             check_overlap = TRUE), size = opts$text_size)
+    } else if (opts$text_proportion == 'onlyData') {
       if(!is.null(data)){
         dat_text <- data.frame(id = data$a)
         dat_text$id <- as.character(dat_text$id)
         dat_text <- dat_text %>% dplyr::inner_join(., centroides, by = c("id"))
         g <- g + geom_text(data = dat_text,
                            aes(label = name, x = lon, y = lat,
-                               check_overlap = TRUE), size = opts$textMap$size)
+                               check_overlap = TRUE), size = opts$text_size)
       }else{
         g <- g
       }
     } else
       if (!is.null(data)) {
         dat_text <- data.frame(id = data$a)
-        dat_text <- sample_frac(dat_text, opts$textMap$propText)
+        dat_text <- sample_frac(dat_text, opts$text_proportion)
         dat_text$id <- as.character(dat_text$id)
         dat_text <- dat_text %>% dplyr::inner_join(., centroides, by = c("id"))
         g <- g + geom_text(data = dat_text,
                            aes(label = name, x = lon, y = lat,
-                               check_overlap = TRUE), size = opts$textMap$size)
+                               check_overlap = TRUE), size = opts$text_size)
       } else {
         g <- g
       }
@@ -739,15 +738,15 @@ gg_bubbles_GnmNum <- function(data = NULL,
 
 
   if (opts$graticule) {
-    g <- g + theme(panel.grid.major = element_line(colour = gray(0.5), linetype = "dashed",
-                                                   size = 0.5))
+    g <- g + theme(panel.grid.major = element_line(colour = opts$graticule_color, linetype = "dashed",
+                                                   size = opts$graticule_weight))
   }
 
   g + labs(x = "",
            y = "",
-           title = opts$titles$title$text,
-           subtitle = opts$titles$subtitle$text,
-           caption = opts$titles$caption$text)
+           title = opts$title,
+           subtitle = opts$subtitle,
+           caption = opts$caption)
 
 }
 
@@ -762,8 +761,8 @@ gg_bubbles_GnmNum <- function(data = NULL,
 #' @section ftypes: Gnm-Num
 #' @examples
 gg_bubbles_GnmCatNum <- function(data = NULL,
-                                     mapName = "world_countries",
-                                     opts = NULL)
+                                 mapName = "world_countries",
+                                 opts = NULL)
 {
 
   if(!mapName %in% availableMaps())
@@ -772,9 +771,9 @@ gg_bubbles_GnmCatNum <- function(data = NULL,
   opts <- getOpts(opts = opts)
 
   mapResults <- layerMap(mapName = mapName,
-                         borderColor = opts$borderColor,
-                         borderWeigth = opts$borderWidth,
-                         fillColor = opts$defaultFill,
+                         borderColor = opts$border_color,
+                         borderWeigth =opts$border_width,
+                         fillColor = opts$default_color,
                          fillOpacity = opts$opacity)
 
   graph <- mapResults[[2]]
@@ -785,8 +784,8 @@ gg_bubbles_GnmCatNum <- function(data = NULL,
     f <- fringe(data)
     nms <- getClabels(f)
     data <- f$d
-    flab1 <- opts$legend$title[1] %||% nms[2]
-    flab2 <- opts$legend$title[2] %||% nms[3]
+    flab1 <- opts$legend_title[1] %||% nms[2]
+    flab2 <- opts$legend_title[2] %||% nms[3]
     data$a <- str_to_title(iconv(as.character(tolower(data$a)), to="ASCII//TRANSLIT"))
     nDig <- 2
     if (!is.null(opts$nDigits)) nDig <- opts$nDigits
@@ -818,71 +817,71 @@ gg_bubbles_GnmCatNum <- function(data = NULL,
                             alpha = opts$opacity) +
       scale_size(
         name = flab2,
-        range = c(opts$bubbles$minSize, opts$bubbles$maxSize),
+        range = c(opts$min_radius, opts$max_radius),
         breaks = breaks,
         labels = labels) +
       scale_color_manual(
         name = flab1,
         values = as.character(unique(data_graph$color)),
         na.value = opts$naColor)
-    if (!opts$legend$show[1]) g <- g + guides(color = opts$legend$show[1])
-    if (!opts$legend$show[2]) g <- g + guides(size = opts$legend$show[2])
+    if (!opts$legend_show[1]) g <- g + guides(color = opts$legend_show[1])
+    if (!opts$legend_show[2]) g <- g + guides(size = opts$legend_show[2])
 
 
   }else{
     g <- graph
   }
 
-  if (!is.null(opts$projectionOpts$ratio)) g <- g + coord_equal(ratio = opts$projectionOpts$ratio)
-  if (!is.null(opts$projectionName)) g <- g  + coord_map(opts$projectionName, orientation = opts$projectionOpts$orientation)
+  if (!is.null(opts$projection_ratio)) g <- g + coord_equal(ratio = opts$projection_ratio)
+  if (!is.null(opts$projectionName)) g <- g  + coord_map(opts$projectionName, orientation = opts$projection_orientation)
 
-  g <-  g + theme(legend.position= opts$legend$position,
-                  plot.title = element_text(color= opts$titles$title$color, size= opts$titles$title$size),
-                  plot.subtitle = element_text(color= opts$titles$subtitle$color, size= opts$titles$subtitle$size),
-                  plot.caption = element_text(color= opts$titles$caption$color, size= opts$titles$caption$size),
+  g <-  g + theme(legend.position= opts$legend_position,
+                  plot.title = element_text(color= opts$title_color, size= opts$title_size),
+                  plot.subtitle = element_text(color= opts$subtitle_color, size= opts$subtitle_size),
+                  plot.caption = element_text(color= opts$caption_color, size= opts$caption_size),
                   plot.background = element_rect(fill = opts$background, linetype = 'blank'),
                   panel.background = element_rect(fill = opts$background,
                                                   colour = opts$background,
                                                   size = 1.5,
                                                   linetype = 'blank'),
-                  legend.text=element_text(color=opts$legend$color),
-                  legend.background = element_rect(colour = opts$legend$border,
-                                                   fill = opts$legend$background))
+                  legend.text=element_text(color=opts$legend_color),
+                  legend.background = element_rect(colour = opts$legend_borderColor,
+                                                   fill = opts$legend_background))
 
-  if (sum(opts$showText) != 0) {
-    if (opts$textMap$optText == 'code') centroides$name <- centroides$id
+  if (sum(opts$text_show) != 0) {
+    if (opts$text_option == 'code') centroides$name <- centroides$id
     if (!is.null(data)) {
       data$c <- round(data$c, ifelse(is.null(opts$nDigits), 2, opts$nDigits))
       centroides <- left_join(centroides, data, by = c('id' = 'a'))
-      if (sum(opts$showText) == 2) centroides$name <- paste0(centroides$name, '\n', centroides$c)
-      if (sum(opts$showText) == 1 && opts$showText[1]) centroides$name <- centroides$name
-      if (sum(opts$showText) == 1 && opts$showText[2]) centroides$name <- centroides$b
+      if (sum(opts$text_show) == 2) centroides$name <- paste0(centroides$name, '\n', centroides$c)
+      if (sum(opts$text_show) == 1 && opts$text_show[1]) centroides$name <- centroides$name
+      if (sum(opts$text_show) == 1 && opts$text_show[2]) centroides$name <- centroides$b
     }
 
-    if (opts$textMap$propText == 'all') {
+    if (opts$text_proportion == 'all') {
       g <- g + geom_text(data = centroides,
                          aes(label = name, x = lon, y = lat,
-                             check_overlap = TRUE), size = opts$textMap$size)
-    } else if (opts$textMap$propText == 'onlyData') {
+                             check_overlap = TRUE), size = opts$text_size)
+    } else if (opts$text_proportion == 'onlyData') {
       if(!is.null(data)){
         dat_text <- data.frame(id = data$a)
         dat_text$id <- as.character(dat_text$id)
         dat_text <- dat_text %>% dplyr::inner_join(., centroides, by = c("id"))
         g <- g + geom_text(data = dat_text,
                            aes(label = name, x = lon, y = lat,
-                               check_overlap = TRUE), size = opts$textMap$size)
+                               check_overlap = TRUE), size = opts$text_size)
       }else{
         g <- g
       }
     } else
       if (!is.null(data)) {
         dat_text <- data.frame(id = data$a)
-        dat_text <- sample_frac(dat_text, opts$textMap$propText)
+        dat_text <- sample_frac(dat_text, opts$text_proportion)
         dat_text$id <- as.character(dat_text$id)
         dat_text <- dat_text %>% dplyr::inner_join(., centroides, by = c("id"))
         g <- g + geom_text(data = dat_text,
                            aes(label = name, x = lon, y = lat,
-                               check_overlap = TRUE), size = opts$textMap$size)
+                               check_overlap = TRUE), size = opts$text_size)
       } else {
         g <- g
       }
@@ -890,14 +889,14 @@ gg_bubbles_GnmCatNum <- function(data = NULL,
 
 
   if (opts$graticule) {
-    g <- g + theme(panel.grid.major = element_line(colour = gray(0.5), linetype = "dashed",
-                                                   size = 0.5))
+    g <- g + theme(panel.grid.major = element_line(colour = opts$graticule_color, linetype = "dashed",
+                                                   size = opts$graticule_weight))
   }
 
   g + labs(x = "",
            y = "",
-           title = opts$titles$title$text,
-           subtitle = opts$titles$subtitle$text,
-           caption = opts$titles$caption$text)
+           title = opts$title,
+           subtitle = opts$subtitle,
+           caption = opts$caption)
 
 }
