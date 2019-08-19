@@ -53,7 +53,7 @@ gg_choropleth_GcdNum <- function( data = NULL,
                           percent = opts$percentage,
                           nDigits = opts$nDigits,
                           marks = opts$marks,
-                          format = opts$format,
+                          format = c(opts$prefix, opts$suffix),
                           colors = opts$colors,
                           dataLeft =  data_map
     )
@@ -67,7 +67,7 @@ gg_choropleth_GcdNum <- function( data = NULL,
     if (opts$scale == 'continuous') {
       g <- g + scale_fill_gradient(
         aesthetics = "fill",
-        na.value = opts$naColor,
+        na.value = opts$na_color,
         colours = as.character(unique(data_graph$color)),
         labels =  as.character(unique(data_graph$labels[!is.na(data_graph$labels)])),
         breaks =  as.numeric(unique(data_graph$breaks[!is.na(data_graph$breaks)])),
@@ -75,7 +75,7 @@ gg_choropleth_GcdNum <- function( data = NULL,
     } else {
       g <- g + scale_fill_manual(
         values = as.character(unique(data_graph$color)),
-        na.value = opts$naColor)
+        na.value = opts$na_color)
     }
 
     g <- g +
@@ -264,7 +264,7 @@ gg_choropleth_GcdCat <- function(data = NULL,
                  aes(map_id = id, x = long, y = lat, fill = b),
                  color = opts$border_color, size = 0.25, alpha = opts$opacity) +
         scale_fill_manual(values = as.character(unique(data_graph$color)),
-                          na.value = opts$naColor)
+                          na.value = opts$na_color)
       if (sum(opts$text_show) != 0) {
         if (opts$text_option == 'code') centroides$name <- centroides$id
         if (!is.null(data)) {
@@ -424,7 +424,7 @@ gg_choropleth_GnmNum <- function(data = NULL,
     if (opts$scale == 'continuous') {
       g <- g + scale_fill_gradientn(
         aesthetics = "fill",
-        na.value = opts$naColor,
+        na.value = opts$na_color,
         colours = as.character(unique(data_graph$color)),
         labels =  as.character(unique(data_graph$labels[!is.na(data_graph$labels)])),
         breaks =  as.numeric(unique(data_graph$breaks[!is.na(data_graph$breaks)])),
@@ -432,7 +432,7 @@ gg_choropleth_GnmNum <- function(data = NULL,
     } else {
       g <- g + scale_fill_manual(
         values = as.character(unique(data_graph$color)),
-        na.value =opts$naColor)
+        na.value =opts$na_color)
     }
     g <- g +
       labs(x = "",
@@ -618,7 +618,7 @@ gg_choropleth_GnmCat <- function(data = NULL,
                  aes(map_id = id, x = long, y = lat, fill = b),
                  color = opts$border_color, size = 0.25, alpha = opts$opacity) +
         scale_fill_manual(values = as.character(unique(data_graph$color)),
-                          na.value = opts$naColor)
+                          na.value = opts$na_color)
       g <- g +
         labs(x = "",
              y = "",
@@ -682,19 +682,23 @@ gg_choropleth_GnmCat <- function(data = NULL,
   if (!is.null(opts$projection_ratio)) g <- g + coord_equal(ratio = opts$projection_ratio)
   if (!is.null(opts$projection_name)) g <- g  + coord_map(opts$projection_name, orientation = opts$projection_orientation)
 
+  if (opts$legend_show[1]) {
   g <- g + theme(legend.position= opts$legend_position,
-                 plot.title = element_text(color= opts$title_color, size= opts$title_size),
-                 plot.subtitle = element_text(color= opts$subtitle_color, size= opts$subtitle_size),
-                 plot.caption = element_text(color= opts$caption_color, size= opts$caption_size),
-                 plot.background = element_rect(fill = opts$background, linetype = 'blank'),
-                 panel.background = element_rect(fill = opts$background,
-                                                 colour = opts$background,
-                                                 size = 1.5,
-                                                 linetype = 'blank'),
                  legend.text=element_text(color=opts$legend_color),
                  legend.background = element_rect(colour = opts$legend_borderColor,
                                                   fill = opts$legend_background))
+  } else {
+    g <- g +  guides(fill=FALSE)
+  }
 
+  g <- g + theme( plot.title = element_text(color= opts$title_color, size= opts$title_size),
+                  plot.subtitle = element_text(color= opts$subtitle_color, size= opts$subtitle_size),
+                  plot.caption = element_text(color= opts$caption_color, size= opts$caption_size),
+                  plot.background = element_rect(fill = opts$background, linetype = 'blank'),
+                  panel.background = element_rect(fill = opts$background,
+                                                  colour = opts$background,
+                                                  size = 1.5,
+                                                  linetype = 'blank'))
   if (opts$graticule) {
     g <- g + theme(panel.grid.major = element_line(colour = opts$graticule_color, linetype = "dashed",
                                                    size = opts$graticule_weight))  }

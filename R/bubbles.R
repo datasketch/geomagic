@@ -135,12 +135,12 @@ gg_bubbles_GcdNum <- function(data = NULL,
 
 
 #' Bubbles map
-#' @name gg_bubbles_GcdNum
+#' @name gg_bubbles_GcdCatNum
 #' @param x A code.
 #' @param y A number.
 #' @export
 #' @return The sum of \code{x} and \code{y}.
-#' @section ftypes: Gcd-Num
+#' @section ftypes: Gcd-Cat-Num
 #' @examples
 #' NULL
 gg_bubbles_GcdCatNum <- function(data = NULL,

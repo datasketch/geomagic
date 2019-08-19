@@ -132,7 +132,7 @@ binsLeg <- function(data = NULL,
   sumBins <- 1/(10^nDig)
 
   if (scale == 'discrete') {
-    if (scale == 'quantile') {
+    if (mode == 'quantile') {
       z <- round(as.vector(quantile(unique(vector), probs = c(0, cumsum(rep((1/bins), bins))))), nDig)
     } else {
       z <- round(rev(seq(max(vector), min(vector), length.out = bins + 1  )), nDig)
