@@ -90,7 +90,12 @@ geomagic_prep <- function(data = NULL, opts = NULL, by_col = "name") {
   list(
     d = data_map,
     data = data,
-    theme = opts$theme
+    theme = opts$theme,
+    projections = list(projection = opts$extra$map_projection,
+                       lat = opts$extra$map_projection_lat,
+                       long = opts$extra$map_projection_long,
+                       rotation = opts$extra$map_projection_rotation,
+                       add_params = opts$extra$map_projection_params)
   )
 
 }
