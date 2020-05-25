@@ -12,5 +12,7 @@ gg_choropleth_GnmNum <- function(data = NULL, ...){
 
   opts <- dsvizopts::merge_dsviz_options(...)
   l <- geomagic_prep(data = data, opts = opts)
-  l
+
+  g <- gg_basic_choropleth(l)
+  g
 }
