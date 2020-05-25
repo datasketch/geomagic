@@ -4,8 +4,7 @@
 \alias{gg_choropleth_Gnm}
 \title{Ggplot choropleths by geographical code}
 \usage{
-gg_choropleth_Gnm(data = NULL, mapName = "world_countries",
-  opts = NULL)
+gg_choropleth_Gnm(data = NULL, mapName = "world_countries", opts = NULL)
 }
 \arguments{
 \item{x}{A data.frame}

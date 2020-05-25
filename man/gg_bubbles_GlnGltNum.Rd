@@ -4,8 +4,7 @@
 \alias{gg_bubbles_GlnGltNum}
 \title{Ggplot bubbles by latitud and longitud}
 \usage{
-gg_bubbles_GlnGltNum(data = NULL, mapName = "world_countries",
-  opts = NULL)
+gg_bubbles_GlnGltNum(data = NULL, mapName = "world_countries", opts = NULL)
 }
 \arguments{
 \item{x}{A data.frame}

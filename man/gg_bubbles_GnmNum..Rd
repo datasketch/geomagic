@@ -5,8 +5,7 @@
 \alias{gg_bubbles_GnmCatNum}
 \title{Bubbles map}
 \usage{
-gg_bubbles_GnmCatNum(data = NULL, mapName = "world_countries",
-  opts = NULL)
+gg_bubbles_GnmCatNum(data = NULL, mapName = "world_countries", opts = NULL)
 }
 \arguments{
 \item{x}{A code.}

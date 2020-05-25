@@ -4,8 +4,7 @@
 \alias{gg_bubbles_GlnGltCatNum}
 \title{Bubbles map}
 \usage{
-gg_bubbles_GlnGltCatNum(data = NULL, mapName = "world_countries",
-  opts = NULL)
+gg_bubbles_GlnGltCatNum(data = NULL, mapName = "world_countries", opts = NULL)
 }
 \arguments{
 \item{x}{A code.}

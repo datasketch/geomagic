@@ -6,8 +6,7 @@
 \title{Choropleth map
 Choropleth map}
 \usage{
-gg_choropleth_GnmNum(data = NULL, mapName = "world_countries",
-  opts = NULL)
+gg_choropleth_GnmNum(data = NULL, mapName = "world_countries", opts = NULL)
 }
 \arguments{
 \item{x}{A code.}

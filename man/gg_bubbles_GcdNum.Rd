@@ -5,8 +5,7 @@
 \title{Bubbles map
 Bubbles map}
 \usage{
-gg_bubbles_GcdNum(data = NULL, mapName = "world_countries",
-  opts = NULL)
+gg_bubbles_GcdNum(data = NULL, mapName = "world_countries", opts = NULL)
 }
 \arguments{
 \item{x}{A code.}
