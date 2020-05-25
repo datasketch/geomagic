@@ -31,5 +31,17 @@ gg_projections <- function(opts_projections) {
     l <- list(projection = opts_projections$projection)
   }
   c(l, orientation = list(orientation))
-  #do.call("coord_map", )
+}
+
+#' Graticule map
+gg_graticule <- function(graticule) {
+
+  if (!graticule$map_graticule) return()
+  theme(
+    panel.ontop = TRUE,   ## Note: this is to make the panel grid visible in this example
+    panel.grid = element_blank(),
+    line = element_blank(),
+    rect = element_blank(),
+    panel.grid.major = element_line(colour = graticule$map_graticule_color, linetype = "dashed",
+                                    size = graticule$graticule_weight))
 }

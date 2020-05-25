@@ -95,7 +95,11 @@ geomagic_prep <- function(data = NULL, opts = NULL, by_col = "name") {
                        lat = opts$extra$map_projection_lat,
                        long = opts$extra$map_projection_long,
                        rotation = opts$extra$map_projection_rotation,
-                       add_params = opts$extra$map_projection_params)
+                       add_params = opts$extra$map_projection_params),
+    graticule = list(map_graticule = opts$extra$map_graticule,
+                     map_graticule_color = opts$extra$map_graticule_color,
+                     map_graticule_interval = opts$extra$map_graticule_interval,
+                     map_graticule_weight = opts$extra$map_graticule_weight)
   )
 
 }
