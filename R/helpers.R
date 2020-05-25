@@ -42,6 +42,6 @@ gg_graticule <- function(graticule) {
     panel.grid = element_blank(),
     line = element_blank(),
     rect = element_blank(),
-    panel.grid.major = element_line(colour = graticule$map_graticule_color, linetype = "dashed",
-                                    size = graticule$graticule_weight))
+    plot.background = element_rect(fill = graticule$background),
+    panel.grid.major = element_line())
 }

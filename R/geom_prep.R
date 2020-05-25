@@ -90,6 +90,11 @@ geomagic_prep <- function(data = NULL, opts = NULL, by_col = "name") {
   list(
     d = data_map,
     data = data,
+    titles = list(
+      title = opts$title$title,
+      subtitle = opts$title$subtitle,
+      caption = opts$title$caption
+    ),
     theme = opts$theme,
     projections = list(projection = opts$extra$map_projection,
                        lat = opts$extra$map_projection_lat,
@@ -97,9 +102,7 @@ geomagic_prep <- function(data = NULL, opts = NULL, by_col = "name") {
                        rotation = opts$extra$map_projection_rotation,
                        add_params = opts$extra$map_projection_params),
     graticule = list(map_graticule = opts$extra$map_graticule,
-                     map_graticule_color = opts$extra$map_graticule_color,
-                     map_graticule_interval = opts$extra$map_graticule_interval,
-                     map_graticule_weight = opts$extra$map_graticule_weight)
+                     background = opts$theme$background_color)
   )
 
 }
