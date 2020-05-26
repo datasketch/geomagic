@@ -13,6 +13,24 @@ gg_basic_choropleth <- function(l) {
   g
 }
 
+
+#' Basic layer bubbles
+gg_basic_bubbles <- function(l) {
+
+    g <- ggplot(data = l$d) +
+      geom_polygon(aes( x = long, y = lat, group = group),
+                   fill = l$theme$na_color,
+                   color= l$theme$border_color)
+    if (!is.null(l$data)) {
+      g <- g +
+            geom_point(data = l$centroides, aes(x = lon, y = lat, size = b), colour = l$theme$palette_colors[1])
+    }
+
+  g
+}
+
+
+
 #' Projections
 gg_projections <- function(opts_projections) {
 
@@ -69,4 +87,27 @@ geom_labels <- function(nms, tooltip) {
   }
   #}
   tooltip
+}
+
+#'
+gg_palette <- function(opts) {
+if (opts$color_scale == "Category") {
+  color_mapping <- "colorFactor"
+  l <- list()
+} else if (opts$color_scale == "Quantile") {
+  color_mapping <- "scale_fill_manual"
+  l <- list()
+} else if (opts$color_scale == 'Bins') {
+  color_mapping <- "scale_fill_manual"
+  l <- list(values = opts$colors, na.value = opts$na_color)
+} else {
+  if (length(opts$colors) == 1) opts$colors <- c(opts$colors, "#CCCCCC")
+  color_mapping <- "scale_fill_gradient"
+  l <- list(low = opts$colors[1],
+            high = opts$colors[2],
+            na.value = opts$na_color,
+            labels = makeup::makeup_format(sample = opts$style$format_num_sample))
+}
+
+do.call(color_mapping, l)
 }

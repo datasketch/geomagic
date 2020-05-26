@@ -105,7 +105,7 @@ geomagic_prep <- function(data = NULL, opts = NULL, by_col = "name") {
         mutate(name_alt = iconv(tolower(a), to = "ASCII//TRANSLIT"))
       data_map <- data_map %>% left_join(d, by = "name_alt")
       centroides$name_alt <- iconv(tolower(centroides[[by_col]]), to = "ASCII//TRANSLIT")
-      centroides <- centroides %>% left_join(d, by = "name_alt")
+      centroides <- centroides %>% left_join(d, by = "name_alt") %>% drop_na()
     } else {
       data_map <- data_map
     }
@@ -121,16 +121,25 @@ print(centroides)
     titles = list(
       title = opts$title$title,
       subtitle = opts$title$subtitle,
-      caption = opts$title$caption
+      caption = opts$title$caption,
+      legend = opts$title$legend_title
     ),
     theme = opts$theme,
+    text = list(
+      size = opts$theme$text_size/5,
+      family = opts$theme$text_family,
+      colour = opts$theme$text_color
+    ),
     projections = list(projection = opts$extra$map_projection,
                        lat = opts$extra$map_projection_lat,
                        long = opts$extra$map_projection_long,
                        rotation = opts$extra$map_projection_rotation,
                        add_params = opts$extra$map_projection_params),
     graticule = list(map_graticule = opts$extra$map_graticule,
-                     background = opts$theme$background_color)
+                     background = opts$theme$background_color),
+    legend = list(colors = opts$theme$palette_colors,
+                  color_scale = opts$extra$map_color_scale,
+                  na_color = opts$theme$na_color)
   )
 
 }
