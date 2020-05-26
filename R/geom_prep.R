@@ -101,6 +101,9 @@ geomagic_prep <- function(data = NULL, opts = NULL, by_col = "name") {
 
 
     if (!identical(grep("Gnm|Gcd|Cat", dic$hdType) == 1, logical(0))) {
+      if (opts$extra$map_color_scale == "Bins") {
+        d <- gg_cuts(d, "b", sample = opts$style$format_num_sample, bins = opts$extra$map_bins)
+      }
       d <- d %>%
         mutate(name_alt = iconv(tolower(a), to = "ASCII//TRANSLIT"))
       data_map <- data_map %>% left_join(d, by = "name_alt")

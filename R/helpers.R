@@ -17,14 +17,14 @@ gg_basic_choropleth <- function(l) {
 #' Basic layer bubbles
 gg_basic_bubbles <- function(l) {
 
-    g <- ggplot(data = l$d) +
-      geom_polygon(aes( x = long, y = lat, group = group),
-                   fill = l$theme$na_color,
-                   color= l$theme$border_color)
-    if (!is.null(l$data)) {
-      g <- g +
-            geom_point(data = l$centroides, aes(x = lon, y = lat, size = b), colour = l$theme$palette_colors[1])
-    }
+  g <- ggplot(data = l$d) +
+    geom_polygon(aes( x = long, y = lat, group = group),
+                 fill = l$theme$na_color,
+                 color= l$theme$border_color)
+  if (!is.null(l$data)) {
+    g <- g +
+      geom_point(data = l$centroides, aes(x = lon, y = lat, size = b), colour = l$theme$palette_colors[1])
+  }
 
   g
 }
@@ -67,14 +67,19 @@ gg_projections <- function(opts_projections) {
 #' Graticule map
 gg_graticule <- function(graticule) {
 
-  if (!graticule$map_graticule) return()
-  theme(
-    panel.ontop = TRUE,   ## Note: this is to make the panel grid visible in this example
-    panel.grid = element_blank(),
-    line = element_blank(),
-    rect = element_blank(),
-    plot.background = element_rect(fill = graticule$background),
-    panel.grid.major = element_line())
+  if (graticule$map_graticule) {
+    theme(
+      panel.ontop = TRUE,   ## Note: this is to make the panel grid visible in this example
+      panel.grid = element_blank(),
+      line = element_blank(),
+      rect = element_blank(),
+      plot.background = element_rect(fill = graticule$background),
+      panel.grid.major = element_line())
+  } else {
+    theme(
+      panel.grid.major = element_blank()
+    )
+  }
 }
 
 #' labels
@@ -104,23 +109,40 @@ geom_labels <- function(nms, tooltip) {
 
 #'
 gg_palette <- function(opts) {
-if (opts$color_scale == "Category") {
-  color_mapping <- "colorFactor"
-  l <- list()
-} else if (opts$color_scale == "Quantile") {
-  color_mapping <- "scale_fill_manual"
-  l <- list()
-} else if (opts$color_scale == 'Bins') {
-  color_mapping <- "scale_fill_manual"
-  l <- list(values = opts$colors, na.value = opts$na_color)
-} else {
-  if (length(opts$colors) == 1) opts$colors <- c(opts$colors, "#CCCCCC")
-  color_mapping <- "scale_fill_gradient"
-  l <- list(low = opts$colors[1],
-            high = opts$colors[2],
-            na.value = opts$na_color,
-            labels = makeup::makeup_format(sample = opts$style$format_num_sample))
+  if (opts$color_scale == "Category") {
+    color_mapping <- "colorFactor"
+    l <- list()
+  } else if (opts$color_scale == "Quantile") {
+    color_mapping <- "scale_fill_manual"
+    l <- list()
+  } else if (opts$color_scale == 'Bins') {
+    color_mapping <- "scale_fill_manual"
+    l <- list(values = opts$colors, na.value = opts$na_color)
+  } else {
+    if (length(opts$colors) == 1) opts$colors <- c(opts$colors, "#CCCCCC")
+    color_mapping <- "scale_fill_gradient"
+    l <- list(low = opts$colors[1],
+              high = opts$colors[2],
+              na.value = opts$na_color,
+              labels = makeup::makeup_format(sample = opts$style$format_num_sample))
+  }
+
+  do.call(color_mapping, l)
 }
 
-do.call(color_mapping, l)
+
+#'
+gg_cuts <- function (d, var = "b", sample, bins = 4, ...) {
+  d <- d %>%
+    mutate(cuts = gsub("\\[|\\)||]", "",
+                       cut(d[[var]], bins, include.lowest = TRUE, right = FALSE)),
+           id_cuts = cut(d[[var]], bins, labels = F, include.lowest = TRUE, right = FALSE)
+    ) %>%
+    separate(cuts, c("cut_inf", "cut_sup"), sep = ",") %>%
+    mutate(cut_inf = makeup::makeup_num(as.numeric(cut_inf), sample),
+           cut_sup = makeup::makeup_num(as.numeric(cut_sup), sample))%>%
+    arrange(id_cuts)
+  d[[var]] <- paste0(d$cut_inf, " - ", d$cut_sup)
+  d[[var]] <- factor(d[[var]], levels = unique(d[[var]]))
+  d
 }
