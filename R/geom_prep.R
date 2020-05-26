@@ -9,7 +9,7 @@ geomagic_prep <- function(data = NULL, opts = NULL, by_col = "name") {
   ggmap$path <- file.path("geodata",ggmap$geoname,paste0(ggmap$basename,".topojson"))
   ggmap$centroides <- file.path("geodata",ggmap$geoname,paste0(ggmap$basename,".csv"))
   centroides <- read_csv(system.file(ggmap$centroides,package = "geodata"))
-
+  if (is.null(data)) centroides$labels <- centroides[[by_col]]
   tj <- rgdal::readOGR(system.file(ggmap$path,package = "geodata"))
 
 
@@ -75,21 +75,49 @@ geomagic_prep <- function(data = NULL, opts = NULL, by_col = "name") {
       d <- d %>% drop_na()
     }
 
-    data <- d
+
+   cat_var <- dic$id_letters[grepl("Gnm|Gcd|Cat", dic$hdType)]
+   l <- map(cat_var, function(i) {
+     d[[paste0(i, "_label")]] <<- makeup::makeup_chr(d[[i]], opts$style$format_cat_sample)
+   })
+
+   num_var <- dic$id_letters[grepl("Num|Gln|Glt", dic$hdType)]
+   l <- map(num_var, function(i) {
+     d[[paste0(i, "_label")]] <<- makeup::makeup_num(d[[i]],
+                                                     opts$style$format_num_sample,
+                                                     suffix = opts$style$suffix,
+                                                     prefix = opts$style$prefix)
+   })
+
+   general_label <- nms[names(nms) == num_var[1]]
+   general_label <- opts$chart$tooltip %||% paste0("{", general_label, "}")
+
+    d <- d %>%
+      mutate(labels = ifelse(is.na(a), NA,
+                             glue::glue(geom_labels(nms,
+                                         tooltip = general_label)))
+             )
+
+
 
     if (!identical(grep("Gnm|Gcd|Cat", dic$hdType) == 1, logical(0))) {
       d <- d %>%
         mutate(name_alt = iconv(tolower(a), to = "ASCII//TRANSLIT"))
       data_map <- data_map %>% left_join(d, by = "name_alt")
+      centroides$name_alt <- iconv(tolower(centroides[[by_col]]), to = "ASCII//TRANSLIT")
+      centroides <- centroides %>% left_join(d, by = "name_alt")
     } else {
       data_map <- data_map
     }
 
-  }
+    data <- d
 
+  }
+print(centroides)
   list(
     d = data_map,
     data = data,
+    centroides = centroides,
     titles = list(
       title = opts$title$title,
       subtitle = opts$title$subtitle,

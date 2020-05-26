@@ -19,8 +19,8 @@ gg_projections <- function(opts_projections) {
   orientation <- c(opts_projections$lat, opts_projections$long, opts_projections$rotation)
 
   req_one_aditional_parms <- c("cylequalarea", "rectangular", "gall", "perspective", "fisheye",
-                           "newyorker", "conic", "bonne", "bicentric", "elliptic", "mecca",
-                           "homing")
+                               "newyorker", "conic", "bonne", "bicentric", "elliptic", "mecca",
+                               "homing")
   req_two_aditional_params <- c("simpleconic", "lambert", "albers", "trapezoidal", "lune")
 
   if (opts_projections$projection %in% req_one_aditional_parms) {
@@ -44,4 +44,29 @@ gg_graticule <- function(graticule) {
     rect = element_blank(),
     plot.background = element_rect(fill = graticule$background),
     panel.grid.major = element_line())
+}
+
+#' labels
+geom_labels <- function(nms, tooltip) {
+  if (is.null(nms)) stop("Enter names")
+  #nms_names <- names(nms)
+  # if (is.null(tooltip)) {
+  #   l <- map(seq_along(nms), function(i){
+  #     paste0(nms_names[i], "_label")
+  #   }) %>% unlist()
+  #   tooltip <- paste0(l, collapse = " \n ")
+  # } else {
+  points <- gsub("\\{|\\}", "",
+                 stringr::str_extract_all(tooltip, "\\{.*?\\}")[[1]])
+  if (identical(points, character())) {
+    tooltip <- tooltip
+  } else {
+    l <- purrr::map(1:length(points), function(i){
+      i <- 1
+      true_points <-  paste0(names(nms[match(points[i], nms)]),"_label")
+      tooltip <<- gsub(points[i], true_points, tooltip, fixed = TRUE)
+    })[[length(points)]]
+  }
+  #}
+  tooltip
 }

@@ -19,7 +19,10 @@ gg_choropleth_GnmNum <- function(data = NULL, ...){
     gg_graticule(l$graticule) +
     labs(title = l$titles$title,
          subtitle = l$titles$subtitle,
-         caption = l$titles$caption)
+         caption = l$titles$caption) +
+    geom_text(data = l$centroides, aes(lon, lat, label = labels), check_overlap = TRUE,
+              size = 3, colour = "red", family = "Ubuntu")
+
   g
   #add_branding_bar(g, l$theme)
 }
