@@ -1,17 +1,17 @@
 
 #' Ggplot choropleths by numerical variable
 #'
-#' @name gg_choropleth_GnmNum
+#' @name gg_choropleth_GcdNum
 #' @param data A data.frame
 #' @return leaflet viz
-#' @section ctypes: Gnm-Num
+#' @section ctypes: Gcd-Num
 #' @export
 #' @examples
-#' gg_choropleth_GnmNum(sample_data("Gnm-Num", nrow = 10))
-gg_choropleth_GnmNum <- function(data = NULL, ...){
+#' gg_choropleth_GcdNum(sample_data("Gcd-Num", nrow = 10))
+gg_choropleth_GcdNum <- function(data = NULL, ...){
 
   opts <- dsvizopts::merge_dsviz_options(...)
-  l <- geomagic_prep(data = data, opts = opts)
+  l <- geomagic_prep(data = data, opts = opts, by = "id")
 
   g <- gg_basic_choropleth(l) +
     coord_map(gg_projections(l$projections)) +
@@ -30,14 +30,13 @@ gg_choropleth_GnmNum <- function(data = NULL, ...){
 }
 
 
-
 #' Ggplot choropleths by numerical variable
 #'
-#' @name gg_choropleth_Gnm
+#' @name gg_choropleth_Gcd
 #' @param data A data.frame
 #' @return leaflet viz
-#' @section ctypes: Gnm
+#' @section ctypes: Gcd
 #' @export
 #' @examples
-#' gg_choropleth_Gnm(sample_data("Gnm", nrow = 10))
-gg_choropleth_Gnm <- gg_choropleth_GnmNum
+#' gg_choropleth_Gcd(sample_data("Gcd", nrow = 10))
+gg_choropleth_Gcd <- gg_choropleth_GcdNum

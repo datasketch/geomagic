@@ -29,6 +29,19 @@ gg_basic_bubbles <- function(l) {
   g
 }
 
+#' Basic layer points
+gg_basic_points <- function(l) {
+  g <- ggplot(data = l$d) +
+    geom_polygon(aes( x = long, y = lat, group = group),
+                 fill = l$theme$na_color,
+                 color= l$theme$border_color)
+  if (!is.null(l$data)) {
+    g <- g +
+      geom_point(data = l$data, aes(x = a, y = b, size = c), colour = l$theme$palette_colors[1])
+  }
+
+  g
+}
 
 
 #' Projections

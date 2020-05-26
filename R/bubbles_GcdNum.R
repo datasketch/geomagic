@@ -1,17 +1,17 @@
 
 #' Ggplot bubbless by numerical variable
 #'
-#' @name gg_bubbles_GnmNum
+#' @name gg_bubbles_GcdNum
 #' @param data A data.frame
 #' @return leaflet viz
-#' @section ctypes: Gnm-Num
+#' @section ctypes: Gcd-Num
 #' @export
 #' @examples
-#' gg_bubbles_GnmNum(sample_data("Gnm-Num", nrow = 10))
-gg_bubbles_GnmNum <- function(data = NULL, ...) {
+#' gg_bubbles_GcdNum(sample_data("Gcd-Num", nrow = 10))
+gg_bubbles_GcdNum <- function(data = NULL, ...) {
 
   opts <- dsvizopts::merge_dsviz_options(...)
-  l <- geomagic_prep(data = data, opts = opts)
+  l <- geomagic_prep(data = data, opts = opts, by_col = "id")
 
   g <- gg_basic_bubbles(l)  +
     coord_map(gg_projections(l$projections)) +
@@ -29,11 +29,11 @@ gg_bubbles_GnmNum <- function(data = NULL, ...) {
 
 #' Ggplot bubbless by numerical variable
 #'
-#' @name gg_bubbles_Gnm
+#' @name gg_bubbles_Gcd
 #' @param data A data.frame
 #' @return leaflet viz
-#' @section ctypes: Gnm
+#' @section ctypes: Gcd
 #' @export
 #' @examples
-#' gg_bubbles_Gnm(sample_data("Gnm", nrow = 10))
-gg_bubbles_Gnm <- gg_bubbles_GnmNum
+#' gg_bubbles_Gcd(sample_data("Gcd", nrow = 10))
+gg_bubbles_Gcd <- gg_bubbles_GcdNum
