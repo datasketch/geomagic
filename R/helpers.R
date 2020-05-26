@@ -98,7 +98,6 @@ geom_labels <- function(nms, tooltip) {
     tooltip <- tooltip
   } else {
     l <- purrr::map(1:length(points), function(i){
-      i <- 1
       true_points <-  paste0(names(nms[match(points[i], nms)]),"_label")
       tooltip <<- gsub(points[i], true_points, tooltip, fixed = TRUE)
     })[[length(points)]]
@@ -132,15 +131,15 @@ gg_palette <- function(opts) {
 
 
 #'
-gg_cuts <- function (d, var = "b", sample, bins = 4, ...) {
+gg_cuts <- function (d, var = "b", sample, bins = 4, prefix, suffix, ...) {
   d <- d %>%
     mutate(cuts = gsub("\\[|\\)||]", "",
                        cut(d[[var]], bins, include.lowest = TRUE, right = FALSE)),
            id_cuts = cut(d[[var]], bins, labels = F, include.lowest = TRUE, right = FALSE)
     ) %>%
     separate(cuts, c("cut_inf", "cut_sup"), sep = ",") %>%
-    mutate(cut_inf = makeup::makeup_num(as.numeric(cut_inf), sample),
-           cut_sup = makeup::makeup_num(as.numeric(cut_sup), sample))%>%
+    mutate(cut_inf = makeup::makeup_num(as.numeric(cut_inf), sample, prefix = prefix, suffix = suffix),
+           cut_sup = makeup::makeup_num(as.numeric(cut_sup), sample, prefix = prefix, suffix = suffix))%>%
     arrange(id_cuts)
   d[[var]] <- paste0(d$cut_inf, " - ", d$cut_sup)
   d[[var]] <- factor(d[[var]], levels = unique(d[[var]]))
