@@ -50,3 +50,26 @@ gg_choropleth_GnmNum(data, map_name = "col_pacifico",
 gg_choropleth_GnmNum(data, map_name = "col_pacifico",
                      title = "Pacífico Colombiano",
                      map_color_scale = "Bins", prefix = "$")
+
+
+# Gcd Num examples  -------------------------------------------------------
+
+gg_choropleth_GcdNum()
+map_changes <- c("col_municipalities", "venezuela_states")
+availableMaps <- setdiff(availableGeodata(), map_changes)
+#map(availableMaps, function(n) {gg_choropleth_GcdNum(map_name = n)})
+
+gg_choropleth_GcdNum(map_name = "bra_states" )
+data <- data.frame(State = c("BR.PA", "BR.RS", "BR.RS", "BR.TO", "BR.MT", "BR.MA", "BR.ES"),
+                   `Fake population` = runif(7, 20000, 600000))
+gg_choropleth_GcdNum(data, map_name = "bra_states")
+gg_choropleth_GcdNum(data, map_name = "bra_states",
+                     map_color_scale = "Bins",
+                     title = "Brazil map",
+                     subtitle = "Fake map of Brazil population",
+                     caption = "Random data")
+
+gg_choropleth_Gcd(sample_data("Gcd", 300))
+gg_choropleth_Gcd(sample_data("Gcd", 3000),
+                  topo_fill_opacity = 1,
+                  palette_colors = c("#FEAFEA", "#000CCC"))
