@@ -1,5 +1,5 @@
 
-#' Ggplot choropleths by numerical variable
+#' Ggplot choropleths by categorical variable
 #'
 #' @name gg_choropleth_GnmCatNum
 #' @param data A data.frame
@@ -31,7 +31,7 @@ gg_choropleth_GnmCatNum <- function(data = NULL, ...){
 
 
 
-#' Ggplot choropleths by numerical variable
+#' Ggplot choropleths by categorical variable
 #'
 #' @name gg_choropleth_GnmCat
 #' @param data A data.frame
@@ -39,5 +39,5 @@ gg_choropleth_GnmCatNum <- function(data = NULL, ...){
 #' @section ctypes: Gnm-Cat
 #' @export
 #' @examples
-#' gg_choropleth_Gnm(sample_data("Gnm-Cat", nrow = 10))
+#' gg_choropleth_GnmCat(sample_data("Gnm-Cat", nrow = 10))
 gg_choropleth_GnmCat <- gg_choropleth_GnmCatNum
