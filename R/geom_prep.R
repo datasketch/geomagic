@@ -6,6 +6,8 @@ geomagic_prep <- function(data = NULL, opts = NULL, by_col = "name") {
   map_name <- opts$extra$map_name
   ggmap <- geodataMeta(map_name)
 
+  color_scale <- opts$extra$map_color_scale
+
   ggmap$path <- file.path("geodata",ggmap$geoname,paste0(ggmap$basename,".topojson"))
   ggmap$centroides <- file.path("geodata",ggmap$geoname,paste0(ggmap$basename,".csv"))
   centroides <- read_csv(system.file(ggmap$centroides,package = "geodata"))
@@ -46,15 +48,24 @@ geomagic_prep <- function(data = NULL, opts = NULL, by_col = "name") {
                             hdType= as_hdType(x = "Num"), id_letters = "b")
       dic <- dic %>% bind_rows(dic_num)
     } else if (frtype_d %in% c("Gnm-Cat", "Gcd-Cat", "Cat-Cat")) {
+
       d <- d %>%
+        filter(complete.cases(b)) %>%
         dplyr::group_by_all() %>%
-        dplyr::summarise(c = n())
-      ind_nms <- length(nms)+1
-      nms[ind_nms] <- 'Count'
-      names(nms) <- c(names(nms)[-ind_nms], 'c')
-      dic_num <- data.frame(id = "c", label = "Count",
-                            hdType= as_hdType(x = "Num"), id_letters = "c")
-      dic <- dic %>% bind_rows(dic_num)
+        dplyr::summarise(c = n()) %>%
+        dplyr::filter(c == max(c)) %>%
+        dplyr::group_by(a) %>%
+        dplyr::mutate(d = n(), b = ifelse(d == 1, b, "tie")) %>%
+        dplyr::distinct(a, b, c)
+
+        ind_nms <- length(nms)+1
+        nms[ind_nms] <- 'Count'
+        names(nms) <- c(names(nms)[-ind_nms], 'c')
+        dic_num <- data.frame(id = "c", label = "Count", hdType= as_hdType(x = "Num"))
+        dic <- dic %>% bind_rows(dic_num)
+
+        color_scale <- "Category"
+
     } else if (frtype_d %in% "Gln-Glt-Cat") {
       d <- d %>%
         dplyr::group_by_all() %>%
@@ -68,7 +79,15 @@ geomagic_prep <- function(data = NULL, opts = NULL, by_col = "name") {
     } else if (frtype_d %in% c("Gcd-Num", "Gnm-Num", "Cat-Num")) {
       d <- summarizeData(d, opts$summarize$agg, to_agg = b, a) %>% drop_na()
     } else if (frtype_d %in% c("Gcd-Cat-Num", "Gnm-Cat-Num", "Gln-Glt-Cat")) {
-      d <- summarizeData(d, opts$summarize$agg, to_agg = c, a, b) %>% drop_na(a, c)
+      d <- summarizeData(d, opts$summarize$agg, to_agg = c, a, b) %>%
+        drop_na(a, c) %>%
+        dplyr::group_by(a) %>%
+        dplyr::filter(c == max(c)) %>%
+        dplyr::mutate(d = n(), b = ifelse(d == 1, b, "tie")) %>%
+        dplyr::distinct(a, b, c)
+
+      color_scale <- "Category"
+
     } else if (frtype_d %in% c("Gln-Glt", "Glt-Gln", "Num-Num")) {
       d <- d %>% mutate(c = opts$extra$map_radius) %>% drop_na()
     } else {
@@ -143,7 +162,7 @@ print(centroides)
     graticule = list(map_graticule = opts$extra$map_graticule,
                      background = opts$theme$background_color),
     legend = list(colors = opts$theme$palette_colors,
-                  color_scale = opts$extra$map_color_scale,
+                  color_scale = color_scale,
                   na_color = opts$theme$na_color)
   )
 
