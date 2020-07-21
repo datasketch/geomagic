@@ -109,8 +109,8 @@ geom_labels <- function(nms, tooltip) {
 #'
 gg_palette <- function(opts) {
   if (opts$color_scale == "Category") {
-    color_mapping <- "colorFactor"
-    l <- list()
+    color_mapping <- "scale_fill_manual"
+    l <- list(values = opts$colors, na.value = opts$na_color)
   } else if (opts$color_scale == "Quantile") {
     color_mapping <- "scale_fill_manual"
     l <- list()
