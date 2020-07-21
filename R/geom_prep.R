@@ -137,7 +137,7 @@ geomagic_prep <- function(data = NULL, opts = NULL, by_col = "name") {
     data <- d
 
   }
-#print(centroides)
+
   list(
     d = data_map,
     data = data,
