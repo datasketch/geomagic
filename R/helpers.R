@@ -6,9 +6,16 @@ gg_basic_choropleth <- function(l) {
                    fill = l$theme$na_color,
                    color= l$theme$border_color)
   } else {
-    g <- ggplot(data = l$d) +
-      geom_polygon(aes( x = long, y = lat, group = group, fill = b),
-                   color= l$theme$border_color)
+    if (is(l$d$b, "character")){
+      g <- ggplot(data = l$d) +
+        geom_polygon(aes( x = long, y = lat, group = group, fill = b, alpha = c),
+                     color= l$theme$border_color) +
+        scale_alpha_continuous(name = NULL)
+    } else {
+      g <- ggplot(data = l$d) +
+        geom_polygon(aes( x = long, y = lat, group = group, fill = b),
+                     color= l$theme$border_color)
+    }
   }
   g
 }
