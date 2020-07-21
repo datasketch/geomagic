@@ -61,7 +61,7 @@ geomagic_prep <- function(data = NULL, opts = NULL, by_col = "name") {
         ind_nms <- length(nms)+1
         nms[ind_nms] <- 'Count'
         names(nms) <- c(names(nms)[-ind_nms], 'c')
-        dic_num <- data.frame(id = "c", label = "Count", hdType= as_hdType(x = "Num"))
+        dic_num <- data.frame(id = "c", label = "Count", hdType= as_hdType(x = "Num"), id_letters = "c")
         dic <- dic %>% bind_rows(dic_num)
 
         color_scale <- "Category"
@@ -137,7 +137,7 @@ geomagic_prep <- function(data = NULL, opts = NULL, by_col = "name") {
     data <- d
 
   }
-print(centroides)
+#print(centroides)
   list(
     d = data_map,
     data = data,
