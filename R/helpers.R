@@ -6,9 +6,16 @@ gg_basic_choropleth <- function(l) {
                    fill = l$theme$na_color,
                    color= l$theme$border_color)
   } else {
-    g <- ggplot(data = l$d) +
-      geom_polygon(aes( x = long, y = lat, group = group, fill = b),
-                   color= l$theme$border_color)
+    if (is(l$d$b, "character")){
+      g <- ggplot(data = l$d) +
+        geom_polygon(aes( x = long, y = lat, group = group, fill = b, alpha = c),
+                     color= l$theme$border_color) +
+        scale_alpha_continuous(name = NULL)
+    } else {
+      g <- ggplot(data = l$d) +
+        geom_polygon(aes( x = long, y = lat, group = group, fill = b),
+                     color= l$theme$border_color)
+    }
   }
   g
 }
@@ -22,8 +29,15 @@ gg_basic_bubbles <- function(l) {
                  fill = l$theme$na_color,
                  color= l$theme$border_color)
   if (!is.null(l$data)) {
-    g <- g +
-      geom_point(data = l$centroides, aes(x = lon, y = lat, size = b), colour = l$theme$palette_colors[1])
+
+    if (is(l$d$b, "character")){
+      g <- g +
+        geom_point(data = l$centroides, aes(x = lon, y = lat, size = c, color = b))
+    } else {
+      g <- g +
+        geom_point(data = l$centroides, aes(x = lon, y = lat, size = b), color = l$theme$palette_colors[1])
+    }
+
   }
 
   g
@@ -85,15 +99,21 @@ gg_graticule <- function(graticule) {
 
 
 #'
-gg_palette <- function(opts) {
+gg_palette <- function(opts, map_type=NULL) {
+  color_mapping_categorical <-"scale_fill_manual"
+  if (!is.null(map_type)){
+    if (map_type == "bubbles"){
+      color_mapping_categorical <-"scale_color_manual"
+      }
+  }
   if (opts$color_scale == "Category") {
-    color_mapping <- "colorFactor"
-    l <- list()
+    color_mapping <- color_mapping_categorical
+    l <- list(values = opts$colors, na.value = opts$na_color, name = NULL)
   } else if (opts$color_scale == "Quantile") {
-    color_mapping <- "scale_fill_manual"
+    color_mapping <- color_mapping_categorical
     l <- list()
   } else if (opts$color_scale == 'Bins') {
-    color_mapping <- "scale_fill_manual"
+    color_mapping <- color_mapping_categorical
     l <- list(values = opts$colors, na.value = opts$na_color)
   } else {
     if (length(opts$colors) == 1) opts$colors <- c(opts$colors, "#CCCCCC")
