@@ -25,8 +25,7 @@ gg_choropleth_GnmNum <- function(data = NULL, ...){
               colour = l$text$colour, family = l$text$family) +
     gg_palette(opts = l$legend)
 
-  g
-  #add_branding_bar(g, l$theme)
+  add_branding_bar(g, opts$theme)
 }
 
 

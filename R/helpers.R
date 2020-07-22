@@ -145,3 +145,37 @@ gg_cuts <- function (d, var = "b", sample, bins = 4, prefix, suffix, ...) {
   d[[var]] <- factor(d[[var]], levels = unique(d[[var]]))
   d
 }
+
+# Find name or id
+#' @export
+geoType <- function(data, map_name) {
+
+  f <- homodatum::fringe(data)
+  nms <- homodatum::fringe_labels(f)
+  d <- homodatum::fringe_d(f)
+
+  lfmap <- geodataMeta(map_name)
+  centroides <- data_centroid(lfmap$geoname, lfmap$basename)
+  vs <- NULL
+  values <- intersect(d[["a"]], centroides[["id"]])
+
+  if (identical(values, character(0))) {
+    values <- intersect(d[["a"]], centroides[["name"]])
+    if(!identical(values, character())) vs <- "Gnm"
+  } else {
+    vs <- "Gcd"
+  }
+  vs
+}
+
+
+# fake data
+#' @export
+fakeData <- function(map_name = NULL, ...) {
+  if (is.null(map_name)) return()
+  lfmap <- geodataMeta(map_name)
+  centroides <- data_centroid(lfmap$geoname, lfmap$basename)
+  d <- data.frame(name =sample(centroides$name, 11), fake_value = rnorm(11, 33, 333))
+  d
+}
+

@@ -23,7 +23,7 @@ gg_bubbles_GcdNum <- function(data = NULL, ...) {
     geom_text(data = l$centroides, aes(lon, lat, label = labels),
               check_overlap = TRUE, size = l$text$size,
               colour = l$text$colour, family = l$text$family)
-  g
+  add_branding_bar(g, opts$theme)
 }
 
 
