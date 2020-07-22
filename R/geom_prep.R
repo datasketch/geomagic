@@ -30,12 +30,12 @@ geomagic_prep <- function(data = NULL, opts = NULL, by_col = "name") {
   }
 
   if (!is.null(data)) {
+
     f <- homodatum::fringe(data)
     nms <- homodatum::fringe_labels(f)
     d <- homodatum::fringe_d(f)
     dic <- homodatum::fringe_dic(f, id_letters = TRUE)
     frtype_d <- f$frtype
-
 
     if(frtype_d %in% c("Gcd", "Gnm", "Cat")){
       d <- d %>%
@@ -108,16 +108,6 @@ geomagic_prep <- function(data = NULL, opts = NULL, by_col = "name") {
                                                      prefix = opts$style$prefix)
    })
 
-   general_label <- nms[names(nms) == num_var[1]]
-   general_label <- opts$chart$tooltip %||% paste0("{", general_label, "}")
-
-    d <- d %>%
-      mutate(labels = ifelse(is.na(a), NA,
-                             glue::glue(geom_labels(nms,
-                                         tooltip = general_label)))
-             )
-
-
 
     if (!identical(grep("Gnm|Gcd|Cat", dic$hdType) == 1, logical(0))) {
       if (opts$extra$map_color_scale == "Bins") {
@@ -135,7 +125,8 @@ geomagic_prep <- function(data = NULL, opts = NULL, by_col = "name") {
     }
 
     data <- d
-
+    centroides <- centroides %>%
+      mutate(labels = as.character(glue::glue(gg_labels(nms, label = opts$chart$tooltip))))
   }
 
   list(
@@ -152,7 +143,8 @@ geomagic_prep <- function(data = NULL, opts = NULL, by_col = "name") {
     text = list(
       size = opts$theme$text_size/5,
       family = opts$theme$text_family,
-      colour = opts$theme$text_color
+      colour = opts$theme$text_color,
+      show = opts$dataLabels$dataLabels_show
     ),
     projections = list(projection = opts$extra$map_projection,
                        lat = opts$extra$map_projection_lat,

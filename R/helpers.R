@@ -96,29 +96,7 @@ gg_graticule <- function(graticule) {
   }
 }
 
-#' labels
-geom_labels <- function(nms, tooltip) {
-  if (is.null(nms)) stop("Enter names")
-  #nms_names <- names(nms)
-  # if (is.null(tooltip)) {
-  #   l <- map(seq_along(nms), function(i){
-  #     paste0(nms_names[i], "_label")
-  #   }) %>% unlist()
-  #   tooltip <- paste0(l, collapse = " \n ")
-  # } else {
-  points <- gsub("\\{|\\}", "",
-                 stringr::str_extract_all(tooltip, "\\{.*?\\}")[[1]])
-  if (identical(points, character())) {
-    tooltip <- tooltip
-  } else {
-    l <- purrr::map(1:length(points), function(i){
-      true_points <-  paste0(names(nms[match(points[i], nms)]),"_label")
-      tooltip <<- gsub(points[i], true_points, tooltip, fixed = TRUE)
-    })[[length(points)]]
-  }
-  #}
-  tooltip
-}
+
 
 #'
 gg_palette <- function(opts, map_type=NULL) {
@@ -165,3 +143,63 @@ gg_cuts <- function (d, var = "b", sample, bins = 4, prefix, suffix, ...) {
   d[[var]] <- factor(d[[var]], levels = unique(d[[var]]))
   d
 }
+
+# Find name or id
+#' @export
+geoType <- function(data, map_name) {
+
+  f <- homodatum::fringe(data)
+  nms <- homodatum::fringe_labels(f)
+  d <- homodatum::fringe_d(f)
+
+  lfmap <- geodataMeta(map_name)
+  centroides <- data_centroid(lfmap$geoname, lfmap$basename)
+  vs <- NULL
+  values <- intersect(d[["a"]], centroides[["id"]])
+
+  if (identical(values, character(0))) {
+    values <- intersect(d[["a"]], centroides[["name"]])
+    if(!identical(values, character())) vs <- "Gnm"
+  } else {
+    vs <- "Gcd"
+  }
+  vs
+}
+
+
+# fake data
+#' @export
+fakeData <- function(map_name = NULL, ...) {
+  if (is.null(map_name)) return()
+  lfmap <- geodataMeta(map_name)
+  centroides <- data_centroid(lfmap$geoname, lfmap$basename)
+  d <- data.frame(name =sample(centroides$name, 11), fake_value = rnorm(11, 33, 333))
+  d
+}
+
+# template datalabels
+#' @export
+gg_labels <- function(nms, label = NULL) {
+  if (is.null(nms)) stop("Enter names")
+  nms_names <- names(nms)
+  label <- label %||% ""
+  if (label == "") {
+    l <- map(seq_along(nms), function(i){
+      paste0("{",nms_names[i], "_label}")
+    }) %>% unlist()
+    label <- paste0(l, collapse = "\n")
+  } else {
+    points <- gsub("\\{|\\}", "",
+                   stringr::str_extract_all(label, "\\{.*?\\}")[[1]])
+    if (identical(points, character())) {
+      label <- label
+    } else {
+      #i <- 1
+      l <- purrr::map(1:length(points), function(i){
+        true_points <-  paste0(names(nms[match(points[i], nms)]),"_label")
+        label <<- gsub(points[i], true_points, label, fixed = TRUE)
+      })[[length(points)]]}
+  }
+  label
+}
+label <- "{Aliqua (Gnm)} y {Eiusmod (Num)}"

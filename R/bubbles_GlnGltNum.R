@@ -24,8 +24,8 @@ gg_bubbles_GlnGltNum <- function(data = NULL, ...) {
     # geom_text(l$data, aes(a, b, label = labels),
     #           check_overlap = TRUE, size = l$text$size,
     #           colour = l$text$colour, family = l$text$family)
-  print(l$data)
-  g
+
+  add_branding_bar(g, opts$theme)
 }
 
 
