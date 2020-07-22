@@ -19,10 +19,12 @@ gg_bubbles_GnmNum <- function(data = NULL, ...) {
     gg_graticule(l$graticule) +
     labs(title = l$titles$title,
          subtitle = l$titles$subtitle,
-         caption = l$titles$caption, size =  l$titles$legend) +
-    geom_text(data = l$centroides, aes(lon, lat, label = labels),
+         caption = l$titles$caption, size =  l$titles$legend)
+  if (l$text$show) {
+   g <- g + geom_text(data = l$centroides, aes(lon, lat, label = labels),
               check_overlap = TRUE, size = l$text$size,
               colour = l$text$colour, family = l$text$family)
+  }
   add_branding_bar(g, opts$theme)
 }
 
