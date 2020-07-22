@@ -20,7 +20,7 @@ gg_choropleth_GcdNum <- function(data = NULL, ...){
     labs(title = l$titles$title,
          subtitle = l$titles$subtitle,
          caption = l$titles$caption, fill =  l$titles$legend)
-
+print(l$centroides)
   if (l$text$show) {
     g  <- g + geom_text(data = l$centroides, aes(lon, lat, label = labels),
               check_overlap = TRUE, size = l$text$size,

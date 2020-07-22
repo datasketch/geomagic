@@ -82,29 +82,7 @@ gg_graticule <- function(graticule) {
   }
 }
 
-#' labels
-geom_labels <- function(nms, tooltip) {
-  if (is.null(nms)) stop("Enter names")
-  #nms_names <- names(nms)
-  # if (is.null(tooltip)) {
-  #   l <- map(seq_along(nms), function(i){
-  #     paste0(nms_names[i], "_label")
-  #   }) %>% unlist()
-  #   tooltip <- paste0(l, collapse = " \n ")
-  # } else {
-  points <- gsub("\\{|\\}", "",
-                 stringr::str_extract_all(tooltip, "\\{.*?\\}")[[1]])
-  if (identical(points, character())) {
-    tooltip <- tooltip
-  } else {
-    l <- purrr::map(1:length(points), function(i){
-      true_points <-  paste0(names(nms[match(points[i], nms)]),"_label")
-      tooltip <<- gsub(points[i], true_points, tooltip, fixed = TRUE)
-    })[[length(points)]]
-  }
-  #}
-  tooltip
-}
+
 
 #'
 gg_palette <- function(opts) {
@@ -179,3 +157,29 @@ fakeData <- function(map_name = NULL, ...) {
   d
 }
 
+# template datalabels
+#' @export
+gg_labels <- function(nms, label = NULL) {
+  if (is.null(nms)) stop("Enter names")
+  nms_names <- names(nms)
+  label <- label %||% ""
+  if (label == "") {
+    l <- map(seq_along(nms), function(i){
+      paste0("{",nms_names[i], "_label}")
+    }) %>% unlist()
+    label <- paste0(l, collapse = "\n")
+  } else {
+    points <- gsub("\\{|\\}", "",
+                   stringr::str_extract_all(label, "\\{.*?\\}")[[1]])
+    if (identical(points, character())) {
+      label <- label
+    } else {
+      #i <- 1
+      l <- purrr::map(1:length(points), function(i){
+        true_points <-  paste0(names(nms[match(points[i], nms)]),"_label")
+        label <<- gsub(points[i], true_points, label, fixed = TRUE)
+      })[[length(points)]]}
+  }
+  label
+}
+label <- "{Aliqua (Gnm)} y {Eiusmod (Num)}"
