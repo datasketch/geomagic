@@ -133,7 +133,8 @@ print(centroides)
     text = list(
       size = opts$theme$text_size/5,
       family = opts$theme$text_family,
-      colour = opts$theme$text_color
+      colour = opts$theme$text_color,
+      show = opts$dataLabels$dataLabels_show
     ),
     projections = list(projection = opts$extra$map_projection,
                        lat = opts$extra$map_projection_lat,
