@@ -2,6 +2,8 @@
 
 S3method(print,ggmagic)
 export(add_ggmagic_theme_clean)
+export(fakeData)
+export(geoType)
 export(geomagic_prep)
 export(gg_bubbles_Gcd)
 export(gg_bubbles_GcdNum)
