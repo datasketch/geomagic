@@ -55,7 +55,7 @@ gg_choropleth_GnmNum(data, map_name = "col_pacifico",
 
 # Gcd Num examples  -------------------------------------------------------
 
-gg_choropleth_GcdNum()
+gg_choropleth_GcdNum(branding_include=T, background_color = "black", branding_background_color = "black")
 map_changes <- c("col_municipalities", "venezuela_states")
 availableMaps <- setdiff(availableGeodata(), map_changes)
 #map(availableMaps, function(n) {gg_choropleth_GcdNum(map_name = n)})

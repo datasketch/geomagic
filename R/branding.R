@@ -13,7 +13,7 @@ add_branding_bar <- function(gg, opts_theme, debug = FALSE){
   print(opts_theme$background_color)
   logo <- local_logo_path(logo = opts_theme$logo, background = opts_theme$background_color)
   print(logo)
-  logo_height <- opts_theme$logo_height/2
+  logo_height <- opts_theme$logo_height/3
   branding_position <- "bottom"
   logo_position <- opts_theme$logo_position %||% "right"
   branding_text <- opts_theme$branding_text %||% ""
@@ -35,13 +35,13 @@ add_branding_bar <- function(gg, opts_theme, debug = FALSE){
       text_y <- text_vjust <- 0
     }
   }
-
+print(logo_vjust)
   img_html <- glue::glue("<img src='{logo}' height='{logo_height}'/>")
   logo_grob <- gridtext::richtext_grob(img_html,
                         x = logo_x,
                         y = logo_y,
                         hjust = logo_hjust,
-                        vjust = logo_vjust,
+                        vjust = -1.5,#logo_vjust,
                         margin = unit(c(5,20,5,20),'pt'),
                         # padding = unit(c(0,0,5,5),'pt'),
                         gp = grid::gpar(fontsize = branding_text_size,
@@ -54,7 +54,7 @@ add_branding_bar <- function(gg, opts_theme, debug = FALSE){
                         y = text_y,
                         hjust = text_hjust,
                         vjust = text_vjust,
-                        margin = unit(c(5,20,8,20),'pt'),
+                        margin = unit(c(0,0,0,0),'pt'),
                         # padding = unit(c(5,0,5,5),'pt'),
                         box_gp = grid::gpar(
                           col = ifelse(debug,"black","transparent"),
@@ -69,7 +69,7 @@ add_branding_bar <- function(gg, opts_theme, debug = FALSE){
   rect <- grid::rectGrob(
     y = 0,
     width = 1,
-    height = unit(55, "pt"),
+    height = unit(100, "pt"),
     gp=grid::gpar(fill=ifelse(debug, "red", branding_background_color),
             col = branding_background_color,
             alpha= ifelse(debug, 0.3, 1))

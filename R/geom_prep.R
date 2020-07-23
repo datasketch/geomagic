@@ -141,9 +141,9 @@ geomagic_prep <- function(data = NULL, opts = NULL, by_col = "name") {
     ),
     theme = opts$theme,
     text = list(
-      size = opts$theme$text_size/5,
+      size = opts$dataLabels$dataLabels_size %||% opts$theme$text_size/5,
       family = opts$theme$text_family,
-      colour = opts$theme$text_color,
+      colour = opts$dataLabels$dataLabels_color %||% opts$theme$text_color,
       show = opts$dataLabels$dataLabels_show
     ),
     projections = list(projection = opts$extra$map_projection,
