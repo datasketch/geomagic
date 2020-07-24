@@ -8,7 +8,7 @@ add_branding_bar <- function(gg, opts_theme, debug = FALSE){
   # message("in branding")
   # str(opts_theme)
   background_color <- opts_theme$background_color
-  branding_background_color <- opts_theme$branding_background_color %||% background_color
+  branding_background_color <- "transparent"#opts_theme$branding_background_color %||% background_color
   print(opts_theme$logo)
   print(opts_theme$background_color)
   logo <- local_logo_path(logo = opts_theme$logo, background = opts_theme$background_color)
@@ -41,7 +41,7 @@ print(logo_vjust)
                         x = logo_x,
                         y = logo_y,
                         hjust = logo_hjust,
-                        vjust = -1.5,#logo_vjust,
+                        vjust = -1.3,#logo_vjust,
                         margin = unit(c(5,20,5,20),'pt'),
                         # padding = unit(c(0,0,5,5),'pt'),
                         gp = grid::gpar(fontsize = branding_text_size,
