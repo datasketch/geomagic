@@ -15,7 +15,7 @@ gg_bubbles_GlnGltNum <- function(data = NULL, ...) {
   l <- geomagic_prep(data = data, opts = opts)
 
   g <- gg_basic_points(l)+
-    coord_map(gg_projections(l$projections)) +
+    do.call("coord_map", gg_projections(l$projections)) +
     add_ggmagic_theme(l$theme) +
     gg_graticule(l$graticule) +
     labs(title = l$titles$title,

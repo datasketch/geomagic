@@ -60,7 +60,7 @@ gg_basic_points <- function(l) {
 
 #' Projections
 gg_projections <- function(opts_projections) {
-print(opts_projections)
+
   orientation <- c(opts_projections$lat, opts_projections$long, opts_projections$rotation)
 
   req_one_aditional_parms <- c("cylequalarea", "rectangular", "gall", "perspective", "fisheye",

@@ -14,7 +14,7 @@ gg_choropleth_GnmNum <- function(data = NULL, ...){
   l <- geomagic_prep(data = data, opts = opts)
 
   g <- gg_basic_choropleth(l) +
-    coord_map(gg_projections(l$projections)) +
+    do.call("coord_map", gg_projections(l$projections)) +
     add_ggmagic_theme(l$theme) +
     gg_graticule(l$graticule) +
     labs(title = l$titles$title,

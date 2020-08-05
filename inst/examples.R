@@ -17,6 +17,14 @@ gg_choropleth_GnmNum(data = df,
                      title = "Mapa de ejemplo",
                      branding_include = TRUE,  tooltip = "{pais}")
 
+
+# test projectios ---------------------------------------------------------
+
+gg_choropleth_GnmNum(map_name = "usa_states", map_projection = "cylequalarea")
+
+
+
+
 # Gnm-Num examples --------------------------------------------------------
 
 gg_choropleth_GnmNum()
