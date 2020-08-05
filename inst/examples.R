@@ -3,6 +3,7 @@
 
 geomagic_prep()
 gg_choropleth_GnmNum()
+gg_choropleth_GnmNum(map_projection = "rectangular", map_projection_params = 10)
 gg_choropleth_GnmNum(branding_include = T)
 gg_choropleth_GnmNum(map_name = "usa_states")
 gg_choropleth_GnmNum(map_name = "usa_states",

@@ -149,6 +149,7 @@ add_ggmagic_theme <- function(opts = NULL){
       size = thm$panel_border_size,
       fill = 'transparent',
       colour = thm$panel_border_colour),
+    panel.spacing = unit(0.5, "lines"),
     panel.grid.major = element_line(
       size = thm$grid_size,
       linetype = grid_line_type,
