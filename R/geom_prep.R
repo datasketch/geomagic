@@ -24,7 +24,7 @@ geomagic_prep <- function(data = NULL, opts = NULL, by_col = "name") {
     dplyr::left_join( data_info)
   data_map$name_alt <- iconv(tolower(data_map[[by_col]]), to = "ASCII//TRANSLIT")
 
-  if (map_name == "usa_states") {
+  if (map_name == "usa_states" | map_name == "usa_counties") {
     if (!opts$extra$map_add_alaska)
       data_map <- data_map[data_map$name != "Alaska",]
   }
