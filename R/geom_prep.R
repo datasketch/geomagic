@@ -6,6 +6,8 @@ geomagic_prep <- function(data = NULL, opts = NULL, by_col = "name") {
   map_name <- opts$extra$map_name
   ggmap <- geodataMeta(map_name)
 
+  palette_colors <-  opts$theme$palette_colors
+  palette_type <-  opts$theme$palette_type
   color_scale <- opts$extra$map_color_scale
 
   ggmap$path <- file.path("geodata",ggmap$geoname,paste0(ggmap$basename,".topojson"))
@@ -127,6 +129,35 @@ geomagic_prep <- function(data = NULL, opts = NULL, by_col = "name") {
     data <- d
     centroides <- centroides %>%
       mutate(labels = as.character(glue::glue(gg_labels(nms, label = opts$chart$tooltip))))
+
+    # define color palette based on data type
+    var_cat <- "Cat" %in% dic$hdType
+    if(!is.null(palette_type)){
+      if(!palette_type %in% c("categorical", "sequential", "divergent")){
+        warning("Palette type must be one of 'categorical', 'sequential', or 'divergent'; reverting to default.")
+        palette_type <- NULL
+      }
+      if(!var_cat & palette_type == "categorical" | (var_cat & palette_type %in% c("sequential", "divergent"))){
+        warning("Palette type might not be suitable for data type.")
+      }
+    } else {
+      if(var_cat){
+        palette_type <- "categorical"
+      } else {
+        palette_type <- "sequential"
+      }
+    }
+
+    if(is.null(palette_colors)){
+      if(palette_type == "categorical"){
+        palette_colors <- opts$theme$palette_colors_categorical
+      } else if (palette_type == "sequential"){
+        palette_colors <- opts$theme$palette_colors_sequential
+      } else if (palette_type == "divergent"){
+        palette_colors <- opts$theme$palette_colors_divergent
+      }
+    }
+
   }
 
   list(
@@ -153,7 +184,7 @@ geomagic_prep <- function(data = NULL, opts = NULL, by_col = "name") {
                        add_params = opts$extra$map_projection_params),
     graticule = list(map_graticule = opts$extra$map_graticule,
                      background = opts$theme$background_color),
-    legend = list(colors = opts$theme$palette_colors,
+    legend = list(colors = palette_colors,
                   color_scale = color_scale,
                   na_color = opts$theme$na_color)
   )
